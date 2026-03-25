@@ -1,6 +1,6 @@
 # Evolving Hardware-Efficient Grover Circuits with Grammatical Evolution
 
-> **GECCO '26 Submission** — *Arinze Obidiegwu, Douglas Motadias, Emmanuel Obidiegwu*
+> **GECCO '26 Submission** — *Arinze Obidiegwu, Douglas Mota Dias, Emmanuel Obidiegwu*
 >
 > Automatic synthesis of state-specific, NISQ-optimised, 3-qubit Grover's search circuits via Grammatical Evolution, validated on the 133-qubit IBM Heron processor (`ibm_torino`).
 
