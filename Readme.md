@@ -296,7 +296,6 @@ sequenceDiagram
 ├── Grover_110_STD.ipynb            # GE pipeline for |110⟩
 ├── Grover_111_STD.ipynb            # GE pipeline for |111⟩
 ├── grovers-algorithm.ipynb         # Canonical Grover baseline
-├── GECCO_2026_QCE_Camera_Ready.pdf # Accompanying paper
 └── Readme.md
 ```
 
