@@ -1,0 +1,25 @@
+state,selection_method,population_size,population_source,n_runs,success_rate,success_rate_pct,best_fidelity,best_run_seed,best_depth,best_gate_count,best_two_qubit_gates,best_raw_depth,best_raw_gate_count,mean_fidelity,std_fidelity,bimodal,hardware_p_marked,hardware_seed,hardware_sim_fidelity,stop_reasons,mean_early_stop_gen
+000,epsilon_lexicase,300,path,5,4/5,80.0%,0.9865,33537,5,11,2,12,26,0.9772,0.0171,False,0.9766,33537,0.9865,"{""Hardware targets achieved"": 4, ""Fidelity stagnant"": 1}",20.4
+000,epsilon_lexicase,100,path,5,2/5,40.0%,0.9818,70300,5,11,2,13,28,0.6448,0.3196,True,0.9822,70300,0.9818,"{""Fidelity stagnant"": 3, ""Hardware targets achieved"": 2}",16.8
+001,epsilon_lexicase,300,path,5,3/5,60.0%,0.9875,21315,4,9,2,15,29,0.7942,0.2632,True,0.9837,21315,0.9875,"{""Hardware targets achieved"": 3, ""Fidelity stagnant"": 2}",17.0
+001,epsilon_lexicase,100,path,5,4/5,80.0%,0.9813,70300,7,14,5,20,43,0.8800,0.2082,True,0.9567,47182,0.9634,"{""Hardware metrics stagnant"": 2, ""Hardware targets achieved"": 2, ""Fidelity stagnant"": 1}",19.4
+010,epsilon_lexicase,300,path,5,5/5,100.0%,0.9911,33537,5,8,4,19,41,0.9860,0.0033,False,0.9803,33537,0.9911,"{""Hardware targets achieved"": 5}",20.2
+010,epsilon_lexicase,100,path,5,2/5,40.0%,0.9790,21315,11,20,7,27,58,0.6908,0.2614,True,0.9506,21315,0.9790,"{""Hardware targets achieved"": 1, ""Fidelity stagnant"": 3, ""Hardware metrics stagnant"": 1}",18.8
+011,epsilon_lexicase,300,path,5,3/5,60.0%,0.9887,12147,2,5,4,23,45,0.7885,0.2684,True,0.9771,12147,0.9887,"{""Fidelity stagnant"": 2, ""Hardware targets achieved"": 2, ""Hardware metrics stagnant"": 1}",19.4
+011,epsilon_lexicase,100,path,5,3/5,60.0%,0.9790,47182,10,18,2,13,27,0.7348,0.3347,True,0.9579,70300,0.9622,"{""Fidelity stagnant"": 2, ""Hardware targets achieved"": 2, ""Hardware metrics stagnant"": 1}",19.8
+100,epsilon_lexicase,300,path,5,4/5,80.0%,0.9902,33537,3,5,5,20,42,0.8864,0.2242,True,0.9902,33537,0.9902,"{""Hardware targets achieved"": 4, ""Fidelity stagnant"": 1}",21.8
+100,epsilon_lexicase,100,path,5,3/5,60.0%,0.9813,47182,7,12,2,11,25,0.7817,0.2616,True,0.9822,47182,0.9813,"{""Hardware targets achieved"": 2, ""Fidelity stagnant"": 2, ""Hardware metrics stagnant"": 1}",20.0
+101,epsilon_lexicase,300,path,5,3/5,60.0%,0.9894,70300,5,9,4,19,42,0.7898,0.2709,True,0.9827,70300,0.9894,"{""Hardware targets achieved"": 3, ""Fidelity stagnant"": 2}",23.8
+101,epsilon_lexicase,100,path,5,3/5,60.0%,0.9848,33537,4,7,2,12,26,0.7804,0.2626,True,0.9789,33537,0.9848,"{""Fidelity stagnant"": 2, ""Hardware metrics stagnant"": 2, ""Hardware targets achieved"": 1}",21.2
+110,epsilon_lexicase,300,path,5,3/5,60.0%,0.9857,70300,5,9,2,11,27,0.7863,0.2545,True,0.9767,70300,0.9857,"{""Hardware targets achieved"": 3, ""Fidelity stagnant"": 2}",23.0
+110,epsilon_lexicase,100,path,5,2/5,40.0%,0.9827,33537,6,10,2,11,25,0.6918,0.2648,True,0.9821,33537,0.9827,"{""Fidelity stagnant"": 3, ""Hardware targets achieved"": 2}",20.0
+111,epsilon_lexicase,300,path,5,5/5,100.0%,0.9900,70300,5,9,4,19,41,0.9739,0.0168,False,0.9742,70300,0.9900,"{""Hardware targets achieved"": 4, ""Hardware metrics stagnant"": 1}",23.0
+111,epsilon_lexicase,100,path,5,3/5,60.0%,0.9840,21315,6,10,2,13,28,0.7847,0.2652,True,0.9676,21315,0.9840,"{""Hardware targets achieved"": 3, ""Fidelity stagnant"": 2}",18.2
+000,tournament,300,path,5,4/5,80.0%,0.9810,33537,5,11,2,11,25,0.8987,0.1794,True,0.9773,33537,0.9810,"{""Hardware targets achieved"": 4, ""Fidelity stagnant"": 1}",17.8
+001,tournament,300,path,5,4/5,80.0%,0.9868,21315,4,9,3,12,27,0.8853,0.2114,True,0.9765,21315,0.9868,"{""Hardware targets achieved"": 4, ""Fidelity stagnant"": 1}",22.2
+010,tournament,300,path,5,2/5,40.0%,0.9796,47182,7,13,2,11,26,0.6928,0.2611,True,0.9712,47182,0.9796,"{""Hardware targets achieved"": 2, ""Fidelity stagnant"": 3}",22.2
+011,tournament,300,path,5,3/5,60.0%,0.9776,21315,5,10,2,11,25,0.7902,0.2475,True,0.9661,21315,0.9776,"{""Hardware targets achieved"": 3, ""Fidelity stagnant"": 2}",19.2
+100,tournament,300,path,5,3/5,60.0%,0.9788,47182,5,10,2,11,26,0.7823,0.2613,True,0.9720,47182,0.9788,"{""Fidelity stagnant"": 2, ""Hardware targets achieved"": 3}",18.0
+101,tournament,300,path,5,1/5,20.0%,0.9668,12147,8,12,2,12,26,0.5955,0.2092,True,0.9595,12147,0.9668,"{""Fidelity stagnant"": 4, ""Hardware targets achieved"": 1}",19.4
+110,tournament,300,path,5,2/5,40.0%,0.9796,47182,6,10,2,11,25,0.6864,0.2666,True,0.9750,47182,0.9796,"{""Fidelity stagnant"": 3, ""Hardware targets achieved"": 2}",16.6
+111,tournament,300,path,5,3/5,60.0%,0.9873,47182,4,8,3,13,27,0.7820,0.2643,True,0.9719,47182,0.9873,"{""Hardware targets achieved"": 3, ""Fidelity stagnant"": 2}",19.0

@@ -1,0 +1,22 @@
+# Environments / caches
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Old + pre-launch run data (kept in archive/, not in git)
+archive/
+experiments_frozen_10seed/
+logs_frozen_10seed/
+
+# Notebooks: intentionally NOT committed (they embed a legacy IBM token;
+# sanitize before ever adding them)
+*.ipynb
+
+# Generated figures / plots
+fig_*.png
+fig_*.pdf
+paper_figures/
+
+# Archives
+*.zip

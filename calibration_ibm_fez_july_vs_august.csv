@@ -1,0 +1,93 @@
+section,key,metric,value,unit
+per-snapshot medians,2026-07-21,T1_median_us,123.19758,us
+per-snapshot medians,2026-07-21,T2_median_us,94.475139,us
+per-snapshot medians,2026-07-21,readout_error_median,0.0087890625,
+per-snapshot medians,2026-07-21,single_q_gate_error_median,0.00031626893,
+per-snapshot medians,2026-07-21,two_q_gate_error_median,0.0028043314,
+per-snapshot medians,2026-07-21,two_q_gate_error_mean,0.032818576,
+per-snapshot medians,2026-07-22,T1_median_us,115.3549,us
+per-snapshot medians,2026-07-22,T2_median_us,89.331883,us
+per-snapshot medians,2026-07-22,readout_error_median,0.0095825195,
+per-snapshot medians,2026-07-22,single_q_gate_error_median,0.00029535375,
+per-snapshot medians,2026-07-22,two_q_gate_error_median,0.0028126803,
+per-snapshot medians,2026-07-22,two_q_gate_error_mean,0.033265384,
+per-snapshot medians,2026-07-23,T1_median_us,115.3549,us
+per-snapshot medians,2026-07-23,T2_median_us,89.331883,us
+per-snapshot medians,2026-07-23,readout_error_median,0.0083618164,
+per-snapshot medians,2026-07-23,single_q_gate_error_median,0.00029535375,
+per-snapshot medians,2026-07-23,two_q_gate_error_median,0.0028126803,
+per-snapshot medians,2026-07-23,two_q_gate_error_mean,0.033265384,
+per-snapshot medians,2026-07-26,T1_median_us,141.30948,us
+per-snapshot medians,2026-07-26,T2_median_us,100.10798,us
+per-snapshot medians,2026-07-26,readout_error_median,0.0096435547,
+per-snapshot medians,2026-07-26,single_q_gate_error_median,0.00030521767,
+per-snapshot medians,2026-07-26,two_q_gate_error_median,0.0028202359,
+per-snapshot medians,2026-07-26,two_q_gate_error_mean,0.032978148,
+per-snapshot medians,2026-08-06,T1_median_us,133.43488,us
+per-snapshot medians,2026-08-06,T2_median_us,97.585813,us
+per-snapshot medians,2026-08-06,readout_error_median,0.0095214844,
+per-snapshot medians,2026-08-06,single_q_gate_error_median,0.0003310648,
+per-snapshot medians,2026-08-06,two_q_gate_error_median,0.0029004618,
+per-snapshot medians,2026-08-06,two_q_gate_error_mean,0.033120428,
+per-snapshot medians,2026-08-07,T1_median_us,133.43488,us
+per-snapshot medians,2026-08-07,T2_median_us,97.585813,us
+per-snapshot medians,2026-08-07,readout_error_median,0.0083618164,
+per-snapshot medians,2026-08-07,single_q_gate_error_median,0.00030871505,
+per-snapshot medians,2026-08-07,two_q_gate_error_median,0.0030202916,
+per-snapshot medians,2026-08-07,two_q_gate_error_mean,0.033172488,
+per-snapshot medians,2026-08-08,T1_median_us,133.43488,us
+per-snapshot medians,2026-08-08,T2_median_us,97.585813,us
+per-snapshot medians,2026-08-08,readout_error_median,0.0083618164,
+per-snapshot medians,2026-08-08,single_q_gate_error_median,0.00030871505,
+per-snapshot medians,2026-08-08,two_q_gate_error_median,0.0030202916,
+per-snapshot medians,2026-08-08,two_q_gate_error_mean,0.033172488,
+per-snapshot medians,2026-08-11,T1_median_us,109.90002,us
+per-snapshot medians,2026-08-11,T2_median_us,78.219544,us
+per-snapshot medians,2026-08-11,readout_error_median,0.0085449219,
+per-snapshot medians,2026-08-11,single_q_gate_error_median,0.00030262948,
+per-snapshot medians,2026-08-11,two_q_gate_error_median,0.0030165703,
+per-snapshot medians,2026-08-11,two_q_gate_error_mean,0.033250214,
+july_vs_august,July window,T1_median_us,119.27624,
+july_vs_august,August window,T1_median_us,133.43488,
+july_vs_august,delta (Aug-Jul),T1_median_us,+14.158637,
+july_vs_august,relative change,T1_median_us,+11.9%,
+july_vs_august,July window,T2_median_us,91.903511,
+july_vs_august,August window,T2_median_us,97.585813,
+july_vs_august,delta (Aug-Jul),T2_median_us,+5.6823022,
+july_vs_august,relative change,T2_median_us,+6.2%,
+july_vs_august,July window,readout_error_median,0.009185791,
+july_vs_august,August window,readout_error_median,0.0083618164,
+july_vs_august,delta (Aug-Jul),readout_error_median,-0.00082397461,
+july_vs_august,relative change,readout_error_median,-9.0%,
+july_vs_august,July window,single_q_gate_error_median,0.00030028571,
+july_vs_august,August window,single_q_gate_error_median,0.00030871505,
+july_vs_august,delta (Aug-Jul),single_q_gate_error_median,+8.4293442e-06,
+july_vs_august,relative change,single_q_gate_error_median,+2.8%,
+july_vs_august,July window,two_q_gate_error_median,0.0028126803,
+july_vs_august,August window,two_q_gate_error_median,0.0030202916,
+july_vs_august,delta (Aug-Jul),two_q_gate_error_median,+0.00020761129,
+july_vs_august,relative change,two_q_gate_error_median,+7.4%,
+july_vs_august,July window,two_q_gate_error_mean,0.033121766,
+july_vs_august,August window,two_q_gate_error_mean,0.033172488,
+july_vs_august,delta (Aug-Jul),two_q_gate_error_mean,+5.0721981e-05,
+july_vs_august,relative change,two_q_gate_error_mean,+0.2%,
+simulated p_marked by noise model,epsilon_lexicase/111 (9g/5d),2026-07-21,0.9952,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,epsilon_lexicase/111 (9g/5d),2026-07-26,0.9930,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,epsilon_lexicase/111 (9g/5d),2026-08-07,0.9956,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,epsilon_lexicase/111 (9g/5d),delta Aug7-Jul21,+0.0004,
+simulated p_marked by noise model,epsilon_lexicase/111 (9g/5d),delta Aug7-Jul26,+0.0027,
+simulated p_marked by noise model,epsilon_lexicase/000 (11g/5d),2026-07-21,0.9695,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,epsilon_lexicase/000 (11g/5d),2026-07-26,0.9569,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,epsilon_lexicase/000 (11g/5d),2026-08-07,0.9723,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,epsilon_lexicase/000 (11g/5d),delta Aug7-Jul21,+0.0028,
+simulated p_marked by noise model,epsilon_lexicase/000 (11g/5d),delta Aug7-Jul26,+0.0154,
+simulated p_marked by noise model,tournament/110 (10g/6d),2026-07-21,0.9828,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,tournament/110 (10g/6d),2026-07-26,0.9731,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,tournament/110 (10g/6d),2026-08-07,0.9834,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,tournament/110 (10g/6d),delta Aug7-Jul21,+0.0006,
+simulated p_marked by noise model,tournament/110 (10g/6d),delta Aug7-Jul26,+0.0103,
+simulated p_marked by noise model,tournament/100 (10g/5d),2026-07-21,0.9731,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,tournament/100 (10g/5d),2026-07-26,0.9651,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,tournament/100 (10g/5d),2026-08-07,0.9763,"10k shots, mean of 10 seeds"
+simulated p_marked by noise model,tournament/100 (10g/5d),delta Aug7-Jul21,+0.0032,
+simulated p_marked by noise model,tournament/100 (10g/5d),delta Aug7-Jul26,+0.0112,

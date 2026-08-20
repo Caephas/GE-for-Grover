@@ -1,0 +1,22 @@
+# Environments / caches
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Old / pre-launch run data (recoverable in archive/)
+archive/
+experiments_frozen_10seed/
+logs_frozen_10seed/
+
+# Notebooks contain a legacy embedded IBM token — never commit
+*.ipynb
+
+# Removed git metadata from an earlier, unwanted init — never restore
+.git_removed*
+
+# Generated figures / archives
+fig_*.png
+fig_*.pdf
+paper_figures/
+*.zip
