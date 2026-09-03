@@ -74,12 +74,3 @@ python build_cliffs_ci_unified.py               # unified Cliff's δ CIs
 python build_deployed_circuit_figures.py        # deployed circuit images
 ```
 
-## Excluded by design
-
-- `ibm_*_transpiled_*.ipynb` notebooks (contained an embedded IBM credential)
-- `gpem_paper/` (LaTeX) and `QGE GPEM 2026/` (template)
-- `infra/` (GCP/launcher scripts used during development; runs were local)
-- `archive/` (old live-calibration runs; 4 GB, kept separately)
-- Superseded 2-arm packs (`PAPER_DATA_FROZEN_10SEED.md`,
-  `STATS_SUPPLEMENT_FROZEN_10SEED.md`, `SUPP_TABLES_FROZEN_10SEED.md`, etc.)
-- Authoring scratch (`PAPER_FILL_IN*.md`), `.venv`, `.git`, and sweep logs
