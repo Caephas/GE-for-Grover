@@ -1,0 +1,22 @@
+{
+  "individual_id": 1,
+  "fitness_evolution": 0.11129999999999998,
+  "fitness_hardware": 0.12000000000000002,
+  "backend": "ibm_fez",
+  "target_state": "011",
+  "counts": {
+    "011": 9800,
+    "001": 65,
+    "010": 75,
+    "111": 59,
+    "101": 1
+  },
+  "p_marked_hw": 0.98,
+  "total_shots": 10000,
+  "original_gates": 59,
+  "original_depth": 33,
+  "transpiled_gates": 5,
+  "transpiled_depth": 2,
+  "job_id": "dabstgle36ac739ftscg",
+  "timestamp": "2026-09-02T08:22:50.665179"
+}

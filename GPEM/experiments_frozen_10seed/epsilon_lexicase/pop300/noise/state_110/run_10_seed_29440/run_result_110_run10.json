@@ -1,0 +1,31 @@
+{
+  "run_id": 10,
+  "seed": 29440,
+  "target_state": "110",
+  "selection_method": "epsilon_lexicase",
+  "raw_fitness": 0.7745000000000001,
+  "fitness": 0.7745000000000001,
+  "fidelity": 0.9255,
+  "gate_count": 35,
+  "depth": 18,
+  "raw_gate_count": 45,
+  "raw_depth": 24,
+  "gate_ops": {
+    "h": 19,
+    "x": 12,
+    "cx": 4,
+    "measure": 3,
+    "ryy": 2,
+    "u": 2,
+    "cy": 1,
+    "swap": 1,
+    "y": 1
+  },
+  "two_qubit_gates": 6,
+  "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.cy( 1,2 )\n## End Diffuser\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.swap( 2,1 )\nqc.ryy( np.pi/4 , 1,0 )\nqc.ryy( np.pi/4 , 1,0 )\nqc.u( np.pi/2 , np.pi/4 , 1.5708 , 1 )\nqc.y( 1 )\nqc.u( 2.7 , 2.7 , 1.5708 , 2 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
+  "genome_hash": "3029506481",
+  "early_stopped_gen": 99,
+  "stop_reason": "completed_all_generations",
+  "raw_two_qubit_gates": 4,
+  "two_qubit_provenance": "transpiled (frozen target, run seed); raw preserved in raw_two_qubit_gates"
+}

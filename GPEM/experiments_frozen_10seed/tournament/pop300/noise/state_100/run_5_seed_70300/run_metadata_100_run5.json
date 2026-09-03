@@ -1,0 +1,38 @@
+{
+  "system": {
+    "machine": "arm64",
+    "processor": "arm",
+    "system": "Darwin",
+    "system_version": "Darwin Kernel Version 25.5.0: Tue Jun  9 22:26:22 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T8132",
+    "python_version": "3.11.15",
+    "cpu_count": 10,
+    "chip": "Apple M4",
+    "ram_gb": 16.0,
+    "pkg_qiskit": "2.4.1",
+    "pkg_qiskit-aer": "0.17.2",
+    "pkg_qiskit-ibm-runtime": "0.46.1",
+    "pkg_deap": "1.4.2",
+    "pkg_numpy": "2.2.2",
+    "pkg_grape": "dev"
+  },
+  "timing": {
+    "evolution_start": 1787582739.3559418,
+    "evolution_end": 1787602180.013393,
+    "total_seconds": 19440.66,
+    "total_minutes": 324.01,
+    "avg_gen_seconds": 360.0
+  },
+  "config": {
+    "target_state": "100",
+    "seed": 70300,
+    "run_id": 5,
+    "selection_method": "tournament",
+    "population_size": 300,
+    "max_generations": 100,
+    "backend": "ibm_fez",
+    "early_stopped_gen": 53,
+    "stop_reason": "Hardware targets achieved: fidelity=0.974, gates=19, depth=11",
+    "use_noise": true
+  },
+  "timestamp": "2026-08-24T21:09:41.905098"
+}

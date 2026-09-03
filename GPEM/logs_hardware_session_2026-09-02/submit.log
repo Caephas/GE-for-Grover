@@ -1,0 +1,183 @@
+=== HARDWARE BATCH session_2026-09-02 | ibm_fez | 10000 shots (individual jobs, back-to-back) ===
+backend: ibm_fez | status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x10eb054d0>
+manifest circuits: 25
+ # arm             state seed   sim     rec D/G/2Q  transpiled D/G/2Qraw D/G   match
+ 1 epsilon_lexicase000   47182  0.9898  1/3/0       1/3/0          20/43    OK
+ 2 epsilon_lexicase001   12147  0.9901  2/4/0       2/4/0          14/28    OK
+ 3 epsilon_lexicase010   33537  0.9818  5/8/1       5/8/1          19/41    OK
+ 4 epsilon_lexicase011   47182  0.9801  4/8/1       4/8/1          16/29    OK
+ 5 epsilon_lexicase100   29440  0.9881  5/8/0       5/8/0          20/43    OK
+ 6 epsilon_lexicase101   80248  0.9895  3/6/0       3/6/0          14/28    OK
+ 7 epsilon_lexicase110   33537  0.9859  2/6/0       2/6/0          19/42    OK
+ 8 epsilon_lexicase111   12147  0.9814  10/19/3       10/19/3          30/62    OK
+ 9 tournament      000   80248  0.9895  1/3/0       1/3/0          19/43    OK
+10 tournament      001   80248  0.9881  2/5/0       2/5/0          19/42    OK
+11 tournament      010   80248  0.9846  3/5/0       3/5/0          19/42    OK
+12 tournament      011   70300  0.9797  15/22/5       15/22/5          19/41    OK
+13 tournament      100   80248  0.9883  2/4/0       2/4/0          19/44    OK
+14 tournament      101   47182  0.9819  5/8/2       5/8/2          13/27    OK
+15 tournament      110   12147  0.9793  6/10/2       6/10/2          11/25    OK
+16 tournament      111   67154  0.9794  5/8/2       5/8/2          12/26    OK
+17 lexi2           000   47182  0.9834  2/5/0       2/5/0          23/45    OK
+18 lexi2           001   33537  0.9819  7/12/2       7/12/2          16/32    OK
+19 lexi2           010   80248  0.9851  3/5/0       3/5/0          21/43    OK
+20 lexi2           011   91197  0.9887  2/5/0       2/5/0          33/59    OK
+21 lexi2           100   29440  0.9869  3/6/0       3/6/0          25/48    OK
+22 lexi2           101   21315  0.9820  3/7/0       3/7/0          23/45    OK
+23 lexi2           110   21315  0.9805  6/11/1       6/11/1          28/53    OK
+24 lexi2           111   21315  0.9876  3/7/0       3/7/0          24/46    OK
+25 epsilon_lexicase111   29440  0.9798  4/8/1       4/8/1          13/26    OK
+
+Submitting 25 circuits back-to-back...
+
+[epsilon_lexicase state000 seed47182] submitting...
+  job id: dac3vvdnj4cs73ac52u0
+  p(marked) = 0.9901 | sim-HW gap = -0.0003
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state000_seed47182.json
+
+[epsilon_lexicase state001 seed12147] submitting...
+  job id: dac40itnj4cs73ac53jg
+  p(marked) = 0.9875 | sim-HW gap = +0.0026
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state001_seed12147.json
+
+[epsilon_lexicase state010 seed33537] submitting...
+  job id: dac40mbdd5gc73d5j0sg
+  p(marked) = 0.9737 | sim-HW gap = +0.0081
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state010_seed33537.json
+
+[epsilon_lexicase state011 seed47182] submitting...
+  job id: dac41i51ierc738j4igg
+  p(marked) = 0.9841 | sim-HW gap = -0.0040
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state011_seed47182.json
+
+[epsilon_lexicase state100 seed29440] submitting...
+  job id: dac421m42tqs73armm9g
+  p(marked) = 0.9844 | sim-HW gap = +0.0037
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state100_seed29440.json
+
+[epsilon_lexicase state101 seed80248] submitting...
+  job id: dac42b5nj4cs73ac55cg
+  p(marked) = 0.9855 | sim-HW gap = +0.0040
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state101_seed80248.json
+
+[epsilon_lexicase state110 seed33537] submitting...
+  job id: dac42ou42tqs73armn50
+  p(marked) = 0.9782 | sim-HW gap = +0.0077
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state110_seed33537.json
+
+[epsilon_lexicase state111 seed12147] submitting...
+  job id: dac42se42tqs73armn90
+  p(marked) = 0.9478 | sim-HW gap = +0.0336
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state111_seed12147.json
+
+[tournament state000 seed80248] submitting...
+  job id: dac42uu42tqs73armndg
+  p(marked) = 0.9887 | sim-HW gap = +0.0008
+  saved: logs_hardware_session_2026-09-02/tournament_state000_seed80248.json
+
+[tournament state001 seed80248] submitting...
+  job id: dac432bdd5gc73d5j3f0
+  p(marked) = 0.9844 | sim-HW gap = +0.0037
+  saved: logs_hardware_session_2026-09-02/tournament_state001_seed80248.json
+
+[tournament state010 seed80248] submitting...
+  job id: dac43j3dd5gc73d5j44g
+  p(marked) = 0.9847 | sim-HW gap = -0.0001
+  saved: logs_hardware_session_2026-09-02/tournament_state010_seed80248.json
+
+[tournament state011 seed70300] submitting...
+  job id: dac43ndnj4cs73ac56vg
+  p(marked) = 0.9559 | sim-HW gap = +0.0238
+  saved: logs_hardware_session_2026-09-02/tournament_state011_seed70300.json
+
+[tournament state100 seed80248] submitting...
+  job id: dac43rbdd5gc73d5j4e0
+  p(marked) = 0.9863 | sim-HW gap = +0.0020
+  saved: logs_hardware_session_2026-09-02/tournament_state100_seed80248.json
+
+[tournament state101 seed47182] submitting...
+  job id: dac44nd1ierc738j4lvg
+  p(marked) = 0.9682 | sim-HW gap = +0.0137
+  saved: logs_hardware_session_2026-09-02/tournament_state101_seed47182.json
+
+[tournament state110 seed12147] submitting...
+  job id: dac44u3dd5gc73d5j5hg
+  p(marked) = 0.9664 | sim-HW gap = +0.0129
+  saved: logs_hardware_session_2026-09-02/tournament_state110_seed12147.json
+
+[tournament state111 seed67154] submitting...
+  job id: dac45dt1ierc738j4mpg
+  p(marked) = 0.9627 | sim-HW gap = +0.0167
+  saved: logs_hardware_session_2026-09-02/tournament_state111_seed67154.json
+
+[lexi2 state000 seed47182] submitting...
+  job id: dac45g51ierc738j4ms0
+  p(marked) = 0.9585 | sim-HW gap = +0.0249
+  saved: logs_hardware_session_2026-09-02/lexi2_state000_seed47182.json
+
+[lexi2 state001 seed33537] submitting...
+  job id: dac45jjdd5gc73d5j66g
+  p(marked) = 0.9740 | sim-HW gap = +0.0079
+  saved: logs_hardware_session_2026-09-02/lexi2_state001_seed33537.json
+
+[lexi2 state010 seed80248] submitting...
+  job id: dac45m51ierc738j4n1g
+  p(marked) = 0.9810 | sim-HW gap = +0.0041
+  saved: logs_hardware_session_2026-09-02/lexi2_state010_seed80248.json
+
+[lexi2 state011 seed91197] submitting...
+  job id: dac45vdnj4cs73ac5990
+  p(marked) = 0.9590 | sim-HW gap = +0.0297
+  saved: logs_hardware_session_2026-09-02/lexi2_state011_seed91197.json
+
+[lexi2 state100 seed29440] submitting...
+  job id: dac46bd1ierc738j4nrg
+  p(marked) = 0.9729 | sim-HW gap = +0.0140
+  saved: logs_hardware_session_2026-09-02/lexi2_state100_seed29440.json
+
+[lexi2 state101 seed21315] submitting...
+  job id: dac46fl1ierc738j4o1g
+  p(marked) = 0.9454 | sim-HW gap = +0.0366
+  saved: logs_hardware_session_2026-09-02/lexi2_state101_seed21315.json
+
+[lexi2 state110 seed21315] submitting...
+  job id: dac46hu42tqs73armre0
+  p(marked) = 0.9676 | sim-HW gap = +0.0129
+  saved: logs_hardware_session_2026-09-02/lexi2_state110_seed21315.json
+
+[lexi2 state111 seed21315] submitting...
+  job id: dac46lm42tqs73armrjg
+  p(marked) = 0.9637 | sim-HW gap = +0.0239
+  saved: logs_hardware_session_2026-09-02/lexi2_state111_seed21315.json
+
+[epsilon_lexicase state111 seed29440] submitting...
+  job id: dac46vu42tqs73armrvg
+  p(marked) = 0.9703 | sim-HW gap = +0.0095
+  saved: logs_hardware_session_2026-09-02/epsilon_lexicase_state111_seed29440.json
+
+=== SESSION SUMMARY ===
+  epsilon_lexicase state000 seed47182: p(marked)=0.9901  sim-HW=-0.0003
+  epsilon_lexicase state001 seed12147: p(marked)=0.9875  sim-HW=+0.0026
+  epsilon_lexicase state010 seed33537: p(marked)=0.9737  sim-HW=+0.0081
+  epsilon_lexicase state011 seed47182: p(marked)=0.9841  sim-HW=-0.0040
+  epsilon_lexicase state100 seed29440: p(marked)=0.9844  sim-HW=+0.0037
+  epsilon_lexicase state101 seed80248: p(marked)=0.9855  sim-HW=+0.0040
+  epsilon_lexicase state110 seed33537: p(marked)=0.9782  sim-HW=+0.0077
+  epsilon_lexicase state111 seed12147: p(marked)=0.9478  sim-HW=+0.0336
+  tournament state000 seed80248: p(marked)=0.9887  sim-HW=+0.0008
+  tournament state001 seed80248: p(marked)=0.9844  sim-HW=+0.0037
+  tournament state010 seed80248: p(marked)=0.9847  sim-HW=-0.0001
+  tournament state011 seed70300: p(marked)=0.9559  sim-HW=+0.0238
+  tournament state100 seed80248: p(marked)=0.9863  sim-HW=+0.0020
+  tournament state101 seed47182: p(marked)=0.9682  sim-HW=+0.0137
+  tournament state110 seed12147: p(marked)=0.9664  sim-HW=+0.0129
+  tournament state111 seed67154: p(marked)=0.9627  sim-HW=+0.0167
+  lexi2 state000 seed47182: p(marked)=0.9585  sim-HW=+0.0249
+  lexi2 state001 seed33537: p(marked)=0.9740  sim-HW=+0.0079
+  lexi2 state010 seed80248: p(marked)=0.9810  sim-HW=+0.0041
+  lexi2 state011 seed91197: p(marked)=0.9590  sim-HW=+0.0297
+  lexi2 state100 seed29440: p(marked)=0.9729  sim-HW=+0.0140
+  lexi2 state101 seed21315: p(marked)=0.9454  sim-HW=+0.0366
+  lexi2 state110 seed21315: p(marked)=0.9676  sim-HW=+0.0129
+  lexi2 state111 seed21315: p(marked)=0.9637  sim-HW=+0.0239
+  epsilon_lexicase state111 seed29440: p(marked)=0.9703  sim-HW=+0.0095

@@ -1,0 +1,29 @@
+{
+  "run_id": 5,
+  "seed": 70300,
+  "target_state": "110",
+  "selection_method": "lexi2",
+  "raw_fitness": 1.6965,
+  "fitness": 1.6965,
+  "fidelity": 0.5435,
+  "gate_count": 62,
+  "depth": 43,
+  "raw_gate_count": 27,
+  "raw_depth": 14,
+  "gate_ops": {
+    "h": 12,
+    "x": 6,
+    "measure": 3,
+    "cx": 2,
+    "cswap": 1,
+    "y": 1,
+    "rzx": 1,
+    "s": 1
+  },
+  "two_qubit_gates": 10,
+  "raw_two_qubit_gates": 2,
+  "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Oracle\nqc.cswap( 0,2,1 )\nqc.y( 2 )\n## End Oracle\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.rzx( np.pi , 0,2 )\nqc.h( 0 )\nqc.s( 2 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
+  "genome_hash": "3106120993",
+  "early_stopped_gen": 99,
+  "stop_reason": "completed_all_generations"
+}

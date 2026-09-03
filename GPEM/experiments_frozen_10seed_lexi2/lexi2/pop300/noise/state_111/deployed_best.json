@@ -1,0 +1,14 @@
+{
+  "run_id": 1,
+  "seed": 21315,
+  "fidelity": 0.9876,
+  "depth": 3,
+  "gate_count": 7,
+  "two_qubit_gates": 0,
+  "raw_depth": 24,
+  "raw_gate_count": 46,
+  "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.cz( 1,2 )\n## End Diffuser\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.h( 0 )\nqc.x( 0 )\nqc.rz( np.pi , 2 )\nqc.swap( 2,0 )\nqc.cx( 2,0 )\nqc.cz( 2,1 )\nqc.z( 2 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
+  "selection_method": "lexi2",
+  "population_size": 300,
+  "rule": "max fidelity -> min transpiled 2Q gates -> min total transpiled gates -> min transpiled depth"
+}

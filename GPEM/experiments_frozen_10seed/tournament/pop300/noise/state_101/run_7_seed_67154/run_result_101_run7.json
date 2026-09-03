@@ -1,0 +1,28 @@
+{
+  "run_id": 7,
+  "seed": 67154,
+  "target_state": "101",
+  "selection_method": "tournament",
+  "raw_fitness": 0.3083,
+  "fitness": 0.3083,
+  "fidelity": 0.9717,
+  "gate_count": 14,
+  "depth": 8,
+  "raw_gate_count": 48,
+  "raw_depth": 24,
+  "gate_ops": {
+    "h": 22,
+    "x": 13,
+    "cx": 5,
+    "id": 4,
+    "measure": 3,
+    "cy": 1
+  },
+  "two_qubit_gates": 3,
+  "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.h( 0 )\n## End Diffuser\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.id( 2 )\nqc.id( 0 )\nqc.h( 2 )\nqc.cx( 2,1 )\nqc.id( 2 )\nqc.id( 0 )\nqc.h( 1 )\nqc.cy( 2,0 )\nqc.x( 2 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
+  "genome_hash": "2611625436",
+  "early_stopped_gen": 49,
+  "stop_reason": "Hardware targets achieved: fidelity=0.972, gates=14, depth=8",
+  "raw_two_qubit_gates": 5,
+  "two_qubit_provenance": "transpiled (frozen target, run seed); raw preserved in raw_two_qubit_gates"
+}

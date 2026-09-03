@@ -1,0 +1,1435 @@
+=== 2026-08-26T07:09:46Z | epsilon_lexicase | state 000 ===
+=== REDEPLOY HARDWARE | state 000 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_000):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9738 20g/10d/8q          45g/23d  [OK]
+       2   47182    0.9898 3g/1d/4q          43g/20d  [OK]
+       3   12147    0.9787 10g/6d/3q          29g/13d  [OK]
+       4   33537    0.9738 16g/10d/4q          41g/19d  [OK]
+       5   70300    0.9780 10g/5d/3q          28g/13d  [OK]
+       6   74135    0.9893 4g/2d/6q          34g/19d  [OK]
+       7   67154    0.9798 11g/5d/2q          25g/11d  [OK]
+       8   80248    0.9791 11g/6d/2q          25g/11d  [OK]
+       9   91197    0.9802 7g/4d/3q          31g/16d  [OK]
+      10   29440    0.9809 11g/6d/2q          25g/11d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 2 (seed 47182)
+Recorded fidelity:  0.9898
+Raw circuit:        43 gates / 20 depth
+In-loop transpiled: 3 gates / 1 depth / 4 2Q (fitness-time, seed 47182)
+Pre-check transpile: 3 gates / 1 depth at seed_transpiler=47182 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_000/run_2_seed_47182/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 000
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x11778e090>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.0702
+
+Evolved circuit statistics:
+  Original gates: 43
+  Original depth: 20
+  Gate counts: OrderedDict([('h', 22), ('x', 12), ('cx', 4), ('measure', 3), ('id', 1), ('rx', 1)])
+
+Original evolved circuit:
+Figure(3918x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 3
+  Transpiled depth: 1
+  Gate counts: OrderedDict([('measure', 3)])
+  Gate reduction: 93.0%
+  Depth reduction: 95.0%
+
+Transpiled circuit for hardware:
+Figure(884x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da792h46l22c73dn9u8g
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 000: 0.9918
+  Measurement distribution: {'000': 9918, '010': 67, '001': 7, '100': 8}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.0702
+    Hardware  fitness: 0.0682
+    Hardware shows better performance: 0.0020
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_000/run_2_seed_47182/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:10:06Z | epsilon_lexicase | state 001 ===
+=== REDEPLOY HARDWARE | state 001 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_001):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9793 10g/5d/2q          28g/13d  [OK]
+       2   47182    0.9885 5g/2d/2q          32g/17d  [OK]
+       3   12147    0.9901 4g/2d/4q          28g/14d  [OK]
+       4   33537    0.9794 10g/5d/2q          26g/12d  [OK]
+       5   70300    0.9796 5g/2d/4q          43g/20d  [OK]
+       6   74135    0.9652 10g/5d/4q          43g/20d  [OK]
+       7   67154    0.9774 10g/6d/2q          25g/11d  [OK]
+       8   80248    0.9764 10g/6d/2q          25g/11d  [OK]
+       9   91197    0.9800 6g/4d/3q          35g/16d  [OK]
+      10   29440    0.9799 10g/6d/2q          27g/11d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 3 (seed 12147)
+Recorded fidelity:  0.9901
+Raw circuit:        28 gates / 14 depth
+In-loop transpiled: 4 gates / 2 depth / 4 2Q (fitness-time, seed 12147)
+Pre-check transpile: 4 gates / 2 depth at seed_transpiler=12147 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'x': 1}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_001/run_3_seed_12147/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 001
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x116d9a350>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.0899
+
+Evolved circuit statistics:
+  Original gates: 28
+  Original depth: 14
+  Gate counts: OrderedDict([('h', 11), ('x', 6), ('cx', 4), ('ry', 3), ('measure', 3), ('y', 1)])
+
+Original evolved circuit:
+Figure(2916x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 4
+  Transpiled depth: 2
+  Gate counts: OrderedDict([('measure', 3), ('x', 1)])
+  Gate reduction: 85.7%
+  Depth reduction: 85.7%
+
+Transpiled circuit for hardware:
+Figure(884x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da792lu0ukec73830nag
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 001: 0.9910
+  Measurement distribution: {'001': 9910, '000': 70, '101': 16, '011': 4}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.0899
+    Hardware  fitness: 0.0890
+    Hardware shows better performance: 0.0009
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_001/run_3_seed_12147/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:10:25Z | epsilon_lexicase | state 010 ===
+=== REDEPLOY HARDWARE | state 010 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_010):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9769 13g/7d/6q          58g/27d  [OK]
+       2   47182    0.9792 12g/8d/2q          25g/11d  [OK]
+       3   12147    0.9782 10g/5d/2q          25g/11d  [OK]
+       4   33537    0.9818 8g/5d/4q          41g/19d  [OK]
+       5   70300    0.9749 11g/5d/6q          33g/16d  [OK]
+       6   74135    0.9803 10g/6d/5q          43g/21d  [OK]
+       7   67154    0.9741 10g/5d/2q          26g/11d  [OK]
+       8   80248    0.9802 10g/5d/2q          26g/11d  [OK]
+       9   91197    0.9778 9g/6d/2q          25g/11d  [OK]
+      10   29440    0.9772 9g/4d/4q          28g/13d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 4 (seed 33537)
+Recorded fidelity:  0.9818
+Raw circuit:        41 gates / 19 depth
+In-loop transpiled: 8 gates / 5 depth / 4 2Q (fitness-time, seed 33537)
+Pre-check transpile: 8 gates / 5 depth at seed_transpiler=33537 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'rz': 2, 'sx': 2, 'cz': 1}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_010/run_4_seed_33537/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 010
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x11318e4d0>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.1782
+
+Evolved circuit statistics:
+  Original gates: 41
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 22), ('x', 12), ('cx', 4), ('measure', 3)])
+
+Original evolved circuit:
+Figure(3752x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 8
+  Transpiled depth: 5
+  Gate counts: OrderedDict([('measure', 3), ('rz', 2), ('sx', 2), ('cz', 1)])
+  Gate reduction: 80.5%
+  Depth reduction: 73.7%
+
+Transpiled circuit for hardware:
+Figure(1552x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da792qe0ukec73830ngg
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 010: 0.9731
+  Measurement distribution: {'010': 9731, '000': 262, '011': 3, '110': 4}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1782
+    Hardware  fitness: 0.1869
+    ⚠ Hardware shows degradation: 0.0087
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_010/run_4_seed_33537/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:10:43Z | epsilon_lexicase | state 011 ===
+=== REDEPLOY HARDWARE | state 011 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_011):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9798 10g/5d/2q          25g/11d  [OK]
+       2   47182    0.9801 8g/4d/5q          29g/16d  [OK]
+       3   12147    0.9778 19g/9d/6q          64g/31d  [OK]
+       4   33537    0.9736 13g/8d/2q          27g/14d  [OK]
+       5   70300    0.9793 15g/10d/3q          28g/13d  [OK]
+       6   74135    0.9758 13g/8d/6q          46g/24d  [OK]
+       7   67154    0.9741 9g/5d/4q          43g/21d  [OK]
+       8   80248    0.9784 11g/7d/3q          31g/18d  [OK]
+       9   91197    0.9738 10g/5d/2q          25g/11d  [OK]
+      10   29440    0.9772 16g/9d/4q          42g/20d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 2 (seed 47182)
+Recorded fidelity:  0.9801
+Raw circuit:        29 gates / 16 depth
+In-loop transpiled: 8 gates / 4 depth / 5 2Q (fitness-time, seed 47182)
+Pre-check transpile: 8 gates / 4 depth at seed_transpiler=47182 -> MATCHES in-loop (intended circuit)
+    ops: {'x': 4, 'measure': 3, 'cz': 1}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_011/run_2_seed_47182/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 011
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x11798a6d0>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.1799
+
+Evolved circuit statistics:
+  Original gates: 29
+  Original depth: 16
+  Gate counts: OrderedDict([('h', 11), ('x', 7), ('cx', 3), ('measure', 3), ('ry', 2), ('cz', 2), ('u', 1)])
+
+Original evolved circuit:
+Figure(3250x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 8
+  Transpiled depth: 4
+  Gate counts: OrderedDict([('x', 4), ('measure', 3), ('cz', 1)])
+  Gate reduction: 72.4%
+  Depth reduction: 75.0%
+
+Transpiled circuit for hardware:
+Figure(1384x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da792v60ukec73830nqg
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 011: 0.9733
+  Measurement distribution: {'011': 9733, '001': 120, '111': 72, '010': 71, '101': 2, '000': 2}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1799
+    Hardware  fitness: 0.1867
+    ⚠ Hardware shows degradation: 0.0068
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_011/run_2_seed_47182/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:11:02Z | epsilon_lexicase | state 100 ===
+=== REDEPLOY HARDWARE | state 100 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_100):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9748 10g/5d/6q          46g/23d  [OK]
+       2   47182    0.9755 18g/10d/17q          126g/64d  [OK]
+       3   12147    0.9845 4g/2d/4q          45g/21d  [OK]
+       4   33537    0.9805 20g/12d/8q          58g/29d  [OK]
+       5   70300    0.9835 4g/2d/4q          44g/20d  [OK]
+       6   74135    0.9573 16g/9d/6q          63g/31d  [OK]
+       7   67154    0.9824 8g/5d/4q          41g/19d  [OK]
+       8   80248    0.9788 11g/6d/2q          25g/11d  [OK]
+       9   91197    0.9792 7g/4d/3q          28g/13d  [OK]
+      10   29440    0.9881 8g/5d/4q          43g/20d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 10 (seed 29440)
+Recorded fidelity:  0.9881
+Raw circuit:        43 gates / 20 depth
+In-loop transpiled: 8 gates / 5 depth / 4 2Q (fitness-time, seed 29440)
+Pre-check transpile: 8 gates / 5 depth at seed_transpiler=29440 -> MATCHES in-loop (intended circuit)
+    ops: {'rz': 3, 'measure': 3, 'sx': 2}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_100/run_10_seed_29440/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 100
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x115792410>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.1719
+
+Evolved circuit statistics:
+  Original gates: 43
+  Original depth: 20
+  Gate counts: OrderedDict([('h', 20), ('x', 12), ('cx', 4), ('u', 3), ('measure', 3), ('ry', 1)])
+
+Original evolved circuit:
+Figure(4086x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 8
+  Transpiled depth: 5
+  Gate counts: OrderedDict([('rz', 3), ('measure', 3), ('sx', 2)])
+  Gate reduction: 81.4%
+  Depth reduction: 75.0%
+
+Transpiled circuit for hardware:
+Figure(1720x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da7933usidac73af3490
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 100: 0.9806
+  Measurement distribution: {'000': 94, '100': 9806, '110': 83, '101': 16, '010': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1719
+    Hardware  fitness: 0.1794
+    ⚠ Hardware shows degradation: 0.0075
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_100/run_10_seed_29440/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:11:21Z | epsilon_lexicase | state 101 ===
+=== REDEPLOY HARDWARE | state 101 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_101):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9663 8g/5d/4q          44g/21d  [OK]
+       2   47182    0.9632 14g/7d/4q          41g/19d  [OK]
+       3   12147    0.9799 10g/6d/2q          25g/11d  [OK]
+       4   33537    0.9537 20g/11d/2q          29g/13d  [OK]
+       5   70300    0.9794 15g/11d/4q          29g/14d  [OK]
+       6   74135    0.9887 5g/2d/12q          108g/51d  [OK]
+       7   67154    0.9812 17g/10d/7q          59g/28d  [OK]
+       8   80248    0.9895 6g/3d/2q          28g/14d  [OK]
+       9   91197    0.9753 20g/13d/8q          63g/29d  [OK]
+      10   29440    0.9772 10g/5d/4q          42g/20d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 8 (seed 80248)
+Recorded fidelity:  0.9895
+Raw circuit:        28 gates / 14 depth
+In-loop transpiled: 6 gates / 3 depth / 2 2Q (fitness-time, seed 80248)
+Pre-check transpile: 6 gates / 3 depth at seed_transpiler=80248 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'x': 2, 'rz': 1}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_101/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 101
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x11729a690>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.1305
+
+Evolved circuit statistics:
+  Original gates: 28
+  Original depth: 14
+  Gate counts: OrderedDict([('h', 11), ('x', 6), ('u', 3), ('measure', 3), ('cx', 2), ('rxx', 2), ('tdg', 1)])
+
+Original evolved circuit:
+Figure(3082x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 6
+  Transpiled depth: 3
+  Gate counts: OrderedDict([('measure', 3), ('x', 2), ('rz', 1)])
+  Gate reduction: 78.6%
+  Depth reduction: 78.6%
+
+Transpiled circuit for hardware:
+Figure(1218x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da7938m0ukec73830oeg
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 101: 0.9853
+  Measurement distribution: {'101': 9853, '100': 67, '001': 67, '111': 13}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1305
+    Hardware  fitness: 0.1347
+    ⚠ Hardware shows degradation: 0.0042
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_101/run_8_seed_80248/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:11:39Z | epsilon_lexicase | state 110 ===
+=== REDEPLOY HARDWARE | state 110 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_110):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9766 16g/8d/5q          43g/21d  [OK]
+       2   47182    0.9799 9g/5d/2q          26g/12d  [OK]
+       3   12147    0.9813 7g/3d/5q          49g/26d  [OK]
+       4   33537    0.9859 6g/2d/4q          42g/19d  [OK]
+       5   70300    0.9802 8g/5d/2q          30g/13d  [OK]
+       6   74135    0.9788 10g/5d/3q          28g/13d  [OK]
+       7   67154    0.9772 9g/6d/2q          27g/13d  [OK]
+       8   80248    0.9859 7g/4d/5q          47g/22d  [OK]
+       9   91197    0.9792 9g/5d/3q          28g/14d  [OK]
+      10   29440    0.9255 35g/18d/4q          45g/24d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 4 (seed 33537)
+Recorded fidelity:  0.9859
+Raw circuit:        42 gates / 19 depth
+In-loop transpiled: 6 gates / 2 depth / 4 2Q (fitness-time, seed 33537)
+Pre-check transpile: 6 gates / 2 depth at seed_transpiler=33537 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'x': 2, 'rz': 1}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_110/run_4_seed_33537/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 110
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x112a9e610>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.1341
+
+Evolved circuit statistics:
+  Original gates: 42
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 20), ('x', 12), ('cx', 4), ('ry', 3), ('measure', 3)])
+
+Original evolved circuit:
+Figure(3752x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 6
+  Transpiled depth: 2
+  Gate counts: OrderedDict([('measure', 3), ('x', 2), ('rz', 1)])
+  Gate reduction: 85.7%
+  Depth reduction: 89.5%
+
+Transpiled circuit for hardware:
+Figure(1088x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da793dc6l22c73dn9vf0
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 110: 0.9840
+  Measurement distribution: {'110': 9840, '010': 73, '100': 79, '111': 7, '000': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1341
+    Hardware  fitness: 0.1360
+    ⚠ Hardware shows degradation: 0.0019
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_110/run_4_seed_33537/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:11:59Z | epsilon_lexicase | state 111 ===
+=== REDEPLOY HARDWARE | state 111 | epsilon_lexicase | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_111):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9786 19g/12d/7q          58g/28d  [OK]
+       2   47182    0.9793 8g/4d/2q          33g/18d  [OK]
+       3   12147    0.9814 19g/10d/7q          62g/30d  [OK]
+       4   33537    0.9779 19g/12d/5q          51g/28d  [OK]
+       5   70300    0.9781 16g/8d/6q          57g/27d  [OK]
+       6   74135    0.9550 13g/8d/2q          32g/13d  [OK]
+       7   67154    0.9504 10g/4d/4q          45g/21d  [OK]
+       8   80248    0.9812 8g/5d/3q          28g/13d  [OK]
+       9   91197    0.9580 18g/10d/6q          59g/28d  [OK]
+      10   29440    0.9798 8g/4d/3q          26g/13d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 3 (seed 12147)
+Recorded fidelity:  0.9814
+Raw circuit:        62 gates / 30 depth
+In-loop transpiled: 19 gates / 10 depth / 7 2Q (fitness-time, seed 12147)
+Pre-check transpile: 19 gates / 10 depth at seed_transpiler=12147 -> MATCHES in-loop (intended circuit)
+    ops: {'rz': 6, 'sx': 6, 'cz': 3, 'measure': 3, 'x': 1}
+
+Result will be saved to: experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_111/run_3_seed_12147/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 111
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x114f9a690>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.3986
+
+Evolved circuit statistics:
+  Original gates: 62
+  Original depth: 30
+  Gate counts: OrderedDict([('h', 27), ('x', 20), ('cx', 6), ('id', 3), ('measure', 3), ('swap', 1), ('cz', 1), ('u', 1)])
+
+Original evolved circuit:
+Figure(4420x1570)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 19
+  Transpiled depth: 10
+  Gate counts: OrderedDict([('rz', 6), ('sx', 6), ('cz', 3), ('measure', 3), ('x', 1)])
+  Gate reduction: 69.4%
+  Depth reduction: 66.7%
+
+Transpiled circuit for hardware:
+Figure(2386x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da793husidac73af34t0
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 111: 0.9304
+  Measurement distribution: {'110': 256, '111': 9304, '011': 93, '100': 81, '101': 224, '001': 6, '010': 33, '000': 3}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.3986
+    Hardware  fitness: 0.4496
+    ⚠ Hardware shows degradation: 0.0510
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/epsilon_lexicase/pop300/noise/state_111/run_3_seed_12147/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:12:17Z | tournament | state 000 ===
+=== REDEPLOY HARDWARE | state 000 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_000):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9793 11g/5d/2q          25g/11d  [OK]
+       2   47182    0.9783 9g/5d/2q          29g/14d  [OK]
+       3   12147    0.9783 10g/6d/2q          27g/12d  [OK]
+       4   33537    0.9801 11g/6d/2q          25g/11d  [OK]
+       5   70300    0.9780 11g/5d/2q          25g/11d  [OK]
+       6   74135    0.9893 3g/1d/4q          42g/19d  [OK]
+       7   67154    0.9790 11g/5d/2q          26g/12d  [OK]
+       8   80248    0.9895 3g/1d/4q          43g/19d  [OK]
+       9   91197    0.9778 9g/6d/2q          27g/12d  [OK]
+      10   29440    0.9801 9g/5d/4q          41g/19d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 8 (seed 80248)
+Recorded fidelity:  0.9895
+Raw circuit:        43 gates / 19 depth
+In-loop transpiled: 3 gates / 1 depth / 4 2Q (fitness-time, seed 80248)
+Pre-check transpile: 3 gates / 1 depth at seed_transpiler=80248 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3}
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_000/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 000
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x115a96990>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.0705
+
+Evolved circuit statistics:
+  Original gates: 43
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 22), ('x', 12), ('cx', 4), ('measure', 3), ('id', 1), ('tdg', 1)])
+
+Original evolved circuit:
+Figure(3752x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 3
+  Transpiled depth: 1
+  Gate counts: OrderedDict([('measure', 3)])
+  Gate reduction: 93.0%
+  Depth reduction: 94.7%
+
+Transpiled circuit for hardware:
+Figure(884x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da793mbsq5js73bjlsg0
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 000: 0.9894
+  Measurement distribution: {'000': 9894, '010': 68, '001': 15, '100': 22, '110': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.0705
+    Hardware  fitness: 0.0706
+    ⚠ Hardware shows degradation: 0.0001
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/tournament/pop300/noise/state_000/run_8_seed_80248/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:12:35Z | tournament | state 001 ===
+=== REDEPLOY HARDWARE | state 001 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_001):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9764 10g/6d/2q          25g/11d  [OK]
+       2   47182    0.9802 8g/5d/2q          31g/14d  [OK]
+       3   12147    0.9757 13g/8d/3q          27g/13d  [OK]
+       4   33537    0.9695 7g/5d/4q          43g/20d  [OK]
+       5   70300    0.9615 14g/8d/2q          25g/11d  [OK]
+       6   74135    0.9785 9g/6d/5q          44g/21d  [OK]
+       7   67154    0.9762 10g/5d/2q          29g/12d  [OK]
+       8   80248    0.9881 5g/2d/4q          42g/19d  [OK]
+       9   91197    0.9587 13g/9d/2q          25g/11d  [OK]
+      10   29440    0.9785 8g/4d/3q          30g/15d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 8 (seed 80248)
+Recorded fidelity:  0.9881
+Raw circuit:        42 gates / 19 depth
+In-loop transpiled: 5 gates / 2 depth / 4 2Q (fitness-time, seed 80248)
+Pre-check transpile: 5 gates / 2 depth at seed_transpiler=80248 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'x': 1, 'rz': 1}
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_001/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 001
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x113896550>
+  Queue: 3 jobs
+
+[HOF Individual 1] Fitness: 0.1119
+
+Evolved circuit statistics:
+  Original gates: 42
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 20), ('x', 12), ('cx', 4), ('measure', 3), ('id', 1), ('u', 1), ('ry', 1)])
+
+Original evolved circuit:
+Figure(3752x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 5
+  Transpiled depth: 2
+  Gate counts: OrderedDict([('measure', 3), ('x', 1), ('rz', 1)])
+  Gate reduction: 88.1%
+  Depth reduction: 89.5%
+
+Transpiled circuit for hardware:
+Figure(1050x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da793qs6l22c73dna02g
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 001: 0.9833
+  Measurement distribution: {'001': 9833, '101': 73, '011': 19, '000': 75}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1119
+    Hardware  fitness: 0.1167
+    ⚠ Hardware shows degradation: 0.0048
+✗ Hardware execution failed: module 'datetime' has no attribute 'now'
+  This could be due to:
+    - Backend queue / transient network issues
+    - Streaming callbacks (already disabled here)
+    - Session/runtime mismatches
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+✗ no hardware result saved at experiments_frozen_10seed/tournament/pop300/noise/state_001/run_8_seed_80248/hof_1_ibm_hardware_data.json (job may still be queued - check the IBM dashboard)
+=== 2026-08-26T07:12:59Z | tournament | state 010 ===
+=== REDEPLOY HARDWARE | state 010 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_010):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9806 20g/10d/7q          57g/27d  [OK]
+       2   47182    0.9742 10g/5d/2q          25g/11d  [OK]
+       3   12147    0.9609 14g/8d/2q          25g/11d  [OK]
+       4   33537    0.9776 8g/5d/4q          41g/19d  [OK]
+       5   70300    0.9778 11g/6d/4q          42g/19d  [OK]
+       6   74135    0.9753 10g/5d/2q          25g/11d  [OK]
+       7   67154    0.9791 10g/5d/2q          25g/11d  [OK]
+       8   80248    0.9846 5g/3d/4q          42g/19d  [OK]
+       9   91197    0.9766 10g/5d/2q          27g/11d  [OK]
+      10   29440    0.9780 26g/14d/5q          40g/19d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 8 (seed 80248)
+Recorded fidelity:  0.9846
+Raw circuit:        42 gates / 19 depth
+In-loop transpiled: 5 gates / 3 depth / 4 2Q (fitness-time, seed 80248)
+Pre-check transpile: 5 gates / 3 depth at seed_transpiler=80248 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'x': 1, 'rz': 1}
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_010/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 010
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x116d9e610>
+  Queue: 4 jobs
+
+[HOF Individual 1] Fitness: 0.1154
+
+Evolved circuit statistics:
+  Original gates: 42
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 21), ('x', 12), ('cx', 4), ('measure', 3), ('id', 1), ('u', 1)])
+
+Original evolved circuit:
+Figure(3918x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 5
+  Transpiled depth: 3
+  Gate counts: OrderedDict([('measure', 3), ('x', 1), ('rz', 1)])
+  Gate reduction: 88.1%
+  Depth reduction: 84.2%
+
+Transpiled circuit for hardware:
+Figure(1218x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da79416sidac73af35j0
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 010: 0.9818
+  Measurement distribution: {'010': 9818, '000': 88, '110': 77, '011': 17}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1154
+    Hardware  fitness: 0.1182
+    ⚠ Hardware shows degradation: 0.0028
+  Results saved to: experiments_frozen_10seed/tournament/pop300/noise/state_010/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+
+======================================================================
+NEW HARDWARE RESULT
+======================================================================
+  p_marked_hw:        0.9818
+  transpiled:         5g/3d (seed-consistent: yes)
+  job_id:             da79416sidac73af35j0
+  timestamp:          2026-08-26T08:13:21.442062
+  saved to:           experiments_frozen_10seed/tournament/pop300/noise/state_010/run_8_seed_80248/hof_1_ibm_hardware_data.json
+=== 2026-08-26T07:13:21Z | tournament | state 011 ===
+=== REDEPLOY HARDWARE | state 011 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_011):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9596 13g/8d/2q          26g/12d  [OK]
+       2   47182    0.9603 12g/7d/2q          25g/11d  [OK]
+       3   12147    0.9770 14g/8d/4q          42g/20d  [OK]
+       4   33537    0.9767 13g/9d/4q          45g/22d  [OK]
+       5   70300    0.9797 22g/15d/5q          41g/19d  [OK]
+       6   74135    0.9766 25g/14d/5q          42g/21d  [OK]
+       7   67154    0.9773 10g/5d/6q          61g/29d  [OK]
+       8   80248    0.9756 9g/5d/4q          41g/19d  [OK]
+       9   91197    0.9778 7g/5d/3q          27g/13d  [OK]
+      10   29440    0.9607 12g/7d/2q          25g/11d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 5 (seed 70300)
+Recorded fidelity:  0.9797
+Raw circuit:        41 gates / 19 depth
+In-loop transpiled: 22 gates / 15 depth / 5 2Q (fitness-time, seed 70300)
+Pre-check transpile: 22 gates / 15 depth at seed_transpiler=70300 -> MATCHES in-loop (intended circuit)
+    ops: {'sx': 7, 'rz': 6, 'cz': 5, 'measure': 3, 'x': 1}
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_011/run_5_seed_70300/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 011
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x114c8e750>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.4603
+
+Evolved circuit statistics:
+  Original gates: 41
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 19), ('x', 12), ('cx', 4), ('measure', 3), ('cz', 1), ('z', 1), ('ry', 1)])
+
+Original evolved circuit:
+Figure(3752x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 22
+  Transpiled depth: 15
+  Gate counts: OrderedDict([('sx', 7), ('rz', 6), ('cz', 5), ('measure', 3), ('x', 1)])
+  Gate reduction: 46.3%
+  Depth reduction: 21.1%
+
+Transpiled circuit for hardware:
+Figure(3222x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da7946esidac73af35og
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 011: 0.9239
+  Measurement distribution: {'011': 9239, '000': 264, '001': 235, '010': 248, '111': 7, '110': 6, '100': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.4603
+    Hardware  fitness: 0.5161
+    ⚠ Hardware shows degradation: 0.0558
+  Results saved to: experiments_frozen_10seed/tournament/pop300/noise/state_011/run_5_seed_70300/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+
+======================================================================
+NEW HARDWARE RESULT
+======================================================================
+  p_marked_hw:        0.9239
+  transpiled:         22g/15d (seed-consistent: yes)
+  job_id:             da7946esidac73af35og
+  timestamp:          2026-08-26T08:13:40.530564
+  saved to:           experiments_frozen_10seed/tournament/pop300/noise/state_011/run_5_seed_70300/hof_1_ibm_hardware_data.json
+=== 2026-08-26T07:13:40Z | tournament | state 100 ===
+=== REDEPLOY HARDWARE | state 100 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_100):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9619 13g/6d/2q          25g/11d  [OK]
+       2   47182    0.9793 10g/6d/2q          26g/12d  [OK]
+       3   12147    0.9536 15g/7d/2q          26g/11d  [OK]
+       4   33537    0.9787 11g/6d/2q          25g/11d  [OK]
+       5   70300    0.9736 19g/11d/9q          62g/31d  [OK]
+       6   74135    0.9830 7g/4d/4q          44g/21d  [OK]
+       7   67154    0.9780 10g/5d/2q          26g/11d  [OK]
+       8   80248    0.9883 4g/2d/4q          44g/19d  [OK]
+       9   91197    0.9765 10g/5d/2q          27g/13d  [OK]
+      10   29440    0.9802 12g/7d/11q          91g/44d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 8 (seed 80248)
+Recorded fidelity:  0.9883
+Raw circuit:        44 gates / 19 depth
+In-loop transpiled: 4 gates / 2 depth / 4 2Q (fitness-time, seed 80248)
+Pre-check transpile: 4 gates / 2 depth at seed_transpiler=80248 -> MATCHES in-loop (intended circuit)
+    ops: {'measure': 3, 'x': 1}
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_100/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 100
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x115392990>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.0917
+
+Evolved circuit statistics:
+  Original gates: 44
+  Original depth: 19
+  Gate counts: OrderedDict([('h', 22), ('x', 13), ('cx', 4), ('measure', 3), ('id', 1), ('tdg', 1)])
+
+Original evolved circuit:
+Figure(3752x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 4
+  Transpiled depth: 2
+  Gate counts: OrderedDict([('measure', 3), ('x', 1)])
+  Gate reduction: 90.9%
+  Depth reduction: 89.5%
+
+Transpiled circuit for hardware:
+Figure(884x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da794be0ukec73830pog
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 100: 0.9844
+  Measurement distribution: {'100': 9844, '000': 116, '110': 17, '101': 21, '001': 1, '010': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.0917
+    Hardware  fitness: 0.0956
+    ⚠ Hardware shows degradation: 0.0039
+  Results saved to: experiments_frozen_10seed/tournament/pop300/noise/state_100/run_8_seed_80248/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+
+======================================================================
+NEW HARDWARE RESULT
+======================================================================
+  p_marked_hw:        0.9844
+  transpiled:         4g/2d (seed-consistent: yes)
+  job_id:             da794be0ukec73830pog
+  timestamp:          2026-08-26T08:13:58.346179
+  saved to:           experiments_frozen_10seed/tournament/pop300/noise/state_100/run_8_seed_80248/hof_1_ibm_hardware_data.json
+=== 2026-08-26T07:13:58Z | tournament | state 101 ===
+=== REDEPLOY HARDWARE | state 101 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_101):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9540 15g/7d/2q          32g/14d  [OK]
+       2   47182    0.9819 8g/5d/2q          27g/13d  [OK]
+       3   12147    0.9798 19g/11d/4q          42g/20d  [OK]
+       4   33537    0.9786 16g/9d/2q          28g/14d  [OK]
+       5   70300    0.9778 13g/8d/2q          26g/11d  [OK]
+       6   74135    0.9724 14g/10d/9q          59g/29d  [OK]
+       7   67154    0.9717 14g/8d/5q          48g/24d  [OK]
+       8   80248    0.9816 8g/5d/2q          26g/12d  [OK]
+       9   91197    0.9617 13g/8d/2q          25g/11d  [OK]
+      10   29440    0.9800 10g/5d/5q          42g/19d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 2 (seed 47182)
+Recorded fidelity:  0.9819
+Raw circuit:        27 gates / 13 depth
+In-loop transpiled: 8 gates / 5 depth / 2 2Q (fitness-time, seed 47182)
+Pre-check transpile: 12 gates / 7 depth at seed_transpiler=47182 -> ⚠ DIFFERS from in-loop!
+    ops: {'x': 6, 'measure': 3, 'cz': 2, 'rz': 1}
+    WARNING: this would deploy a differently-transpiled circuit than was scored.
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_101/run_2_seed_47182/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 101
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x114d92590>
+  Queue: 1 jobs
+
+[HOF Individual 1] Fitness: 0.1781
+
+Evolved circuit statistics:
+  Original gates: 27
+  Original depth: 13
+  Gate counts: OrderedDict([('h', 11), ('x', 6), ('ry', 3), ('measure', 3), ('cx', 2), ('swap', 2)])
+
+Original evolved circuit:
+Figure(2580x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 12
+  Transpiled depth: 7
+  Gate counts: OrderedDict([('x', 6), ('measure', 3), ('cz', 2), ('rz', 1)])
+  Gate reduction: 55.6%
+  Depth reduction: 46.2%
+
+Transpiled circuit for hardware:
+Figure(1886x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da794fs6l22c73dna0tg
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 101: 0.9658
+  Measurement distribution: {'101': 9658, '100': 175, '111': 62, '001': 99, '110': 5, '011': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1781
+    Hardware  fitness: 0.2742
+    ⚠ Hardware shows degradation: 0.0961
+  Results saved to: experiments_frozen_10seed/tournament/pop300/noise/state_101/run_2_seed_47182/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+
+======================================================================
+NEW HARDWARE RESULT
+======================================================================
+  p_marked_hw:        0.9658
+  transpiled:         12g/7d (seed-consistent: NO)
+  job_id:             da794fs6l22c73dna0tg
+  timestamp:          2026-08-26T08:14:17.455778
+  saved to:           experiments_frozen_10seed/tournament/pop300/noise/state_101/run_2_seed_47182/hof_1_ibm_hardware_data.json
+=== 2026-08-26T07:14:17Z | tournament | state 110 ===
+=== REDEPLOY HARDWARE | state 110 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_110):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9777 20g/11d/5q          42g/21d  [OK]
+       2   47182    0.9781 13g/8d/2q          28g/13d  [OK]
+       3   12147    0.9793 10g/6d/2q          25g/11d  [OK]
+       4   33537    0.9774 19g/11d/8q          59g/29d  [OK]
+       5   70300    0.9749 13g/8d/3q          26g/12d  [OK]
+       6   74135    0.9752 6g/3d/5q          44g/22d  [OK]
+       7   67154    0.9793 10g/6d/2q          29g/14d  [OK]
+       8   80248    0.9724 10g/5d/2q          28g/11d  [OK]
+       9   91197    0.9762 10g/6d/3q          26g/12d  [OK]
+      10   29440    0.9781 10g/6d/2q          25g/11d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 3 (seed 12147)
+Recorded fidelity:  0.9793
+Raw circuit:        25 gates / 11 depth
+In-loop transpiled: 10 gates / 6 depth / 2 2Q (fitness-time, seed 12147)
+Pre-check transpile: 10 gates / 6 depth at seed_transpiler=12147 -> MATCHES in-loop (intended circuit)
+    ops: {'x': 4, 'measure': 3, 'cz': 2, 'rz': 1}
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_110/run_3_seed_12147/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 110
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x117196b90>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.2207
+
+Evolved circuit statistics:
+  Original gates: 25
+  Original depth: 11
+  Gate counts: OrderedDict([('h', 12), ('x', 6), ('measure', 3), ('cx', 2), ('ry', 2)])
+
+Original evolved circuit:
+Figure(2414x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 10
+  Transpiled depth: 6
+  Gate counts: OrderedDict([('x', 4), ('measure', 3), ('cz', 2), ('rz', 1)])
+  Gate reduction: 60.0%
+  Depth reduction: 45.5%
+
+Transpiled circuit for hardware:
+Figure(1550x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da794kjsq5js73bjltkg
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 110: 0.9687
+  Measurement distribution: {'110': 9687, '010': 101, '100': 88, '111': 122, '000': 1, '011': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.2207
+    Hardware  fitness: 0.2313
+    ⚠ Hardware shows degradation: 0.0106
+  Results saved to: experiments_frozen_10seed/tournament/pop300/noise/state_110/run_3_seed_12147/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+
+======================================================================
+NEW HARDWARE RESULT
+======================================================================
+  p_marked_hw:        0.9687
+  transpiled:         10g/6d (seed-consistent: yes)
+  job_id:             da794kjsq5js73bjltkg
+  timestamp:          2026-08-26T08:14:35.776664
+  saved to:           experiments_frozen_10seed/tournament/pop300/noise/state_110/run_3_seed_12147/hof_1_ibm_hardware_data.json
+=== 2026-08-26T07:14:35Z | tournament | state 111 ===
+=== REDEPLOY HARDWARE | state 111 | tournament | pop300 ===
+
+Saved per-run results (experiments_frozen_10seed/tournament/pop300/noise/state_111):
+  run_id    seed  fidelity     in-loop g/d/2Q  raw gates/depth
+       1   21315    0.9624 10g/6d/2q          25g/11d  [OK]
+       2   47182    0.9750 17g/10d/2q          28g/12d  [OK]
+       3   12147    0.9793 16g/8d/7q          64g/34d  [OK]
+       4   33537    0.9752 10g/5d/4q          41g/19d  [OK]
+       5   70300    0.9771 8g/5d/2q          25g/11d  [OK]
+       6   74135    0.9785 22g/10d/7q          60g/28d  [OK]
+       7   67154    0.9794 8g/5d/2q          26g/12d  [OK]
+       8   80248    0.9734 14g/9d/5q          46g/22d  [OK]
+       9   91197    0.7489 68g/45d/4q          29g/15d  [OK]
+      10   29440    0.9746 20g/12d/5q          45g/22d  [OK]
+
+======================================================================
+PRE-SUBMIT VERIFICATION (no job queued yet)
+======================================================================
+Deployed run:       run 7 (seed 67154)
+Recorded fidelity:  0.9794
+Raw circuit:        26 gates / 12 depth
+In-loop transpiled: 8 gates / 5 depth / 2 2Q (fitness-time, seed 67154)
+Pre-check transpile: 10 gates / 6 depth at seed_transpiler=67154 -> ⚠ DIFFERS from in-loop!
+    ops: {'x': 3, 'measure': 3, 'cz': 2, 'rz': 2}
+    WARNING: this would deploy a differently-transpiled circuit than was scored.
+
+Result will be saved to: experiments_frozen_10seed/tournament/pop300/noise/state_111/run_7_seed_67154/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM QUANTUM HARDWARE EXECUTION
+============================================================
+Evolution used noise model: YES
+Target state: 111
+Shots per circuit: 10000
+✓ Connected to backend: ibm_fez
+  Status: <qiskit_ibm_runtime.models.backend_status.BackendStatus object at 0x115296550>
+  Queue: 2 jobs
+
+[HOF Individual 1] Fitness: 0.1806
+
+Evolved circuit statistics:
+  Original gates: 26
+  Original depth: 12
+  Gate counts: OrderedDict([('h', 11), ('x', 6), ('ry', 3), ('measure', 3), ('cx', 2), ('swap', 1)])
+
+Original evolved circuit:
+Figure(2580x734)
+
+Transpiling circuit for ibm_fez...
+✓ Circuit transpiled successfully!
+
+Transpiled circuit statistics:
+  Transpiled gates: 8
+  Transpiled depth: 5
+  Gate counts: OrderedDict([('x', 3), ('measure', 3), ('cz', 2)])
+  Gate reduction: 69.2%
+  Depth reduction: 58.3%
+
+Transpiled circuit for hardware:
+Figure(1384x734)
+
+Submitting job to ibm_fez...
+  Requested shots: 10000
+✓ Job submitted.
+  Job ID: da794p46l22c73dna1cg
+  Waiting for results...
+
+✓ Hardware execution completed!
+  Total shots processed: 10000
+  Hardware p(marked) for 111: 0.9680
+  Measurement distribution: {'111': 9680, '011': 163, '110': 59, '101': 94, '001': 2, '100': 1, '010': 1}
+Figure(1400x1000)
+
+  Performance comparison:
+    Evolution fitness: 0.1806
+    Hardware  fitness: 0.1920
+    ⚠ Hardware shows degradation: 0.0114
+  Results saved to: experiments_frozen_10seed/tournament/pop300/noise/state_111/run_7_seed_67154/hof_1_ibm_hardware_data.json
+
+============================================================
+IBM Quantum hardware execution completed!
+Note: Results from real quantum hardware at ibm_fez
+============================================================
+
+======================================================================
+NEW HARDWARE RESULT
+======================================================================
+  p_marked_hw:        0.9680
+  transpiled:         8g/5d (seed-consistent: yes)
+  job_id:             da794p46l22c73dna1cg
+  timestamp:          2026-08-26T08:14:54.447138
+  saved to:           experiments_frozen_10seed/tournament/pop300/noise/state_111/run_7_seed_67154/hof_1_ibm_hardware_data.json
+=== ALL DEPLOYMENTS DONE 2026-08-26T07:14:54Z ===

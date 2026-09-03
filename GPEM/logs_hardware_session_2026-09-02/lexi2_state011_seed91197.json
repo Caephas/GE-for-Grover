@@ -1,0 +1,31 @@
+{
+  "individual_id": 1,
+  "fitness_evolution": null,
+  "fitness_hardware": null,
+  "backend": "ibm_fez",
+  "target_state": "011",
+  "counts": {
+    "111": 291,
+    "011": 9590,
+    "001": 50,
+    "010": 65,
+    "110": 3,
+    "101": 1
+  },
+  "p_marked_hw": 0.959,
+  "total_shots": 10000,
+  "original_gates": 59,
+  "original_depth": 33,
+  "transpiled_gates": 5,
+  "transpiled_depth": 2,
+  "transpiled_2q": 0,
+  "seed": 91197,
+  "arm": "lexi2",
+  "sim_fidelity": 0.9887,
+  "job_id": "dac45vdnj4cs73ac5990",
+  "session_id": null,
+  "execution_mode": "individual_jobs_back_to_back",
+  "session_label": "session_2026-09-02",
+  "timestamp": "2026-09-02T16:39:24.285497",
+  "circuit_kind": "deployed"
+}

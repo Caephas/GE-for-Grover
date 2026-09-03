@@ -1,0 +1,241 @@
+arm,state,seed,run_id,fidelity,gate_count,depth,two_qubit_gates,raw_two_qubit_gates,raw_gate_count,raw_depth,raw_fitness,stop_reason,early_stopped_gen
+epsilon_lexicase,000,21315,1,0.9738,20,10,4,8,45,23,0.4262,"Hardware targets achieved: fidelity=0.974, gates=20, depth=10",43
+epsilon_lexicase,000,74135,6,0.9893,4,2,0,6,34,19,0.09070000000000004,"Hardware targets achieved: fidelity=0.989, gates=4, depth=2",26
+epsilon_lexicase,000,91197,9,0.9802,7,4,1,3,31,16,0.15980000000000005,"Hardware targets achieved: fidelity=0.980, gates=7, depth=4",15
+epsilon_lexicase,000,33537,4,0.9738,16,10,4,4,41,19,0.3462,"Hardware targets achieved: fidelity=0.974, gates=16, depth=10",31
+epsilon_lexicase,000,12147,3,0.9787,10,6,2,3,29,13,0.2213,"Hardware targets achieved: fidelity=0.979, gates=10, depth=6",17
+epsilon_lexicase,000,67154,7,0.9798,11,5,2,2,25,11,0.2402,"Hardware targets achieved: fidelity=0.980, gates=11, depth=5",15
+epsilon_lexicase,000,70300,5,0.978,10,5,1,3,28,13,0.22200000000000003,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",18
+epsilon_lexicase,000,29440,10,0.9809,11,6,2,2,25,11,0.2391,"Hardware targets achieved: fidelity=0.981, gates=11, depth=6",15
+epsilon_lexicase,000,47182,2,0.9898,3,1,0,4,43,20,0.07019999999999998,"Hardware targets achieved: fidelity=0.990, gates=3, depth=1",38
+epsilon_lexicase,000,80248,8,0.9791,11,6,2,2,25,11,0.24090000000000003,"Hardware targets achieved: fidelity=0.979, gates=11, depth=6",15
+epsilon_lexicase,001,21315,1,0.9793,10,5,2,2,28,13,0.22070000000000006,"Hardware targets achieved: fidelity=0.979, gates=10, depth=5",25
+epsilon_lexicase,001,74135,6,0.9652,10,5,0,4,43,20,0.23480000000000006,"Hardware targets achieved: fidelity=0.965, gates=10, depth=5",27
+epsilon_lexicase,001,91197,9,0.98,6,4,1,3,35,16,0.14,"Hardware targets achieved: fidelity=0.980, gates=6, depth=4",19
+epsilon_lexicase,001,33537,4,0.9794,10,5,2,2,26,12,0.22059999999999996,"Hardware targets achieved: fidelity=0.979, gates=10, depth=5",15
+epsilon_lexicase,001,12147,3,0.9901,4,2,0,4,28,14,0.08990000000000002,"Hardware targets achieved: fidelity=0.990, gates=4, depth=2",21
+epsilon_lexicase,001,67154,7,0.9774,10,6,2,2,25,11,0.22259999999999996,"Hardware targets achieved: fidelity=0.977, gates=10, depth=6",31
+epsilon_lexicase,001,70300,5,0.9796,5,2,0,4,43,20,0.12039999999999998,"Hardware targets achieved: fidelity=0.980, gates=5, depth=2",43
+epsilon_lexicase,001,29440,10,0.9799,10,6,2,2,27,11,0.22010000000000002,"Hardware targets achieved: fidelity=0.980, gates=10, depth=6",15
+epsilon_lexicase,001,47182,2,0.9885,5,2,0,2,32,17,0.11149999999999996,"Hardware targets achieved: fidelity=0.989, gates=5, depth=2",41
+epsilon_lexicase,001,80248,8,0.9764,10,6,2,2,25,11,0.22359999999999997,"Hardware targets achieved: fidelity=0.976, gates=10, depth=6",15
+epsilon_lexicase,010,21315,1,0.9769,13,7,1,6,58,27,0.2831,"Hardware targets achieved: fidelity=0.977, gates=13, depth=7",29
+epsilon_lexicase,010,74135,6,0.9803,10,6,1,5,43,21,0.21970000000000006,"Hardware targets achieved: fidelity=0.980, gates=10, depth=6",17
+epsilon_lexicase,010,91197,9,0.9778,9,6,2,2,25,11,0.2022,"Hardware targets achieved: fidelity=0.978, gates=9, depth=6",19
+epsilon_lexicase,010,33537,4,0.9818,8,5,1,4,41,19,0.1782,"Hardware targets achieved: fidelity=0.982, gates=8, depth=5",82
+epsilon_lexicase,010,12147,3,0.9782,10,5,2,2,25,11,0.22180000000000005,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",17
+epsilon_lexicase,010,67154,7,0.9741,10,5,2,2,26,11,0.22590000000000005,"Hardware targets achieved: fidelity=0.974, gates=10, depth=5",24
+epsilon_lexicase,010,70300,5,0.9749,11,5,2,6,33,16,0.2451,"Hardware targets achieved: fidelity=0.975, gates=11, depth=5",25
+epsilon_lexicase,010,29440,10,0.9772,9,4,1,4,28,13,0.20280000000000004,"Hardware targets achieved: fidelity=0.977, gates=9, depth=4",22
+epsilon_lexicase,010,47182,2,0.9792,12,8,2,2,25,11,0.26080000000000003,"Hardware targets achieved: fidelity=0.979, gates=12, depth=8",16
+epsilon_lexicase,010,80248,8,0.9802,10,5,2,2,26,11,0.21980000000000005,"Hardware targets achieved: fidelity=0.980, gates=10, depth=5",17
+epsilon_lexicase,011,21315,1,0.9798,10,5,2,2,25,11,0.2202,"Hardware targets achieved: fidelity=0.980, gates=10, depth=5",22
+epsilon_lexicase,011,74135,6,0.9758,13,8,2,6,46,24,0.2842,"Hardware targets achieved: fidelity=0.976, gates=13, depth=8",21
+epsilon_lexicase,011,91197,9,0.9738,10,5,2,2,25,11,0.2262,"Hardware targets achieved: fidelity=0.974, gates=10, depth=5",30
+epsilon_lexicase,011,33537,4,0.9736,13,8,2,2,27,14,0.2864,"Hardware targets achieved: fidelity=0.974, gates=13, depth=8",21
+epsilon_lexicase,011,12147,3,0.9778,19,9,3,6,64,31,0.4022,"Hardware targets achieved: fidelity=0.978, gates=19, depth=9",18
+epsilon_lexicase,011,67154,7,0.9741,9,5,1,4,43,21,0.20590000000000003,"Hardware targets achieved: fidelity=0.974, gates=9, depth=5",38
+epsilon_lexicase,011,70300,5,0.9793,15,10,3,3,28,13,0.32070000000000004,"Hardware targets achieved: fidelity=0.979, gates=15, depth=10",53
+epsilon_lexicase,011,29440,10,0.9772,16,9,4,4,42,20,0.34280000000000005,"Hardware targets achieved: fidelity=0.977, gates=16, depth=9",15
+epsilon_lexicase,011,47182,2,0.9801,8,4,1,5,29,16,0.17990000000000003,"Hardware targets achieved: fidelity=0.980, gates=8, depth=4",22
+epsilon_lexicase,011,80248,8,0.9784,11,7,2,3,31,18,0.24159999999999995,"Hardware targets achieved: fidelity=0.978, gates=11, depth=7",31
+epsilon_lexicase,100,21315,1,0.9748,10,5,1,6,46,23,0.2252,"Hardware targets achieved: fidelity=0.975, gates=10, depth=5",27
+epsilon_lexicase,100,74135,6,0.9573,16,9,3,6,63,31,0.36269999999999997,"Hardware targets achieved: fidelity=0.957, gates=16, depth=9",29
+epsilon_lexicase,100,91197,9,0.9792,7,4,1,3,28,13,0.16080000000000005,"Hardware targets achieved: fidelity=0.979, gates=7, depth=4",15
+epsilon_lexicase,100,33537,4,0.9805,20,12,3,8,58,29,0.4195,"Hardware targets achieved: fidelity=0.981, gates=20, depth=12",35
+epsilon_lexicase,100,12147,3,0.9845,4,2,0,4,45,21,0.09549999999999996,"Hardware targets achieved: fidelity=0.985, gates=4, depth=2",34
+epsilon_lexicase,100,67154,7,0.9824,8,5,1,4,41,19,0.17759999999999995,"Hardware targets achieved: fidelity=0.982, gates=8, depth=5",27
+epsilon_lexicase,100,70300,5,0.9835,4,2,0,4,44,20,0.09649999999999996,"Hardware targets achieved: fidelity=0.984, gates=4, depth=2",35
+epsilon_lexicase,100,29440,10,0.9881,8,5,0,4,43,20,0.17190000000000003,"Hardware targets achieved: fidelity=0.988, gates=8, depth=5",17
+epsilon_lexicase,100,47182,2,0.9755,18,10,3,17,126,64,0.38449999999999995,"Hardware targets achieved: fidelity=0.976, gates=18, depth=10",77
+epsilon_lexicase,100,80248,8,0.9788,11,6,2,2,25,11,0.2412,"Hardware targets achieved: fidelity=0.979, gates=11, depth=6",15
+epsilon_lexicase,101,21315,1,0.9663,8,5,0,4,44,21,0.19369999999999996,"Hardware targets achieved: fidelity=0.966, gates=8, depth=5",15
+epsilon_lexicase,101,74135,6,0.9887,5,2,0,12,108,51,0.11129999999999998,"Hardware targets achieved: fidelity=0.989, gates=5, depth=2",44
+epsilon_lexicase,101,91197,9,0.9753,20,13,3,8,63,29,0.4247000000000001,"Hardware targets achieved: fidelity=0.975, gates=20, depth=13",71
+epsilon_lexicase,101,33537,4,0.9537,20,11,3,2,29,13,0.44630000000000003,"Hardware targets achieved: fidelity=0.954, gates=20, depth=11",16
+epsilon_lexicase,101,12147,3,0.9799,10,6,2,2,25,11,0.22010000000000002,"Hardware targets achieved: fidelity=0.980, gates=10, depth=6",15
+epsilon_lexicase,101,67154,7,0.9812,17,10,3,7,59,28,0.35880000000000006,"Hardware targets achieved: fidelity=0.981, gates=17, depth=10",27
+epsilon_lexicase,101,70300,5,0.9794,15,11,3,4,29,14,0.32059999999999994,"Hardware targets achieved: fidelity=0.979, gates=15, depth=11",44
+epsilon_lexicase,101,29440,10,0.9772,10,5,1,4,42,20,0.22280000000000005,"Hardware targets achieved: fidelity=0.977, gates=10, depth=5",15
+epsilon_lexicase,101,47182,2,0.9632,14,7,1,4,41,19,0.3168000000000001,"Hardware targets achieved: fidelity=0.963, gates=14, depth=7",23
+epsilon_lexicase,101,80248,8,0.9895,6,3,0,2,28,14,0.13049999999999995,"Hardware targets achieved: fidelity=0.990, gates=6, depth=3",30
+epsilon_lexicase,110,21315,1,0.9766,16,8,2,5,43,21,0.3434,"Hardware targets achieved: fidelity=0.977, gates=16, depth=8",20
+epsilon_lexicase,110,74135,6,0.9788,10,5,2,3,28,13,0.2212,"Hardware targets achieved: fidelity=0.979, gates=10, depth=5",15
+epsilon_lexicase,110,91197,9,0.9792,9,5,2,3,28,14,0.20080000000000003,"Hardware targets achieved: fidelity=0.979, gates=9, depth=5",45
+epsilon_lexicase,110,33537,4,0.9859,6,2,0,4,42,19,0.1341,"Hardware targets achieved: fidelity=0.986, gates=6, depth=2",29
+epsilon_lexicase,110,12147,3,0.9813,7,3,0,5,49,26,0.15870000000000006,"Hardware targets achieved: fidelity=0.981, gates=7, depth=3",25
+epsilon_lexicase,110,67154,7,0.9772,9,6,2,2,27,13,0.20280000000000004,"Hardware targets achieved: fidelity=0.977, gates=9, depth=6",23
+epsilon_lexicase,110,70300,5,0.9802,8,5,2,2,30,13,0.17980000000000004,"Hardware targets achieved: fidelity=0.980, gates=8, depth=5",25
+epsilon_lexicase,110,29440,10,0.9255,35,18,6,4,45,24,0.7745000000000001,completed_all_generations,99
+epsilon_lexicase,110,47182,2,0.9799,9,5,2,2,26,12,0.2001,"Hardware targets achieved: fidelity=0.980, gates=9, depth=5",29
+epsilon_lexicase,110,80248,8,0.9859,7,4,0,5,47,22,0.15410000000000001,"Hardware targets achieved: fidelity=0.986, gates=7, depth=4",53
+epsilon_lexicase,111,21315,1,0.9786,19,12,3,7,58,28,0.4014,"Hardware targets achieved: fidelity=0.979, gates=19, depth=12",31
+epsilon_lexicase,111,74135,6,0.955,13,8,2,2,32,13,0.30500000000000005,"Hardware targets achieved: fidelity=0.955, gates=13, depth=8",19
+epsilon_lexicase,111,91197,9,0.958,18,10,3,6,59,28,0.402,"Hardware targets achieved: fidelity=0.958, gates=18, depth=10",27
+epsilon_lexicase,111,33537,4,0.9779,19,12,4,5,51,28,0.4021,"Hardware targets achieved: fidelity=0.978, gates=19, depth=12",15
+epsilon_lexicase,111,12147,3,0.9814,19,10,3,7,62,30,0.39859999999999995,"Hardware targets achieved: fidelity=0.981, gates=19, depth=10",19
+epsilon_lexicase,111,67154,7,0.9504,10,4,0,4,45,21,0.2496,"Hardware targets achieved: fidelity=0.950, gates=10, depth=4",54
+epsilon_lexicase,111,70300,5,0.9781,16,8,2,6,57,27,0.34190000000000004,"Hardware targets achieved: fidelity=0.978, gates=16, depth=8",17
+epsilon_lexicase,111,29440,10,0.9798,8,4,1,3,26,13,0.1802,"Hardware targets achieved: fidelity=0.980, gates=8, depth=4",36
+epsilon_lexicase,111,47182,2,0.9793,8,4,2,2,33,18,0.18070000000000006,"Hardware targets achieved: fidelity=0.979, gates=8, depth=4",31
+epsilon_lexicase,111,80248,8,0.9812,8,5,2,3,28,13,0.17880000000000004,"Hardware targets achieved: fidelity=0.981, gates=8, depth=5",27
+lexi2,000,21315,1,0.9768,14,8,2,7,53,28,0.3032,completed_all_generations,99
+lexi2,000,74135,6,0.9821,9,5,1,5,32,17,0.19790000000000002,"Hardware targets achieved: fidelity=0.982, gates=9, depth=5",33
+lexi2,000,91197,9,0.9739,19,11,2,8,62,32,0.4061,"Hardware targets achieved: fidelity=0.974, gates=19, depth=11",45
+lexi2,000,33537,4,0.981,7,3,1,2,32,15,0.15900000000000003,"Hardware targets achieved: fidelity=0.981, gates=7, depth=3",30
+lexi2,000,12147,3,0.9755,14,10,2,9,63,33,0.3045,"Hardware targets achieved: fidelity=0.976, gates=14, depth=10",21
+lexi2,000,67154,7,0.9738,16,8,2,8,60,30,0.3462,"Hardware targets achieved: fidelity=0.974, gates=16, depth=8",45
+lexi2,000,70300,5,0.9772,10,6,2,6,64,32,0.22280000000000005,"Hardware targets achieved: fidelity=0.977, gates=10, depth=6",47
+lexi2,000,29440,10,0.9692,34,18,7,6,40,25,0.7108000000000001,completed_all_generations,99
+lexi2,000,47182,2,0.9834,5,2,0,5,45,23,0.11659999999999995,"Hardware targets achieved: fidelity=0.983, gates=5, depth=2",31
+lexi2,000,80248,8,0.6555,68,47,11,4,30,15,1.7045000000000001,completed_all_generations,99
+lexi2,001,21315,1,0.9789,10,5,1,9,82,43,0.22110000000000002,"Hardware targets achieved: fidelity=0.979, gates=10, depth=5",45
+lexi2,001,74135,6,0.9801,6,3,1,3,31,14,0.13990000000000002,"Hardware targets achieved: fidelity=0.980, gates=6, depth=3",31
+lexi2,001,91197,9,0.9794,9,6,2,5,35,18,0.20059999999999995,"Hardware targets achieved: fidelity=0.979, gates=9, depth=6",18
+lexi2,001,33537,4,0.9819,12,7,2,2,32,16,0.2581,"Hardware targets achieved: fidelity=0.982, gates=12, depth=7",30
+lexi2,001,12147,3,0.9769,19,12,4,9,46,25,0.4031,"Hardware targets achieved: fidelity=0.977, gates=19, depth=12",39
+lexi2,001,67154,7,0.9737,13,8,3,6,46,25,0.2863,"Hardware targets achieved: fidelity=0.974, gates=13, depth=8",35
+lexi2,001,70300,5,0.5459,62,42,10,3,28,15,1.6941,completed_all_generations,99
+lexi2,001,29440,10,0.9783,10,5,1,5,33,17,0.22170000000000006,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",64
+lexi2,001,47182,2,0.9789,9,6,1,7,63,33,0.2011,"Hardware targets achieved: fidelity=0.979, gates=9, depth=6",25
+lexi2,001,80248,8,0.9754,28,15,5,6,65,33,0.5846,completed_all_generations,99
+lexi2,010,21315,1,0.9794,18,10,3,7,62,29,0.38059999999999994,"Hardware targets achieved: fidelity=0.979, gates=18, depth=10",38
+lexi2,010,74135,6,0.9771,19,11,4,7,44,22,0.40290000000000004,"Hardware targets achieved: fidelity=0.977, gates=19, depth=11",28
+lexi2,010,91197,9,0.9743,20,11,4,6,45,23,0.42569999999999997,"Hardware targets achieved: fidelity=0.974, gates=20, depth=11",21
+lexi2,010,33537,4,0.9787,17,11,4,6,44,22,0.3613,"Hardware targets achieved: fidelity=0.979, gates=17, depth=11",28
+lexi2,010,12147,3,0.9791,20,11,3,7,61,32,0.42090000000000005,"Hardware targets achieved: fidelity=0.979, gates=20, depth=11",17
+lexi2,010,67154,7,0.9766,23,14,5,7,51,27,0.4834,completed_all_generations,99
+lexi2,010,70300,5,0.9779,11,7,3,6,56,33,0.2421,"Hardware targets achieved: fidelity=0.978, gates=11, depth=7",47
+lexi2,010,29440,10,0.9785,13,8,2,10,49,28,0.2815,"Hardware targets achieved: fidelity=0.979, gates=13, depth=8",90
+lexi2,010,47182,2,0.9758,20,12,4,11,77,39,0.4242,"Hardware targets achieved: fidelity=0.976, gates=20, depth=12",67
+lexi2,010,80248,8,0.9851,5,3,0,5,43,21,0.11490000000000003,"Hardware targets achieved: fidelity=0.985, gates=5, depth=3",39
+lexi2,011,21315,1,0.9758,22,13,5,5,47,23,0.4642,completed_all_generations,99
+lexi2,011,74135,6,0.9751,21,13,6,6,62,31,0.4449,completed_all_generations,99
+lexi2,011,91197,9,0.9887,5,2,0,8,59,33,0.11129999999999998,"Hardware targets achieved: fidelity=0.989, gates=5, depth=2",37
+lexi2,011,33537,4,0.9874,8,3,0,2,48,24,0.17259999999999995,"Hardware targets achieved: fidelity=0.987, gates=8, depth=3",36
+lexi2,011,12147,3,0.9806,8,3,1,11,61,31,0.17939999999999998,"Hardware targets achieved: fidelity=0.981, gates=8, depth=3",28
+lexi2,011,67154,7,0.9783,8,4,1,4,46,24,0.18170000000000006,"Hardware targets achieved: fidelity=0.978, gates=8, depth=4",63
+lexi2,011,70300,5,0.5985,66,45,10,5,38,21,1.7215,completed_all_generations,99
+lexi2,011,29440,10,0.9711,28,16,6,6,48,25,0.5889000000000001,completed_all_generations,99
+lexi2,011,47182,2,0.4896,29,16,5,5,40,20,1.0903999999999998,completed_all_generations,99
+lexi2,011,80248,8,0.9528,12,9,2,2,36,17,0.2872,"Hardware targets achieved: fidelity=0.953, gates=12, depth=9",16
+lexi2,100,21315,1,0.98,17,10,3,7,59,29,0.36000000000000004,"Hardware targets achieved: fidelity=0.980, gates=17, depth=10",60
+lexi2,100,74135,6,0.9585,54,37,10,5,44,22,1.1215000000000002,completed_all_generations,99
+lexi2,100,91197,9,0.9809,20,10,3,7,60,29,0.41910000000000003,"Hardware targets achieved: fidelity=0.981, gates=20, depth=10",25
+lexi2,100,33537,4,0.9723,20,13,5,5,44,22,0.42769999999999997,"Hardware targets achieved: fidelity=0.972, gates=20, depth=13",86
+lexi2,100,12147,3,0.9768,17,9,3,8,63,30,0.3632,"Hardware targets achieved: fidelity=0.977, gates=17, depth=9",75
+lexi2,100,67154,7,0.9746,20,12,5,5,44,21,0.4254,"Hardware targets achieved: fidelity=0.975, gates=20, depth=12",36
+lexi2,100,70300,5,0.9803,18,9,3,10,65,42,0.37970000000000004,"Hardware targets achieved: fidelity=0.980, gates=18, depth=9",22
+lexi2,100,29440,10,0.9869,6,3,0,7,48,25,0.1331,"Hardware targets achieved: fidelity=0.987, gates=6, depth=3",56
+lexi2,100,47182,2,0.9778,10,6,1,5,45,22,0.2222,"Hardware targets achieved: fidelity=0.978, gates=10, depth=6",46
+lexi2,100,80248,8,0.9763,25,18,5,5,48,25,0.5237,completed_all_generations,99
+lexi2,101,21315,1,0.982,7,3,0,6,45,23,0.15800000000000003,completed_all_generations,99
+lexi2,101,74135,6,0.4906,20,12,4,5,41,20,0.9094000000000001,completed_all_generations,99
+lexi2,101,91197,9,0.9754,15,8,3,7,44,22,0.32459999999999994,"Hardware targets achieved: fidelity=0.975, gates=15, depth=8",15
+lexi2,101,33537,4,0.979,11,7,1,2,31,17,0.24100000000000002,"Hardware targets achieved: fidelity=0.979, gates=11, depth=7",29
+lexi2,101,12147,3,0.5958,63,43,10,7,60,29,1.6642000000000001,completed_all_generations,99
+lexi2,101,67154,7,0.6709,55,33,9,19,71,44,1.4291,completed_all_generations,99
+lexi2,101,70300,5,0.9801,16,9,3,3,34,16,0.33990000000000004,"Hardware targets achieved: fidelity=0.980, gates=16, depth=9",33
+lexi2,101,29440,10,0.9806,9,5,2,2,30,14,0.19939999999999997,"Hardware targets achieved: fidelity=0.981, gates=9, depth=5",36
+lexi2,101,47182,2,0.6726,65,44,12,3,30,15,1.6274000000000002,completed_all_generations,99
+lexi2,101,80248,8,0.9783,13,10,2,2,27,12,0.28170000000000006,"Hardware targets achieved: fidelity=0.978, gates=13, depth=10",59
+lexi2,110,21315,1,0.9805,11,6,1,6,53,28,0.23949999999999996,"Hardware targets achieved: fidelity=0.981, gates=11, depth=6",57
+lexi2,110,74135,6,0.4885,16,10,2,6,59,28,0.8315000000000001,completed_all_generations,99
+lexi2,110,91197,9,0.9768,10,6,2,2,31,13,0.2232,"Hardware targets achieved: fidelity=0.977, gates=10, depth=6",42
+lexi2,110,33537,4,0.9803,9,4,1,6,44,23,0.19970000000000004,"Hardware targets achieved: fidelity=0.980, gates=9, depth=4",25
+lexi2,110,12147,3,0.9786,18,10,3,8,61,29,0.38139999999999996,"Hardware targets achieved: fidelity=0.979, gates=18, depth=10",49
+lexi2,110,67154,7,0.9782,19,11,4,5,41,20,0.40180000000000005,"Hardware targets achieved: fidelity=0.978, gates=19, depth=11",39
+lexi2,110,70300,5,0.5435,62,43,10,2,27,14,1.6965,completed_all_generations,99
+lexi2,110,29440,10,0.9777,20,12,4,5,53,29,0.4223,"Hardware targets achieved: fidelity=0.978, gates=20, depth=12",34
+lexi2,110,47182,2,0.9776,10,5,2,2,27,11,0.2224,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",31
+lexi2,110,80248,8,0.9786,19,10,3,7,61,30,0.4014,"Hardware targets achieved: fidelity=0.979, gates=19, depth=10",15
+lexi2,111,21315,1,0.9876,7,3,0,7,46,24,0.15239999999999998,"Hardware targets achieved: fidelity=0.988, gates=7, depth=3",63
+lexi2,111,74135,6,0.7466,72,48,11,4,51,28,1.6934,completed_all_generations,99
+lexi2,111,91197,9,0.9742,19,10,4,6,44,22,0.40580000000000005,"Hardware targets achieved: fidelity=0.974, gates=19, depth=10",30
+lexi2,111,33537,4,0.9775,9,4,1,8,53,28,0.20249999999999996,"Hardware targets achieved: fidelity=0.978, gates=9, depth=4",45
+lexi2,111,12147,3,0.4879,33,17,6,7,42,21,1.1721,completed_all_generations,99
+lexi2,111,67154,7,0.5434,52,34,9,9,67,34,1.4966,completed_all_generations,99
+lexi2,111,70300,5,0.9585,14,7,2,2,31,18,0.3215,"Hardware targets achieved: fidelity=0.959, gates=14, depth=7",30
+lexi2,111,29440,10,0.9761,22,16,5,8,51,27,0.46390000000000003,completed_all_generations,99
+lexi2,111,47182,2,0.4883,26,15,5,5,41,20,1.0317,completed_all_generations,99
+lexi2,111,80248,8,0.9793,18,9,3,5,47,23,0.38070000000000004,"Hardware targets achieved: fidelity=0.979, gates=18, depth=9",56
+tournament,000,21315,1,0.9793,11,5,2,2,25,11,0.24070000000000005,"Hardware targets achieved: fidelity=0.979, gates=11, depth=5",18
+tournament,000,74135,6,0.9893,3,1,0,4,42,19,0.07070000000000004,"Hardware targets achieved: fidelity=0.989, gates=3, depth=1",25
+tournament,000,91197,9,0.9778,9,6,2,2,27,12,0.2022,"Hardware targets achieved: fidelity=0.978, gates=9, depth=6",15
+tournament,000,33537,4,0.9801,11,6,2,2,25,11,0.23990000000000003,"Hardware targets achieved: fidelity=0.980, gates=11, depth=6",19
+tournament,000,12147,3,0.9783,10,6,2,2,27,12,0.22170000000000006,"Hardware targets achieved: fidelity=0.978, gates=10, depth=6",21
+tournament,000,67154,7,0.979,11,5,2,2,26,12,0.24100000000000002,"Hardware targets achieved: fidelity=0.979, gates=11, depth=5",19
+tournament,000,70300,5,0.978,11,5,2,2,25,11,0.24200000000000002,"Hardware targets achieved: fidelity=0.978, gates=11, depth=5",19
+tournament,000,29440,10,0.9801,9,5,1,4,41,19,0.19990000000000002,"Hardware targets achieved: fidelity=0.980, gates=9, depth=5",15
+tournament,000,47182,2,0.9783,9,5,2,2,29,14,0.20170000000000005,"Hardware targets achieved: fidelity=0.978, gates=9, depth=5",23
+tournament,000,80248,8,0.9895,3,1,0,4,43,19,0.07049999999999995,"Hardware targets achieved: fidelity=0.990, gates=3, depth=1",24
+tournament,001,21315,1,0.9764,10,6,2,2,25,11,0.22359999999999997,"Hardware targets achieved: fidelity=0.976, gates=10, depth=6",15
+tournament,001,74135,6,0.9785,9,6,1,5,44,21,0.20149999999999996,"Hardware targets achieved: fidelity=0.979, gates=9, depth=6",26
+tournament,001,91197,9,0.9587,13,9,2,2,25,11,0.3013,"Hardware targets achieved: fidelity=0.959, gates=13, depth=9",15
+tournament,001,33537,4,0.9695,7,5,0,4,43,20,0.17049999999999998,"Hardware targets achieved: fidelity=0.970, gates=7, depth=5",25
+tournament,001,12147,3,0.9757,13,8,2,3,27,13,0.2843,"Hardware targets achieved: fidelity=0.976, gates=13, depth=8",44
+tournament,001,67154,7,0.9762,10,5,2,2,29,12,0.22380000000000005,"Hardware targets achieved: fidelity=0.976, gates=10, depth=5",25
+tournament,001,70300,5,0.9615,14,8,2,2,25,11,0.3185,"Hardware targets achieved: fidelity=0.962, gates=14, depth=8",15
+tournament,001,29440,10,0.9785,8,4,1,3,30,15,0.18149999999999997,"Hardware targets achieved: fidelity=0.979, gates=8, depth=4",24
+tournament,001,47182,2,0.9802,8,5,2,2,31,14,0.17980000000000004,"Hardware targets achieved: fidelity=0.980, gates=8, depth=5",37
+tournament,001,80248,8,0.9881,5,2,0,4,42,19,0.11190000000000003,"Hardware targets achieved: fidelity=0.988, gates=5, depth=2",25
+tournament,010,21315,1,0.9806,20,10,3,7,57,27,0.4194,"Hardware targets achieved: fidelity=0.981, gates=20, depth=10",41
+tournament,010,74135,6,0.9753,10,5,2,2,25,11,0.22470000000000007,"Hardware targets achieved: fidelity=0.975, gates=10, depth=5",15
+tournament,010,91197,9,0.9766,10,5,2,2,27,11,0.2234,"Hardware targets achieved: fidelity=0.977, gates=10, depth=5",15
+tournament,010,33537,4,0.9776,8,5,1,4,41,19,0.18239999999999998,"Hardware targets achieved: fidelity=0.978, gates=8, depth=5",46
+tournament,010,12147,3,0.9609,14,8,2,2,25,11,0.31910000000000005,"Hardware targets achieved: fidelity=0.961, gates=14, depth=8",15
+tournament,010,67154,7,0.9791,10,5,2,2,25,11,0.22090000000000004,"Hardware targets achieved: fidelity=0.979, gates=10, depth=5",21
+tournament,010,70300,5,0.9778,11,6,1,4,42,19,0.2422,"Hardware targets achieved: fidelity=0.978, gates=11, depth=6",65
+tournament,010,29440,10,0.978,26,14,5,5,40,19,0.542,completed_all_generations,99
+tournament,010,47182,2,0.9742,10,5,2,2,25,11,0.22580000000000006,"Hardware targets achieved: fidelity=0.974, gates=10, depth=5",15
+tournament,010,80248,8,0.9846,5,3,0,4,42,19,0.11539999999999997,"Hardware targets achieved: fidelity=0.985, gates=5, depth=3",20
+tournament,011,21315,1,0.9596,13,8,2,2,26,12,0.3004,"Hardware targets achieved: fidelity=0.960, gates=13, depth=8",33
+tournament,011,74135,6,0.9766,25,14,5,5,42,21,0.5234,completed_all_generations,99
+tournament,011,91197,9,0.9778,7,5,2,3,27,13,0.1622,"Hardware targets achieved: fidelity=0.978, gates=7, depth=5",17
+tournament,011,33537,4,0.9767,13,9,1,4,45,22,0.2833,"Hardware targets achieved: fidelity=0.977, gates=13, depth=9",46
+tournament,011,12147,3,0.977,14,8,1,4,42,20,0.30300000000000005,"Hardware targets achieved: fidelity=0.977, gates=14, depth=8",22
+tournament,011,67154,7,0.9773,10,5,2,6,61,29,0.22270000000000006,"Hardware targets achieved: fidelity=0.977, gates=10, depth=5",21
+tournament,011,70300,5,0.9797,22,15,5,5,41,19,0.4603,completed_all_generations,99
+tournament,011,29440,10,0.9607,12,7,2,2,25,11,0.2793,"Hardware targets achieved: fidelity=0.961, gates=12, depth=7",19
+tournament,011,47182,2,0.9603,12,7,2,2,25,11,0.27969999999999995,"Hardware targets achieved: fidelity=0.960, gates=12, depth=7",15
+tournament,011,80248,8,0.9756,9,5,1,4,41,19,0.20439999999999997,"Hardware targets achieved: fidelity=0.976, gates=9, depth=5",25
+tournament,100,21315,1,0.9619,13,6,2,2,25,11,0.29810000000000003,"Hardware targets achieved: fidelity=0.962, gates=13, depth=6",16
+tournament,100,74135,6,0.983,7,4,0,4,44,21,0.15700000000000003,"Hardware targets achieved: fidelity=0.983, gates=7, depth=4",32
+tournament,100,91197,9,0.9765,10,5,2,2,27,13,0.22349999999999998,"Hardware targets achieved: fidelity=0.977, gates=10, depth=5",15
+tournament,100,33537,4,0.9787,11,6,2,2,25,11,0.2413,"Hardware targets achieved: fidelity=0.979, gates=11, depth=6",18
+tournament,100,12147,3,0.9536,15,7,2,2,26,11,0.3464,"Hardware targets achieved: fidelity=0.954, gates=15, depth=7",16
+tournament,100,67154,7,0.978,10,5,2,2,26,11,0.22200000000000003,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",24
+tournament,100,70300,5,0.9736,19,11,2,9,62,31,0.4064,"Hardware targets achieved: fidelity=0.974, gates=19, depth=11",53
+tournament,100,29440,10,0.9802,12,7,2,11,91,44,0.25980000000000003,"Hardware targets achieved: fidelity=0.980, gates=12, depth=7",51
+tournament,100,47182,2,0.9793,10,6,2,2,26,12,0.22070000000000006,"Hardware targets achieved: fidelity=0.979, gates=10, depth=6",17
+tournament,100,80248,8,0.9883,4,2,0,4,44,19,0.09170000000000005,"Hardware targets achieved: fidelity=0.988, gates=4, depth=2",31
+tournament,101,21315,1,0.954,15,7,2,2,32,14,0.34600000000000003,"Hardware targets achieved: fidelity=0.954, gates=15, depth=7",26
+tournament,101,74135,6,0.9724,14,10,2,9,59,29,0.3076,"Hardware targets achieved: fidelity=0.972, gates=14, depth=10",45
+tournament,101,91197,9,0.9617,13,8,2,2,25,11,0.2983,"Hardware targets achieved: fidelity=0.962, gates=13, depth=8",15
+tournament,101,33537,4,0.9786,16,9,2,2,28,14,0.3414,"Hardware targets achieved: fidelity=0.979, gates=16, depth=9",25
+tournament,101,12147,3,0.9798,19,11,4,4,42,20,0.4002,"Hardware targets achieved: fidelity=0.980, gates=19, depth=11",50
+tournament,101,67154,7,0.9717,14,8,3,5,48,24,0.3083,"Hardware targets achieved: fidelity=0.972, gates=14, depth=8",49
+tournament,101,70300,5,0.9778,13,8,2,2,26,11,0.2822,"Hardware targets achieved: fidelity=0.978, gates=13, depth=8",15
+tournament,101,29440,10,0.98,10,5,1,5,42,19,0.22000000000000003,"Hardware targets achieved: fidelity=0.980, gates=10, depth=5",16
+tournament,101,47182,2,0.9819,8,5,2,2,27,13,0.1781,"Hardware targets achieved: fidelity=0.982, gates=8, depth=5",39
+tournament,101,80248,8,0.9816,8,5,2,2,26,12,0.17839999999999998,"Hardware targets achieved: fidelity=0.982, gates=8, depth=5",20
+tournament,110,21315,1,0.9777,20,11,5,5,42,21,0.4223,"Hardware targets achieved: fidelity=0.978, gates=20, depth=11",30
+tournament,110,74135,6,0.9752,6,3,1,5,44,22,0.14480000000000004,"Hardware targets achieved: fidelity=0.975, gates=6, depth=3",92
+tournament,110,91197,9,0.9762,10,6,2,3,26,12,0.22380000000000005,"Hardware targets achieved: fidelity=0.976, gates=10, depth=6",50
+tournament,110,33537,4,0.9774,19,11,3,8,59,29,0.40259999999999996,"Hardware targets achieved: fidelity=0.977, gates=19, depth=11",58
+tournament,110,12147,3,0.9793,10,6,2,2,25,11,0.22070000000000006,"Hardware targets achieved: fidelity=0.979, gates=10, depth=6",19
+tournament,110,67154,7,0.9793,10,6,2,2,29,14,0.22070000000000006,"Hardware targets achieved: fidelity=0.979, gates=10, depth=6",16
+tournament,110,70300,5,0.9749,13,8,2,3,26,12,0.2851,"Hardware targets achieved: fidelity=0.975, gates=13, depth=8",49
+tournament,110,29440,10,0.9781,10,6,2,2,25,11,0.22190000000000004,"Hardware targets achieved: fidelity=0.978, gates=10, depth=6",18
+tournament,110,47182,2,0.9781,13,8,2,2,28,13,0.28190000000000004,"Hardware targets achieved: fidelity=0.978, gates=13, depth=8",17
+tournament,110,80248,8,0.9724,10,5,2,2,28,11,0.22759999999999997,"Hardware targets achieved: fidelity=0.972, gates=10, depth=5",45
+tournament,111,21315,1,0.9624,10,6,2,2,25,11,0.23759999999999998,"Hardware targets achieved: fidelity=0.962, gates=10, depth=6",20
+tournament,111,74135,6,0.9785,22,10,3,7,60,28,0.46149999999999997,completed_all_generations,99
+tournament,111,91197,9,0.7489,68,45,3,4,29,15,1.6111,completed_all_generations,99
+tournament,111,33537,4,0.9752,10,5,1,4,41,19,0.22480000000000006,"Hardware targets achieved: fidelity=0.975, gates=10, depth=5",61
+tournament,111,12147,3,0.9793,16,8,3,7,64,34,0.34070000000000006,"Hardware targets achieved: fidelity=0.979, gates=16, depth=8",85
+tournament,111,67154,7,0.9794,8,5,2,2,26,12,0.18059999999999996,"Hardware targets achieved: fidelity=0.979, gates=8, depth=5",15
+tournament,111,70300,5,0.9771,8,5,2,2,25,11,0.18290000000000003,"Hardware targets achieved: fidelity=0.977, gates=8, depth=5",26
+tournament,111,29440,10,0.9746,20,12,5,5,45,22,0.4254,"Hardware targets achieved: fidelity=0.975, gates=20, depth=12",79
+tournament,111,47182,2,0.975,17,10,2,2,28,12,0.36500000000000005,"Hardware targets achieved: fidelity=0.975, gates=17, depth=10",15
+tournament,111,80248,8,0.9734,14,9,3,5,46,22,0.3066,"Hardware targets achieved: fidelity=0.973, gates=14, depth=9",25

@@ -1,0 +1,38 @@
+{
+  "system": {
+    "machine": "arm64",
+    "processor": "arm",
+    "system": "Darwin",
+    "system_version": "Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132",
+    "python_version": "3.11.15",
+    "cpu_count": 10,
+    "chip": "Apple M4",
+    "ram_gb": 16.0,
+    "pkg_qiskit": "2.4.1",
+    "pkg_qiskit-aer": "0.17.2",
+    "pkg_qiskit-ibm-runtime": "0.46.1",
+    "pkg_deap": "1.4.2",
+    "pkg_numpy": "2.2.2",
+    "pkg_grape": "dev"
+  },
+  "timing": {
+    "evolution_start": 1787902925.385984,
+    "evolution_end": 1787943936.130006,
+    "total_seconds": 41010.74,
+    "total_minutes": 683.51,
+    "avg_gen_seconds": 410.1
+  },
+  "config": {
+    "target_state": "001",
+    "seed": 80248,
+    "run_id": 8,
+    "selection_method": "lexi2",
+    "population_size": 300,
+    "max_generations": 100,
+    "backend": "ibm_fez",
+    "early_stopped_gen": 99,
+    "stop_reason": "completed_all_generations",
+    "use_noise": true
+  },
+  "timestamp": "2026-08-28T20:05:37.983471"
+}

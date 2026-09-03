@@ -1,0 +1,32 @@
+{
+  "run_id": 7,
+  "seed": 67154,
+  "target_state": "101",
+  "selection_method": "lexi2",
+  "raw_fitness": 1.4291,
+  "fitness": 1.4291,
+  "fidelity": 0.6709,
+  "gate_count": 55,
+  "depth": 33,
+  "raw_gate_count": 71,
+  "raw_depth": 44,
+  "gate_ops": {
+    "h": 20,
+    "cx": 18,
+    "x": 12,
+    "ry": 5,
+    "swap": 4,
+    "rzx": 4,
+    "measure": 3,
+    "y": 2,
+    "sdg": 1,
+    "ryy": 1,
+    "cz": 1
+  },
+  "two_qubit_gates": 9,
+  "raw_two_qubit_gates": 19,
+  "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.h( 0 )\nqc.swap( 1,2 )\n## End Diffuser\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.ry( 2.7 , 1 )\nqc.sdg( 0 )\nqc.ryy( np.pi/4 , 2,0 )\nqc.rzx( np.pi/4 , 2,0 )\nqc.swap( 0,2 )\nqc.cx( 1,0 )\nqc.ry( 2.7 , 1 )\nqc.cx( 1,0 )\nqc.rzx( 2*np.pi , 1,0 )\nqc.y( 2 )\nqc.cx( 1,0 )\nqc.cx( 1,0 )\nqc.cx( 1,0 )\nqc.cx( 1,0 )\nqc.rzx( 2*np.pi , 1,0 )\nqc.y( 2 )\nqc.cx( 1,0 )\nqc.cx( 1,0 )\nqc.rzx( 2*np.pi , 0,2 )\nqc.ry( 2.7 , 1 )\nqc.cx( 0,1 )\nqc.cx( 1,0 )\nqc.swap( 2,0 )\nqc.cx( 1,0 )\nqc.cz( 2,1 )\nqc.cx( 1,0 )\nqc.cx( 1,0 )\nqc.cx( 1,0 )\nqc.ry( 2.7 , 1 )\nqc.swap( 0,2 )\nqc.ry( 2*np.pi , 2 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
+  "genome_hash": "3312576865",
+  "early_stopped_gen": 99,
+  "stop_reason": "completed_all_generations"
+}

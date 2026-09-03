@@ -1,0 +1,29 @@
+{
+  "individual_id": 1,
+  "fitness_evolution": null,
+  "fitness_hardware": null,
+  "backend": "ibm_fez",
+  "target_state": "000",
+  "counts": {
+    "000": 9887,
+    "100": 53,
+    "010": 51,
+    "001": 9
+  },
+  "p_marked_hw": 0.9887,
+  "total_shots": 10000,
+  "original_gates": 43,
+  "original_depth": 19,
+  "transpiled_gates": 3,
+  "transpiled_depth": 1,
+  "transpiled_2q": 0,
+  "seed": 80248,
+  "arm": "tournament",
+  "sim_fidelity": 0.9895,
+  "job_id": "dac42uu42tqs73armndg",
+  "session_id": null,
+  "execution_mode": "individual_jobs_back_to_back",
+  "session_label": "session_2026-09-02",
+  "timestamp": "2026-09-02T16:32:24.487627",
+  "circuit_kind": "deployed"
+}

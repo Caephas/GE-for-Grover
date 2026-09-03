@@ -1,0 +1,27 @@
+{
+  "run_id": 5,
+  "seed": 70300,
+  "target_state": "101",
+  "selection_method": "epsilon_lexicase",
+  "raw_fitness": 0.32059999999999994,
+  "fitness": 0.32059999999999994,
+  "fidelity": 0.9794,
+  "gate_count": 15,
+  "depth": 11,
+  "raw_gate_count": 29,
+  "raw_depth": 14,
+  "gate_ops": {
+    "h": 14,
+    "x": 7,
+    "cx": 4,
+    "measure": 3,
+    "ryy": 1
+  },
+  "two_qubit_gates": 3,
+  "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.h( 1 )\nqc.h( 2 )\nqc.h( 0 )\nqc.cx( 1,2 )\nqc.ryy( 0 , 1,2 )\nqc.x( 0 )\nqc.cx( 0,2 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
+  "genome_hash": "353155042",
+  "early_stopped_gen": 44,
+  "stop_reason": "Hardware targets achieved: fidelity=0.979, gates=15, depth=11",
+  "raw_two_qubit_gates": 4,
+  "two_qubit_provenance": "transpiled (frozen target, run seed); raw preserved in raw_two_qubit_gates"
+}
