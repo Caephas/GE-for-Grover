@@ -1,0 +1,10 @@
+# SHA-256 checksums for the frozen environment used by the 240-run sweep.
+#
+# frozen_env_ibm_fez_2026-08-20.pkl is distributed with this folder.
+# noise_ibm_fez_2026-08-19.pkl is the source noise-model snapshot that was
+# embedded in that bundle; it is not distributed (17.6 MB, and the bundle
+# already carries the same NoiseModel object). Its checksum is recorded here
+# for provenance, and infra/capture_noise.py documents how both were produced.
+
+d51b5d53a60dd7a0e873b02b356d7bec529887cab0bae9aff9aefd62d8d036b3  frozen_env_ibm_fez_2026-08-20.pkl
+fb5973eba35682aff3d0130db5688668ee0911763a1a8d92afe5e713b95c9b23  noise_ibm_fez_2026-08-19.pkl

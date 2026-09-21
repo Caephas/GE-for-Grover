@@ -1,5 +1,50 @@
 # Changelog
 
+## 2026-09-21 — Paper-artefact sync: final figure builders and analysis inputs
+
+**Added (files only; nothing re-run).** Five artefacts used for the submitted
+manuscript were missing from this folder:
+
+- `build_figs_gpem.py` — regenerates the final manuscript figure set (the
+  eleven figures included by the paper) with the revised terminology and
+  print-size layout.
+- `build_fig16_firerate_pool.py` — two-panel Lexi2 mechanism figure
+  (size-tiebreak invocation rate and post-case candidate-pool size).
+- `survivor_pool_lexi2_bygen.csv` — per-generation post-case candidate-pool
+  size, the input for the right panel of that figure.
+- `SURVIVOR_POOL_COMPARISON.md` — the pool-logging caveat for the ε-lexicase
+  vs Lexi2 comparison.
+- `hardware_results_frozen_10seed.csv` — consolidated deployment-time
+  hardware results (26 August 2026 session).
+- `infra/capture_noise.py` and `noise/SHA256SUMS.txt` — provenance for the
+  frozen environment: the capture script, plus checksums for the distributed
+  bundle (`d51b5d53…`) and the source noise-model snapshot (`fb5973eb…`) it
+  embeds. The snapshot itself (17.6 MB) is not distributed. See the README
+  provenance section.
+
+The analysis-output list in `README.md` was updated to include the two
+figure builders. `run_experiment.py` in this folder remains the revision that
+produced the 240-run frozen batch; the 2026-09-04 pool-logging patch below
+postdates the batch and is not part of the frozen artefact.
+
+## 2026-09-04 — Symmetric post-case pool logging for both lexicase-family selectors
+
+**Change (code only; nothing was run).** The 3-objective ε-lexicase selector
+(`selEpsilonLexicaseQuantum`) now records the same per-selection post-case
+survivor-pool information that Lexi2 (`selLexi2Quantum`) records, and both
+selectors additionally log the shuffled case order for every selection. Per
+generation per run, `selection_pool_log_<state>_run<id>.json` contains
+`n_cases`, the MAD-based `epsilons` per case, `selections`,
+`post_case_pool_sizes` (survivor count after all cases for **every** parent
+selection, not only non-singleton ones), and `case_shuffles`. This makes
+cross-arm pool-size comparisons computable for any future control arm;
+historical ε-lexicase runs predate this log and cannot be retro-computed.
+
+The shuffled order is recorded *after* `random.shuffle`, so no additional RNG
+draws are consumed and runs remain byte-reproducible under the master run seed
+(the per-run seed is already logged in `run_metadata`). The legacy Lexi2
+`lexi2_log_*.json` output is unchanged.
+
 ## 2026-08-27 — Fix: `two_qubit_gates` now reports the transpiled 2Q count
 
 **Bug:** `run_result.json` (and everything derived from it) stored the **raw**
