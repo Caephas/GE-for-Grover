@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Re-run ONLY the hardware validation for a saved state, without re-running evolution.
 
-Loads the 5 per-run results saved under
-    experiments/{selection}/pop{pop}/noise/state_{state}/
+Loads the 10 per-run results saved under
+    <root>/{selection}/pop{pop}/noise/state_{state}/
+where root is experiments_frozen_10seed for epsilon_lexicase/tournament and
+experiments_frozen_10seed_lexi2 for lexi2. For lexi2 the notebook-sourced
+config comes from the (identical-config) lexicase notebook.
 (aggregate + per-run folders), picks the deployed circuit with the lambda-free
 lexicographic rule (max fidelity, then min transpiled 2Q gates, then min
-transpiled depth; matching the patched cell 43), rebuilds that circuit from the stored
-phenotype, and submits it to ibm_fez through the *patched* run_hof_on_ibm from
-the matching notebook, passing seed_transpiler=deployed_seed and
-log_dir=the deployed run's folder.
+total transpiled gates, then min transpiled depth; matching the driver),
+loads that run's persisted scored ISA circuit, verifies its checksum, layout,
+and complete operation counts against stored metadata, and submits that exact
+circuit to ibm_fez without re-transpiling.
 
 Before submitting it prints a confirmation block (deployed seed, fidelity,
 transpiled gate/depth vs the recorded in-loop values) and asks for y/N.
@@ -29,8 +32,15 @@ from types import SimpleNamespace
 import numpy as np
 import matplotlib.pyplot as plt
 from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister, transpile
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2
 
-NOTEBOOK_PREFIX = {"epsilon_lexicase": "lexicase", "tournament": "tournament"}
+from hardware_isa import load_scored_isa, verify_live_isa
+
+NOTEBOOK_PREFIX = {"epsilon_lexicase": "lexicase", "tournament": "tournament",
+                   "lexi2": "lexicase"}  # lexi2 has no notebook; same submission code/config
+EXPERIMENT_ROOTS = {"epsilon_lexicase": "experiments_frozen_10seed",
+                    "tournament": "experiments_frozen_10seed",
+                    "lexi2": "experiments_frozen_10seed_lexi2"}
 CONFIG_ASSIGN = re.compile(r"^([A-Z_][A-Z0-9_]*)\s*=\s*(.+?)(\s*#.*)?$")
 
 
@@ -56,12 +66,13 @@ def config_from_notebook(state: str, selection: str) -> dict:
 
 
 def load_deployed_run(state: str, selection: str, pop: int) -> tuple[dict, str, dict]:
-    state_dir = os.path.join("experiments", selection, f"pop{pop}", "noise", f"state_{state}")
+    state_dir = os.path.join(EXPERIMENT_ROOTS[selection], selection,
+                             f"pop{pop}", "noise", f"state_{state}")
     agg_path = os.path.join(state_dir, f"AGGREGATE_{state}.json")
     agg = json.load(open(agg_path))
     per_run = [r for r in agg.get("per_run", []) if isinstance(r, dict)]
-    if len(per_run) != 5:
-        print(f"  ⚠ expected 5 runs, found {len(per_run)} in {agg_path}")
+    if len(per_run) != 10:
+        print(f"  ⚠ expected 10 runs, found {len(per_run)} in {agg_path}")
 
     print(f"\nSaved per-run results ({state_dir}):")
     print(f"  {'run_id':>6} {'seed':>7} {'fidelity':>9} {'in-loop g/d/2Q':>18} {'raw gates/depth':>16}")
@@ -72,7 +83,8 @@ def load_deployed_run(state: str, selection: str, pop: int) -> tuple[dict, str, 
               f"{r.get('gate_count')}g/{r.get('depth')}d/{r.get('two_qubit_gates')}q{'':>9} "
               f"{r.get('raw_gate_count')}g/{r.get('raw_depth')}d  [{exists}]")
 
-    best = max(per_run, key=lambda r: (r["fidelity"], -r["two_qubit_gates"], -r["depth"]))
+    best = max(per_run, key=lambda r: (
+        r["fidelity"], -r["two_qubit_gates"], -r["gate_count"], -r["depth"]))
     run_dir = os.path.join(state_dir, f"run_{best['run_id']}_seed_{best['seed']}")
     if not os.path.isdir(run_dir):
         sys.exit(f"✗ deployed run folder missing: {run_dir}")
@@ -111,7 +123,8 @@ def extract_run_hof_on_ibm(state: str, selection: str, cfg: dict):
     nb = json.load(open(nb_path))
     src = "".join(nb["cells"][42]["source"])
     ns = {
-        "os": os, "re": re, "json": json, "datetime": datetime,
+        "os": os, "re": re, "json": json,
+        "datetime": datetime.datetime,  # notebook cell uses `from datetime import datetime`
         "USE_NOISE_MODEL": cfg["USE_NOISE_MODEL"],
         "TARGET_STATE": state,
         "RANDOM_SEED": None,  # replaced below with the deployed seed fallback
@@ -195,10 +208,93 @@ def run_hardware(state: str, selection: str, pop: int, best: dict, run_dir: str,
     print(f"  saved to:           {out_path}")
 
 
+def verify_stored_circuit(state: str, selection: str, best: dict, run_dir: str):
+    """Load the exact scored ISA and verify its recorded identifying fields."""
+    circuit, metadata, qpy_path, metadata_path = load_scored_isa(
+        run_dir, state, int(best["run_id"])
+    )
+    expected = {
+        "target_state": state,
+        "selection_method": selection,
+        "seed": int(best["seed"]),
+        "run_id": int(best["run_id"]),
+        "gate_count": int(best["gate_count"]),
+        "depth": int(best["depth"]),
+        "two_qubit_gates": int(best["two_qubit_gates"]),
+    }
+    mismatches = {
+        key: {"expected": value, "metadata": metadata.get(key)}
+        for key, value in expected.items()
+        if metadata.get(key) != value
+    }
+    if mismatches:
+        raise ValueError(f"scored ISA metadata mismatch: {mismatches}")
+    return circuit, metadata, qpy_path, metadata_path
+
+
+def run_stored_hardware(
+    state: str,
+    selection: str,
+    best: dict,
+    run_dir: str,
+    circuit,
+    metadata: dict,
+) -> None:
+    """Submit the persisted scored ISA circuit without re-transpiling."""
+    service = QiskitRuntimeService(channel="ibm_cloud")
+    backend = service.backend("ibm_fez")
+    verify_live_isa(circuit, backend)
+
+    sampler = SamplerV2(mode=backend)
+    sampler.options.default_shots = 10_000
+    print(f"\nSubmitting stored scored ISA {metadata['qpy_sha256'][:12]}...")
+    job = sampler.run([circuit])
+    print(f"  Job ID: {job.job_id()}")
+    result = job.result(timeout=3600)
+
+    pub_result = result[0]
+    try:
+        counts = pub_result.data.cr.get_counts()
+    except AttributeError:
+        counts = pub_result.data.c.get_counts()
+    counts = {bitstring[::-1]: count for bitstring, count in counts.items()}
+    total = sum(counts.values())
+    p_marked = counts.get(state, 0) / total if total else 0.0
+
+    hw_data = {
+        "individual_id": 1,
+        "fitness_evolution": float(best.get("raw_fitness", 0.0)),
+        "fitness_hardware": 10 * int(p_marked < 0.48) + (1 - p_marked),
+        "backend": backend.name,
+        "target_state": state,
+        "counts": counts,
+        "p_marked_hw": p_marked,
+        "total_shots": total,
+        "original_gates": best.get("raw_gate_count"),
+        "original_depth": best.get("raw_depth"),
+        "transpiled_gates": metadata["gate_count"],
+        "transpiled_depth": metadata["depth"],
+        "transpiled_2q": metadata["two_qubit_gates"],
+        "job_id": job.job_id(),
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "scored_isa_qpy_sha256": metadata["qpy_sha256"],
+        "scored_isa_metadata_path": os.path.join(
+            run_dir,
+            f"scored_isa_metadata_{state}_run{int(best['run_id'])}.json",
+        ),
+    }
+    out_path = os.path.join(run_dir, "hof_1_ibm_hardware_data.json")
+    with open(out_path, "w") as f:
+        json.dump(hw_data, f, indent=2)
+    print(f"  p(marked)={p_marked:.4f}")
+    print(f"  saved to: {out_path}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--state", default="111", help="target state, e.g. 111 (default: 111)")
-    ap.add_argument("--selection", default="epsilon_lexicase", choices=["epsilon_lexicase", "tournament"])
+    ap.add_argument("--selection", default="epsilon_lexicase",
+                    choices=["epsilon_lexicase", "tournament", "lexi2"])
     ap.add_argument("--pop", type=int, default=300)
     ap.add_argument("--yes", action="store_true", help="skip the confirmation prompt")
     ap.add_argument("--verify-only", action="store_true", help="print the pre-submit check and exit")
@@ -209,8 +305,23 @@ def main() -> None:
 
     print(f"=== REDEPLOY HARDWARE | state {args.state} | {args.selection} | pop{args.pop} ===")
     best, run_dir, _ = load_deployed_run(args.state, args.selection, args.pop)
-    cfg = config_from_notebook(args.state, args.selection)
-    pre_submit_check(best, args.selection)
+    try:
+        circuit, metadata, qpy_path, metadata_path = verify_stored_circuit(
+            args.state, args.selection, best, run_dir
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        sys.exit(f"✗ {exc}")
+    print("\n" + "=" * 70)
+    print("VERIFIED STORED SCORED ISA")
+    print("=" * 70)
+    print(f"  QPY:       {qpy_path}")
+    print(f"  metadata:  {metadata_path}")
+    print(f"  SHA-256:   {metadata['qpy_sha256']}")
+    print(f"  layout:    {metadata['measurement_layout']}")
+    print(f"  gates:     {metadata['gate_count']}")
+    print(f"  depth:     {metadata['depth']}")
+    print(f"  2Q gates:  {metadata['two_qubit_gates']}")
+    print(f"  op counts: {metadata['operation_counts']}")
     print(f"\nResult will be saved to: {os.path.join(run_dir, 'hof_1_ibm_hardware_data.json')}")
 
     if args.verify_only:
@@ -223,7 +334,9 @@ def main() -> None:
             print("Aborted - no job submitted.")
             return
 
-    run_hardware(args.state, args.selection, args.pop, best, run_dir, cfg)
+    run_stored_hardware(
+        args.state, args.selection, best, run_dir, circuit, metadata
+    )
 
 
 if __name__ == "__main__":
