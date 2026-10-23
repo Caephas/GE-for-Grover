@@ -20,8 +20,9 @@ following structural adaptations were made:
   5. IPython ``display`` calls are no-ops in headless mode; circuit PNGs are
      still saved exactly as before.
   6. lexi2 selection arm (8-case epsilon-lexicase over output-state
-     probabilities + size tiebreak) is implemented; per_prob remains a stub
-     that raises a clear NotImplementedError.
+     probabilities + size tiebreak) and lexi8_random (the same cases with a
+     uniform random post-case tiebreak) are implemented; per_prob remains a
+     stub that raises a clear NotImplementedError.
 
 This script NEVER submits IBM Quantum hardware jobs. Noisy-simulation runs
 only; hardware deployment remains a separate manual step (redeploy_hardware.py).
@@ -534,6 +535,120 @@ def selLexi2Quantum(individuals, k, gen=None):
         sym["case_shuffles"].extend(_shuffles)
 
     return selected
+
+
+def selLexi8RandomQuantum(individuals, k, gen=None):
+    """Eight-case epsilon-lexicase with a uniform random post-case tiebreak.
+
+    This is the control condition for Lexi2. The cases, MAD epsilon calculation,
+    case shuffling, and all evaluator behaviour are identical. The only change
+    is that a surviving pool of more than one individual is resolved uniformly
+    at random instead of by the size ordering.
+    """
+    global lexi2_log
+    valid = [ind for ind in individuals
+             if hasattr(ind, "fitness_each_sample")
+             and ind.fitness_each_sample is not None
+             and len(ind.fitness_each_sample) == 8]
+    if not valid:
+        return [random.choice(individuals) for _ in range(k)]
+
+    fitness_matrix = np.array(
+        [ind.fitness_each_sample for ind in valid], dtype=float
+    )
+    medians = np.median(fitness_matrix, axis=0)
+    epsilons = np.median(np.abs(fitness_matrix - medians), axis=0)
+
+    selected = []
+    random_tiebreak_count = 0
+    post_case_pool_sizes_all = []
+    post_case_pool_sizes_random = []
+    case_shuffles = []
+
+    for _ in range(k):
+        candidates = list(range(len(valid)))
+        cases = list(range(8))
+        random.shuffle(cases)
+        case_shuffles.append(cases)
+
+        while cases and len(candidates) > 1:
+            case_idx = cases.pop(0)
+            vals = fitness_matrix[candidates, case_idx]
+            best_val = float(vals.max())
+            candidates = [
+                c for c, v in zip(candidates, vals)
+                if v >= best_val - epsilons[case_idx]
+            ]
+
+        post_case_pool_sizes_all.append(len(candidates))
+        if len(candidates) > 1:
+            random_tiebreak_count += 1
+            post_case_pool_sizes_random.append(len(candidates))
+            selected.append(valid[random.choice(candidates)])
+        else:
+            selected.append(valid[candidates[0]])
+
+    if gen is not None and SELECTION_METHOD == "lexi8_random":
+        entry = lexi2_log.setdefault(int(gen), {
+            "eps": [round(float(e), 6) for e in epsilons],
+            "tiebreak_fires": 0,
+            "selections": 0,
+            "post_case_pool_sizes": [],
+            "post_case_pool_sizes_all": [],
+            "case_shuffles": [],
+            "tiebreak_mode": "uniform_random",
+        })
+        entry["tiebreak_fires"] += random_tiebreak_count
+        entry["selections"] += k
+        entry["post_case_pool_sizes"].extend(post_case_pool_sizes_random)
+        entry["post_case_pool_sizes_all"].extend(post_case_pool_sizes_all)
+        entry["case_shuffles"].extend(case_shuffles)
+
+        sym = selection_pool_log.setdefault(int(gen), {
+            "n_cases": 8,
+            "epsilons": [round(float(e), 6) for e in epsilons],
+            "selections": 0,
+            "post_case_pool_sizes": [],
+            "case_shuffles": [],
+        })
+        sym["selections"] += k
+        sym["post_case_pool_sizes"].extend(post_case_pool_sizes_all)
+        sym["case_shuffles"].extend(case_shuffles)
+
+    return selected
+
+
+def population_diagnostics(population):
+    """Summarise the scored population for the control-arm log."""
+    valid = [
+        ind for ind in population
+        if getattr(ind, "fitness_each_sample", None) is not None
+        and not getattr(ind, "invalid", False)
+    ]
+    if not valid:
+        return {
+            "highest_fidelity_individual": None,
+            "any_individual_meets_all_targets": False,
+        }
+
+    best = max(valid, key=lambda ind: float(ind.fitness_each_sample[0]))
+    two_q, gates, depth = getattr(best, "lexi2_size", (999, 999, 999))
+    fidelity = float(best.fitness_each_sample[0])
+    any_success = any(
+        float(ind.fitness_each_sample[0]) >= 0.95
+        and int(getattr(ind, "lexi2_size", (999, 999, 999))[1]) <= 20
+        and int(getattr(ind, "lexi2_size", (999, 999, 999))[2]) <= 15
+        for ind in valid
+    )
+    return {
+        "highest_fidelity_individual": {
+            "fidelity": round(fidelity, 6),
+            "gates": int(gates),
+            "depth": int(depth),
+            "two_qubit_gates": int(two_q),
+        },
+        "any_individual_meets_all_targets": bool(any_success),
+    }
 
 class TranspilationCache:
     """
@@ -1461,7 +1576,7 @@ def evaluate_with_logging(individual, pts_train=None):
     phenotype_str = evaluator.decode_individual(individual)
     if not phenotype_str:
         # Invalid individual — worst possible scores
-        if SELECTION_METHOD == "lexi2":
+        if SELECTION_METHOD in ("lexi2", "lexi8_random"):
             individual.fitness_each_sample = [0.0] * 8
             individual.lexi2_size = (999, 999, 999)
         else:
@@ -1479,7 +1594,7 @@ def evaluate_with_logging(individual, pts_train=None):
         use_noise=USE_NOISE_MODEL,
     )
     
-    if SELECTION_METHOD == "lexi2":
+    if SELECTION_METHOD in ("lexi2", "lexi8_random"):
         # Lexi2: 8 cases = measured probabilities of the 8 output states.
         individual.fitness_each_sample = list(per_case["probabilities"])
         # Size tiebreak metrics on the scored (transpiled) circuit:
@@ -1518,7 +1633,8 @@ def setup_toolbox(num_workers: int, selection_method: str):
     if selection_method == "per_prob":
         raise NotImplementedError(
             f"selection arm {selection_method!r} is not implemented yet; "
-            f"use 'epsilon_lexicase', 'tournament', or 'lexi2'."
+            f"use 'epsilon_lexicase', 'tournament', 'lexi2', or "
+            f"'lexi8_random'."
         )
 
     # Create DEAP types
@@ -1552,6 +1668,10 @@ def setup_toolbox(num_workers: int, selection_method: str):
         toolbox.register("select", selLexi2Quantum)
         print(f"✓ Selection: Lexi2 (8-case epsilon-lexicase on output-state "
               f"probabilities + 2Q/gates/depth tiebreak)")
+    elif SELECTION_METHOD == "lexi8_random":
+        toolbox.register("select", selLexi8RandomQuantum)
+        print(f"✓ Selection: lexi8_random (8-case epsilon-lexicase on "
+              f"output-state probabilities + uniform random tiebreak)")
     else:
         toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
         print(f"✓ Selection: Tournament (size {TOURNAMENT_SIZE})")
@@ -1647,13 +1767,16 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
     elif SELECTION_METHOD == "lexi2":
         toolbox.register("select", lambda inds, k, _g=_current_gen:
                          selLexi2Quantum(inds, k, gen=_g[0]))
+    elif SELECTION_METHOD == "lexi8_random":
+        toolbox.register("select", lambda inds, k, _g=_current_gen:
+                         selLexi8RandomQuantum(inds, k, gen=_g[0]))
     else:
         toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
     toolbox.register("map", pool.map)
     toolbox.register("evaluate", evaluate_with_logging)
 
     # ---- Fresh per-run diagnostics + cache + early stopping ----
-    if SELECTION_METHOD == "lexi2":
+    if SELECTION_METHOD in ("lexi2", "lexi8_random"):
         diag_names = ["p000", "p001", "p010", "p011",
                       "p100", "p101", "p110", "p111"]
     else:
@@ -1759,6 +1882,17 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         generations_list.append(gen)
 
         diagnostics.record_generation(gen, population)
+        if SELECTION_METHOD == "lexi8_random":
+            entry = lexi2_log.setdefault(int(gen), {
+                "eps": [],
+                "tiebreak_fires": 0,
+                "selections": 0,
+                "post_case_pool_sizes": [],
+                "post_case_pool_sizes_all": [],
+                "case_shuffles": [],
+                "tiebreak_mode": "uniform_random",
+            })
+            entry.update(population_diagnostics(population))
         if gen % 10 == 0:
             print(f"  gen {gen:3d} | fit={fitness_val:.4f} | fid={p_marked:.4f} "
                   f"| gates={avg_gate:.0f} | depth={avg_depth:.0f}")
@@ -1814,15 +1948,25 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         with open(os.path.join(LOG_DIR, f'early_stopping_{target_state}_run{run_id}.json'), 'w') as _f:
             json.dump(es_state, _f, indent=2, default=str)
 
-    # Persist Lexi2 per-generation epsilon + tiebreak logging (Douglas).
-    if SELECTION_METHOD == "lexi2" and lexi2_log:
+    # Persist 8-case selector diagnostics for Lexi2 and its random-tiebreak
+    # control. The shared schema keeps epsilon, selection, and pool fields
+    # directly comparable between methods.
+    if SELECTION_METHOD in ("lexi2", "lexi8_random") and lexi2_log:
         total_fires = sum(v["tiebreak_fires"] for v in lexi2_log.values())
         total_sel = sum(v["selections"] for v in lexi2_log.values())
-        with open(os.path.join(LOG_DIR, f"lexi2_log_{target_state}_run{run_id}.json"), "w") as _f:
+        log_prefix = "lexi2" if SELECTION_METHOD == "lexi2" else "lexi8_random"
+        with open(os.path.join(
+                LOG_DIR, f"{log_prefix}_log_{target_state}_run{run_id}.json"
+        ), "w") as _f:
             json.dump({
                 "target_state": target_state,
                 "seed": seed,
-                "selection_method": "lexi2",
+                "selection_method": SELECTION_METHOD,
+                "tiebreak_mode": (
+                    "lexicographic_size"
+                    if SELECTION_METHOD == "lexi2"
+                    else "uniform_random"
+                ),
                 "per_generation": {str(g): v for g, v in sorted(lexi2_log.items())},
                 "totals": {
                     "selections": total_sel,
@@ -1834,7 +1978,9 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
     # Symmetric per-selection pool log (3-objective epsilon-lexicase and
     # 8-case lexi2): post-case pool size for EVERY selection plus the shuffled
     # case order, so cross-arm pool comparisons are computable for future runs.
-    if SELECTION_METHOD in ("epsilon_lexicase", "lexi2") and selection_pool_log:
+    if SELECTION_METHOD in (
+        "epsilon_lexicase", "lexi2", "lexi8_random"
+    ) and selection_pool_log:
         total_sel = sum(v["selections"] for v in selection_pool_log.values())
         total_pool = sum(sum(v["post_case_pool_sizes"])
                          for v in selection_pool_log.values())
@@ -2243,6 +2389,7 @@ def write_run_result(result: dict) -> str:
         "fitness", "fidelity", "gate_count", "depth", "raw_gate_count",
         "raw_depth", "gate_ops", "two_qubit_gates", "raw_two_qubit_gates",
         "phenotype", "genome_hash", "early_stopped_gen", "stop_reason",
+        "scored_isa_path", "scored_isa_metadata_path",
     )}
     path = os.path.join(result["log_dir"],
                         f"run_result_{result['target_state']}_run{result['run_id']}.json")
@@ -2348,7 +2495,8 @@ def run_cli(argv) -> int:
     ap.add_argument("--state", required=True, help="target state, e.g. 000..111")
     ap.add_argument("--seed", type=int, required=True, help="RNG seed")
     ap.add_argument("--selection", required=True,
-                    choices=["epsilon_lexicase", "tournament", "lexi2", "per_prob"],
+                    choices=["epsilon_lexicase", "tournament", "lexi2",
+                             "lexi8_random", "per_prob"],
                     help="selection arm (per_prob is a stub and errors)")
     ap.add_argument("--population", type=int, default=None)
     ap.add_argument("--generations", type=int, default=None)
@@ -2372,7 +2520,8 @@ def run_cli(argv) -> int:
     if args.selection == "per_prob":
         raise NotImplementedError(
             f"selection arm {args.selection!r} is not implemented yet; "
-            f"use 'epsilon_lexicase', 'tournament', or 'lexi2'. Refusing to run."
+            f"use 'epsilon_lexicase', 'tournament', 'lexi2', or "
+            f"'lexi8_random'. Refusing to run."
         )
     run_id = args.run_id or (RUN_SEEDS.index(args.seed) + 1 if args.seed in RUN_SEEDS else 1)
 
@@ -2421,7 +2570,8 @@ def aggregate_cli(argv) -> int:
                     "write the lambda-free deployed_best.json (no hardware).")
     ap.add_argument("--state", required=True, help="target state, e.g. 000..111")
     ap.add_argument("--selection", required=True,
-                    choices=["epsilon_lexicase", "tournament", "lexi2", "per_prob"])
+                    choices=["epsilon_lexicase", "tournament", "lexi2",
+                             "lexi8_random", "per_prob"])
     ap.add_argument("--population", type=int, default=POPULATION_SIZE)
     ap.add_argument("--outdir", default=EXPERIMENTS_ROOT)
     ap.add_argument("--ideal", action="store_true")
