@@ -19,8 +19,9 @@ following structural adaptations were made:
      (max fidelity, then min transpiled 2Q gates, then min transpiled depth).
   5. IPython ``display`` calls are no-ops in headless mode; circuit PNGs are
      still saved exactly as before.
-  6. lexi2 / per_prob selection arms are accepted by the CLI but raise a clear
-     NotImplementedError until implemented.
+  6. lexi2 selection arm (8-case epsilon-lexicase over output-state
+     probabilities + size tiebreak) is implemented; per_prob remains a stub
+     that raises a clear NotImplementedError.
 
 This script NEVER submits IBM Quantum hardware jobs. Noisy-simulation runs
 only; hardware deployment remains a separate manual step (redeploy_hardware.py).
@@ -59,7 +60,7 @@ import pandas as pd
 import matplotlib
 matplotlib.use("Agg")  # headless: never open GUI windows; PNGs are still saved
 import matplotlib.pyplot as plt
-from qiskit import QuantumCircuit, transpile, ClassicalRegister, QuantumRegister
+from qiskit import QuantumCircuit, transpile, ClassicalRegister, QuantumRegister, qpy
 from qiskit import qasm2
 from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
@@ -87,15 +88,17 @@ def stable_genome_hash(genome):
     return int(hashlib.sha256(str(list(genome)).encode()).hexdigest()[:8], 16)
 
 # === MULTI-RUN CONFIGURATION ===
-# 20-seed extension: original 5 first (paper runs), then 15 new fixed seeds
-# (drawn deterministically from random.Random(20260819); distinct from the
-# original five). To run only the 15 new seeds, slice RUN_SEEDS[5:] and set
-# NUMBER_OF_RUNS = 15.
+# RUN_SEEDS holds 20 fixed seeds for future extension: the original five,
+# then 15 new fixed seeds (drawn deterministically from
+# random.Random(20260819); distinct from the original five). The frozen
+# 3-arm paper batch (240 runs = 3 arms x 8 states x 10 seeds) used ONLY
+# RUN_SEEDS[:10] below; the last 10 seeds have not been run. To run only
+# the 15 new seeds, slice RUN_SEEDS[5:] and set NUMBER_OF_RUNS = 15.
 RUN_SEEDS = [
-    21315, 47182, 12147, 33537, 70300,          # original 5 (paper)
-    74135, 67154, 80248, 91197, 29440,          # new fixed 15
-    51418, 98274, 63664, 32849, 59179,
-    20168, 13982, 25033, 31330, 81964,
+    21315, 47182, 12147, 33537, 70300,          # original 5 (earlier GECCO paper)
+    74135, 67154, 80248, 91197, 29440,          # next 5: frozen paper batch (RUN_SEEDS[:10])
+    51418, 98274, 63664, 32849, 59179,          # not run (future extension)
+    20168, 13982, 25033, 31330, 81964,          # not run (future extension)
 ]
 NUMBER_OF_RUNS = len(RUN_SEEDS)
 
@@ -185,6 +188,21 @@ MAX_EXPECTED_DEPTH = 150
 # Selection / output roots (overridden by CLI)
 SELECTION_METHOD = "epsilon_lexicase"
 EXPERIMENTS_ROOT = "experiments"
+
+# Lexi2 per-generation log: {generation: {eps, tiebreak_fires, selections,
+# post_case_pool_sizes}}. Reset per run; written to LOG_DIR at run end.
+lexi2_log = {}
+
+# Symmetric per-selection pool log for the lexicase-family arms (3-objective
+# epsilon_lexicase and 8-case lexi2): for EVERY parent selection of a
+# generation we record the post-case survivor-pool size and the shuffled case
+# order. This makes cross-arm pool-size comparisons computable for any future
+# control arm (historical epsilon_lexicase runs predate this log). Recording
+# the already-shuffled order consumes no extra RNG draws, so runs remain
+# byte-reproducible under the master seed. Written at run end to
+# selection_pool_log_<state>_run<id>.json.
+selection_pool_log = {}
+ALL_STATES = [f"{i:03b}" for i in range(8)]
 
 # Runtime globals populated by setup functions (kept as module globals because
 # the extracted notebook code reads them directly).
@@ -359,7 +377,7 @@ def selLexicaseQuantum(individuals, k):
     return selected_individuals
 
 
-def selEpsilonLexicaseQuantum(individuals, k, epsilon_method="mad"):
+def selEpsilonLexicaseQuantum(individuals, k, epsilon_method="mad", gen=None):
     """
     Epsilon-lexicase selection for quantum circuits.
     
@@ -393,23 +411,129 @@ def selEpsilonLexicaseQuantum(individuals, k, epsilon_method="mad"):
     else:
         epsilons = np.zeros(n_cases)
     
+    _pool_sizes = []
+    _shuffles = []
     for _ in range(k):
         candidates = list(range(len(valid)))
         cases = list(range(n_cases))
         random.shuffle(cases)
-        
+        _shuffles.append(cases)
+
         while len(cases) > 0 and len(candidates) > 1:
             case_idx = cases[0]
             vals = [fitness_matrix[c, case_idx] for c in candidates]
             best_val = max(vals)
             # Keep individuals within epsilon of best (higher is better)
-            candidates = [c for c, v in zip(candidates, vals) 
+            candidates = [c for c, v in zip(candidates, vals)
                          if v >= best_val - epsilons[case_idx]]
             del cases[0]
-        
+
+        _pool_sizes.append(len(candidates))
         selected_individuals.append(valid[random.choice(candidates)])
-    
+
+    if gen is not None and SELECTION_METHOD == "epsilon_lexicase":
+        entry = selection_pool_log.setdefault(int(gen), {
+            "n_cases": int(n_cases),
+            "epsilons": [round(float(e), 6) for e in epsilons],
+            "selections": 0,
+            "post_case_pool_sizes": [],
+            "case_shuffles": [],
+        })
+        entry["selections"] += k
+        entry["post_case_pool_sizes"].extend(_pool_sizes)
+        entry["case_shuffles"].extend(_shuffles)
+
     return selected_individuals
+
+
+def selLexi2Quantum(individuals, k, gen=None):
+    """Lexi2 selection: epsilon-lexicase over the 8 output-state probabilities,
+    with a circuit-size lexicographic tiebreak after the cases are exhausted.
+
+    Cases: one per computational basis state (p(|000>), ..., p(|111>)) measured
+    on the transpiled circuit, higher-is-better. Epsilon is computed per case
+    per call (per generation) using the same MAD machinery as
+    selEpsilonLexicaseQuantum (epsilon = MAD of the case values in the pool).
+
+    Tiebreak (only when >1 survivor after all 8 cases): smallest transpiled
+    2-qubit gate count, then total transpiled gate count, then transpiled
+    depth (individual.lexi2_size, set by the evaluator). If still tied, pick
+    randomly. No scalar coefficient / lambda anywhere.
+
+    When `gen` is not None and the active selection method is 'lexi2', per-call
+    statistics (epsilon vector, tiebreak-fire count, selections, post-case pool
+    sizes) are accumulated in the module-level `lexi2_log[gen]` for Douglas's
+    requested logging.
+    """
+    global lexi2_log
+    valid = [ind for ind in individuals
+             if hasattr(ind, 'fitness_each_sample')
+             and ind.fitness_each_sample is not None
+             and len(ind.fitness_each_sample) == 8]
+    if not valid:
+        return [random.choice(individuals) for _ in range(k)]
+
+    fitness_matrix = np.array([ind.fitness_each_sample for ind in valid], dtype=float)
+
+    # MAD-based epsilon per case (all 8), computed from the current pool.
+    medians = np.median(fitness_matrix, axis=0)
+    mad = np.median(np.abs(fitness_matrix - medians), axis=0)
+    epsilons = mad
+
+    sizes = np.array([getattr(ind, "lexi2_size", (999, 999, 999)) for ind in valid],
+                     dtype=float)
+
+    selected = []
+    fires = 0
+    post_case_pool_sizes = []
+    _pool_sizes_all = []
+    _shuffles = []
+    for _ in range(k):
+        candidates = list(range(len(valid)))
+        cases = list(range(8))
+        random.shuffle(cases)
+        _shuffles.append(cases)
+
+        while len(cases) > 0 and len(candidates) > 1:
+            case_idx = cases[0]
+            vals = fitness_matrix[candidates, case_idx]
+            best_val = float(vals.max())
+            candidates = [c for c, v in zip(candidates, vals)
+                          if v >= best_val - epsilons[case_idx]]
+            del cases[0]
+
+        _pool_sizes_all.append(len(candidates))
+        if len(candidates) > 1:
+            fires += 1
+            post_case_pool_sizes.append(len(candidates))
+            best_size = min(tuple(sizes[c]) for c in candidates)
+            tied = [c for c in candidates if tuple(sizes[c]) == best_size]
+            selected.append(valid[random.choice(tied)])
+        else:
+            selected.append(valid[candidates[0]])
+
+    if gen is not None and SELECTION_METHOD == "lexi2":
+        entry = lexi2_log.setdefault(int(gen), {
+            "eps": [round(float(e), 6) for e in epsilons],
+            "tiebreak_fires": 0,
+            "selections": 0,
+            "post_case_pool_sizes": [],
+        })
+        entry["tiebreak_fires"] += fires
+        entry["selections"] += k
+        entry["post_case_pool_sizes"].extend(post_case_pool_sizes)
+        sym = selection_pool_log.setdefault(int(gen), {
+            "n_cases": 8,
+            "epsilons": [round(float(e), 6) for e in epsilons],
+            "selections": 0,
+            "post_case_pool_sizes": [],
+            "case_shuffles": [],
+        })
+        sym["selections"] += k
+        sym["post_case_pool_sizes"].extend(_pool_sizes_all)
+        sym["case_shuffles"].extend(_shuffles)
+
+    return selected
 
 class TranspilationCache:
     """
@@ -709,7 +833,13 @@ class CircuitEvaluator:
         except Exception as e:
             return None
     
-    def simulate_circuit(self, circuit: QuantumCircuit, marked_state: str, individual_seed: int = None) -> dict:
+    def simulate_circuit(
+        self,
+        circuit: QuantumCircuit,
+        marked_state: str,
+        individual_seed: int = None,
+        return_circuit: bool = False,
+    ) -> dict:
         """Simulate a circuit with optional noise model and transpilation cache."""
         sim_seed = individual_seed if individual_seed is not None else self.seed
         try:
@@ -733,6 +863,11 @@ class CircuitEvaluator:
                 gate_count = circuit.size()
                 depth = circuit.depth()
                 sim_type = "ideal"
+
+            # Transpiled 2Q count on the SAME circuit the fitness loop scores
+            # (used by Lexi2's size tiebreak and the deployment rule).
+            two_qubit_gates = sum(
+                1 for inst in circuit_to_run.data if inst.operation.num_qubits >= 2)
             
             # Simulate with per-individual seed (preserves reproducibility)
             result = simulator.run(circuit_to_run, shots=self.shots, seed_simulator=sim_seed).result()
@@ -749,7 +884,9 @@ class CircuitEvaluator:
                 "error": error,
                 "gate_count": gate_count,
                 "depth": depth,
-                "sim_type": sim_type
+                "two_qubit_gates": two_qubit_gates,
+                "sim_type": sim_type,
+                **({"_scored_isa": circuit_to_run} if return_circuit else {}),
             }
         except Exception as e:
             print(f"[Simulation Error] {e}")
@@ -759,6 +896,7 @@ class CircuitEvaluator:
                 "error": 1.0,
                 "gate_count": 999,
                 "depth": 999,
+                "two_qubit_gates": 999,
                 "sim_type": "error"
             }
     
@@ -788,6 +926,7 @@ def fitness_function_qiskit(
     log_states=True,
     individual_seed=None,
     use_noise=USE_NOISE_MODEL,
+    return_isa=False,
 ):
     """
     Evaluate a quantum circuit phenotype.
@@ -801,8 +940,9 @@ def fitness_function_qiskit(
     """
     if not isinstance(phenotype_str, str):
         if log_states:
-            return (float('inf'), [], {"p_marked": 0.0, "gate_count": 999, "depth": 999})
-        return float('inf')
+            payload = (float('inf'), [], {"p_marked": 0.0, "gate_count": 999, "depth": 999})
+            return (*payload, None) if return_isa else payload
+        return (float('inf'), None) if return_isa else float('inf')
     
     evaluator = CircuitEvaluator(shots=shots, seed=individual_seed, use_noise=use_noise)
     logs = []
@@ -812,10 +952,16 @@ def fitness_function_qiskit(
     qc = evaluator.execute_circuit(modified_code)
     if qc is None:
         if log_states:
-            return (float('inf'), [], {"p_marked": 0.0, "gate_count": 999, "depth": 999})
-        return float('inf')
+            payload = (float('inf'), [], {"p_marked": 0.0, "gate_count": 999, "depth": 999})
+            return (*payload, None) if return_isa else payload
+        return (float('inf'), None) if return_isa else float('inf')
     
-    result = evaluator.simulate_circuit(qc, target_state, individual_seed=individual_seed)
+    result = evaluator.simulate_circuit(
+        qc,
+        target_state,
+        individual_seed=individual_seed,
+        return_circuit=return_isa,
+    )
     
     p_marked = result["p_marked"]
     error = 1 - p_marked
@@ -830,7 +976,14 @@ def fitness_function_qiskit(
     per_case_scores = {
         "p_marked": p_marked,
         "gate_count": gate_count,
-        "depth": depth
+        "depth": depth,
+        "two_qubit_gates": result.get("two_qubit_gates", 0),
+        # Lexi2 cases: measured probability of every 3-bit computational
+        # basis state on the transpiled circuit (higher = better).
+        "probabilities": [
+            round(counts.get(s, 0) / total, 6) for s in ALL_STATES
+        ] if (counts := result.get("counts")) and (total := sum(counts.values())) > 0
+        else [0.0] * 8,
     }
     
     if log_states:
@@ -845,9 +998,10 @@ def fitness_function_qiskit(
             "counts": result["counts"],
             "sim_type": result.get("sim_type", "unknown"),
         })
-        return (fitness_score, logs, per_case_scores)
+        payload = (fitness_score, logs, per_case_scores)
+        return (*payload, result.get("_scored_isa")) if return_isa else payload
     else:
-        return fitness_score
+        return (fitness_score, result.get("_scored_isa")) if return_isa else fitness_score
 
 class EarlyStoppingMonitor:
     def __init__(self, 
@@ -1307,7 +1461,11 @@ def evaluate_with_logging(individual, pts_train=None):
     phenotype_str = evaluator.decode_individual(individual)
     if not phenotype_str:
         # Invalid individual — worst possible scores
-        individual.fitness_each_sample = [0.0, 0.0, 0.0]
+        if SELECTION_METHOD == "lexi2":
+            individual.fitness_each_sample = [0.0] * 8
+            individual.lexi2_size = (999, 999, 999)
+        else:
+            individual.fitness_each_sample = [0.0, 0.0, 0.0]
         return (float('inf'),)
     
     fitness_val, logs, per_case = fitness_function_qiskit(
@@ -1321,16 +1479,26 @@ def evaluate_with_logging(individual, pts_train=None):
         use_noise=USE_NOISE_MODEL,
     )
     
-    # Build per-case fitness vector for lexicase (all higher-is-better)
-    fidelity = per_case["p_marked"]  # [0, 1], higher = better
-    gate_eff = max(0.0, 1.0 - per_case["gate_count"] / MAX_EXPECTED_GATES)  # [0, 1]
-    depth_eff = max(0.0, 1.0 - per_case["depth"] / MAX_EXPECTED_DEPTH)      # [0, 1]
-    
-    individual.fitness_each_sample = [
-        round(fidelity, 6),
-        round(gate_eff, 6),
-        round(depth_eff, 6)
-    ]
+    if SELECTION_METHOD == "lexi2":
+        # Lexi2: 8 cases = measured probabilities of the 8 output states.
+        individual.fitness_each_sample = list(per_case["probabilities"])
+        # Size tiebreak metrics on the scored (transpiled) circuit:
+        # (2Q count, total gates, depth) — smaller is better.
+        individual.lexi2_size = (
+            per_case["two_qubit_gates"],
+            per_case["gate_count"],
+            per_case["depth"],
+        )
+    else:
+        # Build per-case fitness vector for (epsilon-)lexicase (all higher-is-better)
+        fidelity = per_case["p_marked"]  # [0, 1], higher = better
+        gate_eff = max(0.0, 1.0 - per_case["gate_count"] / MAX_EXPECTED_GATES)  # [0, 1]
+        depth_eff = max(0.0, 1.0 - per_case["depth"] / MAX_EXPECTED_DEPTH)      # [0, 1]
+        individual.fitness_each_sample = [
+            round(fidelity, 6),
+            round(gate_eff, 6),
+            round(depth_eff, 6),
+        ]
     
     gen = getattr(individual, "generation", "unknown")
     evaluator.log_evaluation(logs, gen, individual)
@@ -1347,10 +1515,10 @@ def setup_toolbox(num_workers: int, selection_method: str):
     global toolbox, pool, evaluator, eval_counter, SELECTION_METHOD
 
     SELECTION_METHOD = selection_method
-    if selection_method in ("lexi2", "per_prob"):
+    if selection_method == "per_prob":
         raise NotImplementedError(
             f"selection arm {selection_method!r} is not implemented yet; "
-            f"only 'epsilon_lexicase' and 'tournament' are available."
+            f"use 'epsilon_lexicase', 'tournament', or 'lexi2'."
         )
 
     # Create DEAP types
@@ -1380,6 +1548,10 @@ def setup_toolbox(num_workers: int, selection_method: str):
     elif SELECTION_METHOD == "epsilon_lexicase":
         toolbox.register("select", selEpsilonLexicaseQuantum)
         print(f"✓ Selection: Epsilon-Lexicase (MAD-based thresholds)")
+    elif SELECTION_METHOD == "lexi2":
+        toolbox.register("select", selLexi2Quantum)
+        print(f"✓ Selection: Lexi2 (8-case epsilon-lexicase on output-state "
+              f"probabilities + 2Q/gates/depth tiebreak)")
     else:
         toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
         print(f"✓ Selection: Tournament (size {TOURNAMENT_SIZE})")
@@ -1429,6 +1601,8 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
     if selection_method is not None:
         SELECTION_METHOD = selection_method
 
+    lexi2_log.clear()
+    selection_pool_log.clear()
     random.seed(seed)
     np.random.seed(seed)
 
@@ -1464,17 +1638,27 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
                      genome_representation=GENOME_REPRESENTATION)
     toolbox.register("mate", grape.crossover_onepoint)
     toolbox.register("mutate", grape.mutation_int_flip_per_codon)
+    _current_gen = [0]
     if SELECTION_METHOD == "lexicase":
         toolbox.register("select", selLexicaseQuantum)
     elif SELECTION_METHOD == "epsilon_lexicase":
-        toolbox.register("select", selEpsilonLexicaseQuantum)
+        toolbox.register("select", lambda inds, k, _g=_current_gen:
+                         selEpsilonLexicaseQuantum(inds, k, gen=_g[0]))
+    elif SELECTION_METHOD == "lexi2":
+        toolbox.register("select", lambda inds, k, _g=_current_gen:
+                         selLexi2Quantum(inds, k, gen=_g[0]))
     else:
         toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
     toolbox.register("map", pool.map)
     toolbox.register("evaluate", evaluate_with_logging)
 
     # ---- Fresh per-run diagnostics + cache + early stopping ----
-    diagnostics = EvolutionDiagnostics(objective_names=["fidelity", "gate_eff", "depth_eff"])
+    if SELECTION_METHOD == "lexi2":
+        diag_names = ["p000", "p001", "p010", "p011",
+                      "p100", "p101", "p110", "p111"]
+    else:
+        diag_names = ["fidelity", "gate_eff", "depth_eff"]
+    diagnostics = EvolutionDiagnostics(objective_names=diag_names)
     if USE_NOISE_MODEL:
         transpile_cache = TranspilationCache(target=transpile_target(),
                                              optimization_level=3, seed=seed)
@@ -1491,6 +1675,16 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         codon_size=CODON_SIZE, codon_consumption=CODON_CONSUMPTION,
         genome_representation=GENOME_REPRESENTATION)
     hof = tools.HallOfFame(HALLOFFAME_SIZE)
+
+    # Initial-population genome hashes: paired-design evidence that all arms
+    # share a byte-identical gen-0 population for the same (state, seed).
+    with open(os.path.join(run_log_dir, "gen0_genome_hashes.json"), "w") as _f:
+        json.dump({
+            "target_state": target_state,
+            "seed": seed,
+            "selection_method": SELECTION_METHOD,
+            "hashes": [stable_genome_hash(ind.genome) for ind in population],
+        }, _f)
 
     generations_list, best_fitness_list, avg_gate_count_list = [], [], []
     fidelity_history, depth_history = [], []
@@ -1530,6 +1724,7 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
     for gen in range(start_gen, MAX_GENERATIONS):
         diagnostics.start_generation()
         random.seed(seed + gen)
+        _current_gen[0] = gen
 
         population, logbook = algorithms.ge_eaSimpleWithElitism(
             population, toolbox, cxpb=P_CROSSOVER, mutpb=P_MUTATION, ngen=N_GEN,
@@ -1619,6 +1814,51 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         with open(os.path.join(LOG_DIR, f'early_stopping_{target_state}_run{run_id}.json'), 'w') as _f:
             json.dump(es_state, _f, indent=2, default=str)
 
+    # Persist Lexi2 per-generation epsilon + tiebreak logging (Douglas).
+    if SELECTION_METHOD == "lexi2" and lexi2_log:
+        total_fires = sum(v["tiebreak_fires"] for v in lexi2_log.values())
+        total_sel = sum(v["selections"] for v in lexi2_log.values())
+        with open(os.path.join(LOG_DIR, f"lexi2_log_{target_state}_run{run_id}.json"), "w") as _f:
+            json.dump({
+                "target_state": target_state,
+                "seed": seed,
+                "selection_method": "lexi2",
+                "per_generation": {str(g): v for g, v in sorted(lexi2_log.items())},
+                "totals": {
+                    "selections": total_sel,
+                    "tiebreak_fires": total_fires,
+                    "tiebreak_rate": (total_fires / total_sel if total_sel else 0.0),
+                },
+            }, _f, indent=2)
+
+    # Symmetric per-selection pool log (3-objective epsilon-lexicase and
+    # 8-case lexi2): post-case pool size for EVERY selection plus the shuffled
+    # case order, so cross-arm pool comparisons are computable for future runs.
+    if SELECTION_METHOD in ("epsilon_lexicase", "lexi2") and selection_pool_log:
+        total_sel = sum(v["selections"] for v in selection_pool_log.values())
+        total_pool = sum(sum(v["post_case_pool_sizes"])
+                         for v in selection_pool_log.values())
+        total_singleton = sum(
+            sum(1 for s in v["post_case_pool_sizes"] if s == 1)
+            for v in selection_pool_log.values())
+        with open(os.path.join(LOG_DIR,
+                               f"selection_pool_log_{target_state}_run{run_id}.json"),
+                  "w") as _f:
+            json.dump({
+                "target_state": target_state,
+                "seed": seed,
+                "selection_method": SELECTION_METHOD,
+                "note": ("post_case_pool_sizes: survivors after all cases for "
+                         "every selection; case_shuffles: shuffled case order "
+                         "per selection (recorded post-shuffle; no RNG change)"),
+                "per_generation": {str(g): v for g, v in sorted(selection_pool_log.items())},
+                "totals": {
+                    "selections": total_sel,
+                    "singleton_pool_count": total_singleton,
+                    "mean_pool_size": (total_pool / total_sel if total_sel else 0.0),
+                },
+            }, _f, indent=2)
+
     # Final checkpoint for this run
     save_checkpoint(population, stopped_gen, hof, best_fitness_list,
                     avg_gate_count_list, generations_list,
@@ -1631,15 +1871,91 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
     best_phenotype = evaluator.decode_individual(best_ind)
     gh = stable_genome_hash(best_ind.genome)
     iseed = (seed + gh) % (2**32)
-    fv, logs, pc = fitness_function_qiskit(best_phenotype, target_state=target_state, log_states=True,
-                                           individual_seed=iseed, use_noise=USE_NOISE_MODEL)
+    fv, logs, pc, scored_isa = fitness_function_qiskit(
+        best_phenotype,
+        target_state=target_state,
+        log_states=True,
+        individual_seed=iseed,
+        use_noise=USE_NOISE_MODEL,
+        return_isa=True,
+    )
     best_qc = evaluator.execute_circuit(best_phenotype)
 
     # RAW (pre-transpile) metrics — the opt-0 column
     raw_gates = best_qc.size() if best_qc else None
     raw_depth = best_qc.depth() if best_qc else None
     gate_ops = dict(best_qc.count_ops()) if best_qc else {}
-    two_q = gate_ops.get("cz", 0) + gate_ops.get("cx", 0) + gate_ops.get("ecr", 0)
+    raw_two_q = gate_ops.get("cz", 0) + gate_ops.get("cx", 0) + gate_ops.get("ecr", 0)
+    # two_qubit_gates is now the TRANSPILED 2Q count (the metric the deployment
+    # rule and Lexi2 tiebreak use); raw 2Q is preserved separately.
+    two_q = int(pc.get("two_qubit_gates", raw_two_q))
+
+    # Persist the exact ISA circuit that produced the recorded score. Hardware
+    # submission scripts must load this artifact rather than re-transpiling.
+    scored_isa_path = None
+    scored_isa_metadata_path = None
+    if scored_isa is not None:
+        isa_gates = int(scored_isa.size())
+        isa_depth = int(scored_isa.depth())
+        isa_two_q = sum(
+            1 for inst in scored_isa.data if inst.operation.num_qubits >= 2
+        )
+        if (isa_gates, isa_depth, isa_two_q) != (
+            int(pc["gate_count"]), int(pc["depth"]), int(pc["two_qubit_gates"])
+        ):
+            raise RuntimeError(
+                "Scored ISA circuit does not match recorded metrics: "
+                f"ISA={(isa_gates, isa_depth, isa_two_q)}, "
+                f"recorded={(pc['gate_count'], pc['depth'], pc['two_qubit_gates'])}"
+            )
+
+        measurement_layout = [None] * 3
+        for inst in scored_isa.data:
+            if inst.operation.name == "measure":
+                cbit = scored_isa.find_bit(inst.clbits[0]).index
+                measurement_layout[cbit] = int(inst.qubits[0]._index)
+
+        scored_isa_path = os.path.join(
+            LOG_DIR, f"scored_isa_{target_state}_run{run_id}.qpy"
+        )
+        with open(scored_isa_path, "wb") as _f:
+            qpy.dump(scored_isa, _f)
+        with open(scored_isa_path, "rb") as _f:
+            isa_qpy_sha256 = hashlib.sha256(_f.read()).hexdigest()
+
+        operation_counts = {
+            str(name): int(count)
+            for name, count in sorted(scored_isa.count_ops().items())
+        }
+        scored_isa_metadata = {
+            "target_state": target_state,
+            "selection_method": SELECTION_METHOD,
+            "seed": seed,
+            "run_id": run_id,
+            "genome_hash": str(gh),
+            "p_marked": float(pc["p_marked"]),
+            "gate_count": isa_gates,
+            "depth": isa_depth,
+            "two_qubit_gates": isa_two_q,
+            "operation_counts": operation_counts,
+            "measurement_layout": measurement_layout,
+            "active_qubits": sorted({
+                int(q._index)
+                for inst in scored_isa.data
+                if inst.operation.name != "barrier"
+                for q in inst.qubits
+            }),
+            "transpiler_seed": int(
+                transpile_cache.seed if transpile_cache is not None else iseed
+            ),
+            "qpy_sha256": isa_qpy_sha256,
+            "qiskit_version": pkg_version("qiskit"),
+        }
+        scored_isa_metadata_path = os.path.join(
+            LOG_DIR, f"scored_isa_metadata_{target_state}_run{run_id}.json"
+        )
+        with open(scored_isa_metadata_path, "w") as _f:
+            json.dump(scored_isa_metadata, _f, indent=2)
 
     # ---- Always draw + save the FINAL best circuit (raw + transpiled) ----
     # Runs unconditionally after the loop, so an early-stopped run still shows
@@ -1654,8 +1970,9 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         _plt.close(_fig_raw)
         if USE_NOISE_MODEL:
             try:
-                _tf = transpile(best_qc, target=transpile_target(), optimization_level=3,
-                                seed_transpiler=seed)
+                _tf = scored_isa
+                if _tf is None:
+                    raise RuntimeError("no persisted scored ISA circuit")
                 print(f"[FINAL | run {run_id}] Transpiled | {_tf.size()}g/{_tf.depth()}d")
                 _fig_t = _tf.draw("mpl", idle_wires=False)
                 display(_fig_t)
@@ -1686,6 +2003,7 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         "raw_gate_count": raw_gates,             # opt-0
         "raw_depth": raw_depth,                  # opt-0
         "gate_ops": gate_ops, "two_qubit_gates": two_q,
+        "raw_two_qubit_gates": raw_two_q,
         "phenotype": best_phenotype,
         "genome_hash": str(gh),
         "individual": _copy.deepcopy(best_ind),  # for hardware run later
@@ -1698,6 +2016,8 @@ def run_evolution_experiment(run_id, seed, target_state, selection_method=None):
         "stop_reason": stop_reason,
         "diagnostics_records": diagnostics.records,
         "log_dir": LOG_DIR,
+        "scored_isa_path": scored_isa_path,
+        "scored_isa_metadata_path": scored_isa_metadata_path,
     }
     print(f"  DONE: fid={pc['p_marked']:.4f}, transpiled={pc['gate_count']}g/{pc['depth']}d, "
           f"raw={raw_gates}g/{raw_depth}d, 2Q={two_q}")
@@ -1902,10 +2222,12 @@ def select_deployed_run(per_run):
     circuit is selected for deployment):
       1. highest sim fidelity
       2. fewest transpiled two-qubit gates
-      3. lowest transpiled depth
+      3. fewest total transpiled gates
+      4. lowest transpiled depth
     Replaces the old min(raw_fitness) / max(fidelity) picks.
     """
-    return max(per_run, key=lambda r: (r["fidelity"], -r["two_qubit_gates"], -r["depth"]))
+    return max(per_run, key=lambda r: (
+        r["fidelity"], -r["two_qubit_gates"], -r["gate_count"], -r["depth"]))
 
 
 def write_run_result(result: dict) -> str:
@@ -1919,8 +2241,8 @@ def write_run_result(result: dict) -> str:
     subset = {k: result[k] for k in (
         "run_id", "seed", "target_state", "selection_method", "raw_fitness",
         "fitness", "fidelity", "gate_count", "depth", "raw_gate_count",
-        "raw_depth", "gate_ops", "two_qubit_gates", "phenotype", "genome_hash",
-        "early_stopped_gen", "stop_reason",
+        "raw_depth", "gate_ops", "two_qubit_gates", "raw_two_qubit_gates",
+        "phenotype", "genome_hash", "early_stopped_gen", "stop_reason",
     )}
     path = os.path.join(result["log_dir"],
                         f"run_result_{result['target_state']}_run{result['run_id']}.json")
@@ -2003,7 +2325,8 @@ def aggregate_state(outdir: str, state: str, selection: str, population: int,
                                      "raw_depth", "raw_gate_count", "phenotype")}
     deployed["selection_method"] = selection
     deployed["population_size"] = population
-    deployed["rule"] = "max fidelity -> min transpiled 2Q gates -> min transpiled depth"
+    deployed["rule"] = ("max fidelity -> min transpiled 2Q gates -> "
+                        "min total transpiled gates -> min transpiled depth")
     with open(os.path.join(state_dir, "deployed_best.json"), "w") as f:
         json.dump(deployed, f, indent=2)
 
@@ -2026,7 +2349,7 @@ def run_cli(argv) -> int:
     ap.add_argument("--seed", type=int, required=True, help="RNG seed")
     ap.add_argument("--selection", required=True,
                     choices=["epsilon_lexicase", "tournament", "lexi2", "per_prob"],
-                    help="selection arm (lexi2/per_prob are stubs and error)")
+                    help="selection arm (per_prob is a stub and errors)")
     ap.add_argument("--population", type=int, default=None)
     ap.add_argument("--generations", type=int, default=None)
     ap.add_argument("--outdir", default=None,
@@ -2046,11 +2369,10 @@ def run_cli(argv) -> int:
 
     if not re.fullmatch(r"[01]{3}", args.state):
         raise ValueError(f"--state must be a 3-bit binary string, got {args.state!r}")
-    if args.selection in ("lexi2", "per_prob"):
+    if args.selection == "per_prob":
         raise NotImplementedError(
             f"selection arm {args.selection!r} is not implemented yet; "
-            f"only 'epsilon_lexicase' and 'tournament' are available. "
-            f"Refusing to run."
+            f"use 'epsilon_lexicase', 'tournament', or 'lexi2'. Refusing to run."
         )
     run_id = args.run_id or (RUN_SEEDS.index(args.seed) + 1 if args.seed in RUN_SEEDS else 1)
 
