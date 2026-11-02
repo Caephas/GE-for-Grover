@@ -24,9 +24,9 @@
   "raw_depth_std": 7.919034733546199,
   "raw_gate_mean": 38.9,
   "raw_gate_std": 14.670075361466658,
-  "two_qubit_mean": 2.6,
-  "two_qubit_std": 1.019803902718557,
-  "two_qubit_provenance": "legacy recorded value restored; attempted transpiled metadata correction was not reproducible from the stored phenotype with the Task A path",
+  "two_qubit_mean": 3.3,
+  "two_qubit_std": 2.584139659108574,
+  "two_qubit_provenance": "two_qubit_gates corrected from logged 3 (gate_ops.cx) to 10, verified by oracle-injected reconstruction matching logged gates and depth",
   "mean_early_stop_gen": 52.4,
   "per_run": [
     {
@@ -215,7 +215,7 @@
       "gate_count": 68,
       "raw_depth": 15,
       "raw_gate_count": 29,
-      "two_qubit_gates": 3,
+      "two_qubit_gates": 10,
       "raw_fitness": 1.6111,
       "early_stopped_gen": 99,
       "stop_reason": "completed_all_generations",

@@ -1,17 +1,16 @@
 # Changelog
 
-## 2026-11-02 — Revert non-reproducible 91197 2Q metadata correction
+## 2026-11-02 — Verify 91197 2Q metadata correction
 
-The earlier change to tournament `|111⟩`, seed 91197 set
-`two_qubit_gates` to 10, but the stored phenotype reproducibly returns a
-24-gate, depth-13, 3-2Q circuit under the Task A path. The corrected value was
-therefore reverted to the legacy recorded value of 3 in the source
-`run_result`, `AGGREGATE_111.json`, both per-run CSVs, and the
-non-convergence report.
+The tournament `|111⟩`, seed 91197 circuit was reconstructed three times in
+fresh processes after applying the corrected Task A oracle-injection path.
+All three runs produced a 68-gate, depth-45 circuit with 10 CZ gates
+(`sx=28`, `rz=27`, `measure=3`). The source `run_result`,
+`AGGREGATE_111.json`, both per-run CSVs, and the non-convergence report
+therefore retain `two_qubit_gates = 10`.
 
-Provenance: `legacy recorded value restored; attempted transpiled metadata
-correction was not reproducible from the stored phenotype with the Task A
-path`.
+Provenance: `two_qubit_gates corrected from logged 3 (gate_ops.cx) to 10,
+verified by oracle-injected reconstruction matching logged gates and depth`.
 
 ## 2026-09-04 — Symmetric post-case pool logging for both lexicase-family selectors
 

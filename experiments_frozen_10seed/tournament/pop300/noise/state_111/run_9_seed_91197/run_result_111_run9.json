@@ -22,11 +22,11 @@
     "ry": 1,
     "rx": 1
   },
-  "two_qubit_gates": 3,
+  "two_qubit_gates": 10,
   "phenotype": "qr = QuantumRegister(3, name='q')\ncr = ClassicalRegister(3, name='cr')\nqc = QuantumCircuit(qr, cr)\nqc.h(0)\nqc.h(1)\nqc.h(2)\n## Begin Oracle\nqc.rzx( 3*np.pi/2 , 2,1 )\n## End Oracle\n## Begin Diffuser\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(2)\nqc.cx(0,2)\nqc.cx(1,2)\nqc.h(2)\nqc.x(0)\nqc.x(1)\nqc.x(2)\nqc.h(0)\nqc.h(1)\nqc.h(2)\nqc.cx( 1,2 )\nqc.cz( 0,2 )\nqc.rzz( 3*np.pi/2 , 0,2 )\nqc.u( np.pi/4 , 0 , 1.5708 , 2 )\nqc.ry( np.pi/4 , 1 )\nqc.rx( 1.3 , 0 )\n## End Diffuser\nqc.measure(0, 0)\nqc.measure(1, 1)\nqc.measure(2, 2)\n",
   "genome_hash": "4237107497",
   "early_stopped_gen": 99,
   "stop_reason": "completed_all_generations",
   "raw_two_qubit_gates": 4,
-  "two_qubit_provenance": "legacy recorded value restored; attempted transpiled metadata correction was not reproducible from the stored phenotype with the Task A path"
+  "two_qubit_provenance": "two_qubit_gates corrected from logged 3 (gate_ops.cx) to 10, verified by oracle-injected reconstruction matching logged gates and depth"
 }
