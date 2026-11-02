@@ -10,8 +10,10 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import os
 import pickle
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import matplotlib
@@ -19,6 +21,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister, transpile
 from qiskit_aer import AerSimulator
 from scipy import stats
 
@@ -46,6 +49,8 @@ SEEDS = [
 ]
 LEX = "lexi2"
 CTRL = "lexi8_random"
+EPSILON = "epsilon_lexicase"
+TOURNAMENT = "tournament"
 ARM_ROOTS = {
     LEX: ROOT / "experiments_frozen_10seed_lexi2" / "lexi2" / "pop300" / "noise",
     CTRL: (
@@ -55,7 +60,23 @@ ARM_ROOTS = {
         / "pop300"
         / "noise"
     ),
+    EPSILON: (
+        ROOT
+        / "experiments_frozen_10seed"
+        / EPSILON
+        / "pop300"
+        / "noise"
+    ),
+    TOURNAMENT: (
+        ROOT
+        / "experiments_frozen_10seed"
+        / TOURNAMENT
+        / "pop300"
+        / "noise"
+    ),
 }
+ALL_METHODS = [EPSILON, TOURNAMENT, LEX, CTRL]
+PAIR_METHODS = [LEX, CTRL]
 NOISE_BUNDLE = ROOT / "noise" / "frozen_env_ibm_fez_2026-08-20.pkl"
 BOOT_SEED = 20260827
 BOOT_N = 10_000
@@ -216,7 +237,9 @@ def paired_fidelity_summary(
         "mcnemar_neither": int(neither),
         "mcnemar_exact_p": exact_mcnemar(int(only_lex), int(only_ctrl)),
         "lex_median_fidelity": float(np.median(lex_values)),
+        "lex_mean_fidelity": float(np.mean(lex_values)),
         "control_median_fidelity": float(np.median(ctrl_values)),
+        "control_mean_fidelity": float(np.mean(ctrl_values)),
         "median_paired_diff_control_minus_lexi2": float(np.median(diff)),
         "mean_paired_diff_control_minus_lexi2": float(np.mean(diff)),
         "pairs_control_higher": int(np.sum(diff > 0)),
@@ -245,27 +268,181 @@ def qsummary(values: list[float]) -> dict:
         "median": float(q2),
         "q1": float(q1),
         "q3": float(q3),
+        "min": float(np.min(arr)),
+        "max": float(np.max(arr)),
         "sd": float(np.std(arr, ddof=1)) if arr.size > 1 else 0.0,
     }
 
 
-def exact_target_probability(
-    simulator: AerSimulator, circuit, measurement_layout: list[int], target: str
+_EXACT_SIMULATOR: AerSimulator | None = None
+_READOUT_MATRICES: dict[int, np.ndarray] | None = None
+_FROZEN_TARGET = None
+
+
+def _init_exact_worker(noise_bundle_path: str) -> None:
+    global _EXACT_SIMULATOR, _READOUT_MATRICES, _FROZEN_TARGET
+    with open(noise_bundle_path, "rb") as handle:
+        bundle = pickle.load(handle)
+    _EXACT_SIMULATOR = AerSimulator(
+        method="density_matrix", noise_model=bundle["noise_model"]
+    )
+    _EXACT_SIMULATOR.set_options(max_parallel_threads=1)
+    _FROZEN_TARGET = bundle["target"]
+    readouts = {}
+    for error in bundle["noise_model"].to_dict()["errors"]:
+        if (
+            error.get("type") == "roerror"
+            and error.get("operations") == ["measure"]
+            and len(error.get("gate_qubits", [()])[0]) == 1
+        ):
+            qubit = int(error["gate_qubits"][0][0])
+            readouts[qubit] = np.asarray(error["probabilities"], dtype=float)
+    if len(readouts) != 156:
+        raise RuntimeError(
+            f"expected 156 single-qubit readout matrices, found {len(readouts)}"
+        )
+    _READOUT_MATRICES = readouts
+
+
+def _exact_target_probability_with_readout(
+    simulator: AerSimulator,
+    circuit,
+    measurement_layout: list[int],
+    readout_matrices: dict[int, np.ndarray],
+    target: str,
 ) -> float:
+    """Exact noisy probabilities followed by the frozen readout confusion."""
     unmeasured = circuit.remove_final_measurements(inplace=False)
     unmeasured.save_probabilities(
         qubits=[int(q) for q in measurement_layout], label="probs"
     )
     result = simulator.run(unmeasured, shots=None).result()
     probabilities = np.asarray(result.data()["probs"], dtype=float)
-    total = 0.0
     width = len(measurement_layout)
-    for index, probability in enumerate(probabilities):
-        # Qiskit probabilities are little-endian: first saved qubit is rightmost.
-        bits = f"{index:0{width}b}"[::-1]
-        if bits == target:
-            total += float(probability)
-    return float(total)
+    target_probability = 0.0
+    for input_index, probability in enumerate(probabilities):
+        input_bits = f"{input_index:0{width}b}"[::-1]
+        for output_index in range(2**width):
+            output_bits = f"{output_index:0{width}b}"[::-1]
+            if output_bits != target:
+                continue
+            confusion = 1.0
+            for qubit, input_bit, output_bit in zip(
+                measurement_layout, input_bits, output_bits
+            ):
+                confusion *= readout_matrices[int(qubit)][
+                    int(input_bit), int(output_bit)
+                ]
+            target_probability += float(probability) * confusion
+    return float(target_probability)
+
+
+def _exact_rescore_one(job: dict) -> dict:
+    if (
+        _EXACT_SIMULATOR is None
+        or _READOUT_MATRICES is None
+        or _FROZEN_TARGET is None
+    ):
+        raise RuntimeError("exact worker was not initialized")
+
+    local_vars = {}
+    exec(
+        job["phenotype"],
+        {
+            "np": np,
+            "QuantumCircuit": QuantumCircuit,
+            "QuantumRegister": QuantumRegister,
+            "ClassicalRegister": ClassicalRegister,
+        },
+        local_vars,
+    )
+    circuit = local_vars.get("qc")
+    if circuit is None:
+        raise ValueError("phenotype did not define qc")
+    expected_metrics = (
+        int(job["recorded_gates"]),
+        int(job["recorded_depth"]),
+        int(job["recorded_two_qubit_gates"]),
+    )
+    transpiler_seed = int(job["seed"])
+    transpiled = transpile(
+        circuit,
+        target=_FROZEN_TARGET,
+        optimization_level=3,
+        seed_transpiler=transpiler_seed,
+    )
+    reconstructed_metrics = (
+        int(transpiled.size()),
+        int(transpiled.depth()),
+        sum(
+            1
+            for instruction in transpiled.data
+            if instruction.operation.num_qubits >= 2
+        ),
+    )
+    measurement_layout = [None] * 3
+    for instruction in transpiled.data:
+        if instruction.operation.name == "measure":
+            cbit = transpiled.find_bit(instruction.clbits[0]).index
+            measurement_layout[cbit] = int(instruction.qubits[0]._index)
+    if any(qubit is None for qubit in measurement_layout):
+        raise ValueError("transpiled circuit does not have a three-bit measurement layout")
+    metrics_match = reconstructed_metrics == expected_metrics
+    exact_fidelity = (
+        _exact_target_probability_with_readout(
+            _EXACT_SIMULATOR,
+            transpiled,
+            measurement_layout,
+            _READOUT_MATRICES,
+            job["state"],
+        )
+        if metrics_match
+        else None
+    )
+    return {
+        "method": job["method"],
+        "state": job["state"],
+        "seed": job["seed"],
+        "exact_fidelity": exact_fidelity,
+        "metrics_match": metrics_match,
+        "recorded_metrics": expected_metrics,
+        "reconstructed_metrics": reconstructed_metrics,
+        "reconstructed_gates": int(transpiled.size()),
+        "reconstructed_depth": int(transpiled.depth()),
+        "reconstructed_two_qubit_gates": sum(
+            1
+            for instruction in transpiled.data
+            if instruction.operation.num_qubits >= 2
+        ),
+        "measurement_layout": measurement_layout,
+        "transpiler_seed": transpiler_seed,
+    }
+
+
+def _exact_rescore_control_qpy_one(job: dict) -> dict:
+    if (
+        _EXACT_SIMULATOR is None
+        or _READOUT_MATRICES is None
+        or _FROZEN_TARGET is None
+    ):
+        raise RuntimeError("exact worker was not initialized")
+    circuit, metadata, _qpy_path, _metadata_path = load_scored_isa(
+        job["run_dir"], job["state"], job["run_id"]
+    )
+    exact_fidelity = _exact_target_probability_with_readout(
+        _EXACT_SIMULATOR,
+        circuit,
+        metadata["measurement_layout"],
+        _READOUT_MATRICES,
+        job["state"],
+    )
+    return {
+        "method": CTRL,
+        "state": job["state"],
+        "seed": job["seed"],
+        "exact_fidelity": exact_fidelity,
+        "measurement_layout": metadata["measurement_layout"],
+    }
 
 
 def load_analysis_data() -> tuple[dict, dict]:
@@ -279,6 +456,17 @@ def load_analysis_data() -> tuple[dict, dict]:
                 results[(method, state, seed)] = payload
                 loaded[(method, state, seed)] = path
     return results, loaded
+
+
+def load_all_analysis_data() -> dict:
+    results = {}
+    for method in ALL_METHODS:
+        for state in STATES:
+            for seed in SEEDS:
+                results[(method, state, seed)] = read_json(
+                    result_path(method, state, seed)
+                )
+    return results
 
 
 def integrity_check(results: dict) -> dict:
@@ -430,49 +618,57 @@ def size_rows(results: dict) -> list[dict]:
 
 
 def mechanism_tables(results: dict) -> tuple[list[dict], list[dict], list[dict]]:
-    fidelity_values = {LEX: {}, CTRL: {}}
+    fidelity_values = {method: {} for method in ALL_METHODS}
     pool_values = {LEX: {}, CTRL: {}}
     control_highest = {}
 
-    for method in (LEX, CTRL):
+    for method in ALL_METHODS:
         for state in STATES:
             for seed in SEEDS:
                 with diagnostics_path(method, state, seed).open(newline="") as handle:
                     for row in csv.DictReader(handle):
                         generation = int(row["generation"])
+                        max_fidelity_column = (
+                            f"p{state}_max"
+                            if method in PAIR_METHODS
+                            else "fidelity_max"
+                        )
                         fidelity_values[method].setdefault(generation, []).append(
-                            float(row[f"p{state}_max"])
+                            float(row[max_fidelity_column])
                         )
 
-                payload = read_json(log_path(method, state, seed))
-                for generation_text, record in payload["per_generation"].items():
-                    generation = int(generation_text)
-                    pool_values[method].setdefault(generation, []).extend(
-                        int(value)
-                        for value in record.get("post_case_pool_sizes", [])
-                    )
-                    if method == CTRL:
-                        highest = record.get("highest_fidelity_individual")
-                        if highest is not None:
-                            control_highest.setdefault(generation, []).append(
-                                {
-                                    **highest,
-                                    "any_individual_meets_all_targets": bool(
-                                        record.get(
-                                            "any_individual_meets_all_targets", False
-                                        )
-                                    ),
-                                }
-                            )
+                if method in PAIR_METHODS:
+                    payload = read_json(log_path(method, state, seed))
+                    for generation_text, record in payload["per_generation"].items():
+                        generation = int(generation_text)
+                        pool_values[method].setdefault(generation, []).extend(
+                            int(value)
+                            for value in record.get("post_case_pool_sizes", [])
+                        )
+                        if method == CTRL:
+                            highest = record.get("highest_fidelity_individual")
+                            if highest is not None:
+                                control_highest.setdefault(generation, []).append(
+                                    {
+                                        **highest,
+                                        "any_individual_meets_all_targets": bool(
+                                            record.get(
+                                                "any_individual_meets_all_targets",
+                                                False,
+                                            )
+                                        ),
+                                    }
+                                )
 
     fidelity_rows = []
     pool_rows = []
-    for method in (LEX, CTRL):
+    for method in ALL_METHODS:
         for generation in sorted(fidelity_values[method]):
             summary = qsummary(fidelity_values[method][generation])
             fidelity_rows.append(
                 {"method": method, "generation": generation, **summary}
             )
+    for method in PAIR_METHODS:
         for generation in sorted(pool_values[method]):
             summary = qsummary(pool_values[method][generation])
             pool_rows.append({"method": method, "generation": generation, **summary})
@@ -498,23 +694,242 @@ def mechanism_tables(results: dict) -> tuple[list[dict], list[dict], list[dict]]
     return fidelity_rows, pool_rows, highest_rows
 
 
+def exact_conditional_paired_ci(
+    only_lex: int, only_control: int, n_pairs: int, confidence: float = 0.95
+) -> tuple[float, float]:
+    """Exact conditional CI for a paired risk difference.
+
+    Conditional on the discordant pairs, the number favouring Lexi2 is
+    binomial. A Clopper-Pearson interval for that within-discordance
+    probability is mapped back to p(Lexi2) - p(control).
+    """
+    discordant = only_lex + only_control
+    if discordant == 0:
+        return 0.0, 0.0
+    alpha = 1.0 - confidence
+    pi_lower = (
+        0.0
+        if only_lex == 0
+        else float(stats.beta.ppf(alpha / 2.0, only_lex, only_control + 1))
+    )
+    pi_upper = (
+        1.0
+        if only_control == 0
+        else float(
+            stats.beta.ppf(
+                1.0 - alpha / 2.0, only_lex + 1, only_control
+            )
+        )
+    )
+    scale = discordant / n_pairs
+    return scale * (2.0 * pi_lower - 1.0), scale * (2.0 * pi_upper - 1.0)
+
+
+def paired_exact_summary(
+    lex_values: np.ndarray,
+    control_values: np.ndarray,
+    lex_meta: list[dict],
+    control_meta: list[dict],
+) -> dict:
+    diff = control_values - lex_values
+    nonzero = diff[diff != 0]
+    wilcoxon = stats.wilcoxon(nonzero, alternative="two-sided")
+    both = sum(
+        task_success(lex_item, "exact_fidelity")
+        and task_success(control_item, "exact_fidelity")
+        for lex_item, control_item in zip(lex_meta, control_meta)
+    )
+    only_lex = sum(
+        task_success(lex_item, "exact_fidelity")
+        and not task_success(control_item, "exact_fidelity")
+        for lex_item, control_item in zip(lex_meta, control_meta)
+    )
+    only_control = sum(
+        not task_success(lex_item, "exact_fidelity")
+        and task_success(control_item, "exact_fidelity")
+        for lex_item, control_item in zip(lex_meta, control_meta)
+    )
+    neither = len(lex_meta) - both - only_lex - only_control
+    return {
+        "n_pairs": len(lex_meta),
+        "lex_task_success": int(both + only_lex),
+        "control_task_success": int(both + only_control),
+        "mcnemar_both_succeed": int(both),
+        "mcnemar_only_lexi2": int(only_lex),
+        "mcnemar_only_control": int(only_control),
+        "mcnemar_neither": int(neither),
+        "mcnemar_exact_p": exact_mcnemar(int(only_lex), int(only_control)),
+        "lex_median_fidelity": float(np.median(lex_values)),
+        "lex_mean_fidelity": float(np.mean(lex_values)),
+        "control_median_fidelity": float(np.median(control_values)),
+        "control_mean_fidelity": float(np.mean(control_values)),
+        "median_paired_diff_control_minus_lexi2": float(np.median(diff)),
+        "mean_paired_diff_control_minus_lexi2": float(np.mean(diff)),
+        "pairs_control_higher": int(np.sum(diff > 0)),
+        "pairs_lexi2_higher": int(np.sum(diff < 0)),
+        "pairs_tied": int(np.sum(diff == 0)),
+        "wilcoxon_statistic": float(wilcoxon.statistic),
+        "wilcoxon_p": float(wilcoxon.pvalue),
+        "wilcoxon_n_nonzero": int(nonzero.size),
+        "cliffs_delta_control_vs_lexi2": float(
+            cliffs_delta(control_values, lex_values)
+        ),
+    }
+
+
+def four_arm_descriptives(
+    results: dict,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    overall_rows = []
+    per_state_rows = []
+    failure_rows = []
+    for method in ALL_METHODS:
+        runs = [
+            results[(method, state, seed)]
+            for state in STATES
+            for seed in SEEDS
+        ]
+        successes = sum(task_success(result) for result in runs)
+        overall_rows.append(
+            {
+                "method": method,
+                "task_successes": int(successes),
+                "n_runs": len(runs),
+                "task_success_proportion": successes / len(runs),
+            }
+        )
+        categories = {
+            "early stop": 0,
+            "late success": 0,
+            "fidelity fail": 0,
+            "size fail": 0,
+        }
+        for result in runs:
+            categories[stop_family(result)] += 1
+        failure_rows.append(
+            {
+                "method": method,
+                **categories,
+                "total": len(runs),
+            }
+        )
+        for state in STATES:
+            state_runs = [
+                results[(method, state, seed)] for seed in SEEDS
+            ]
+            per_state_rows.append(
+                {
+                    "method": method,
+                    "state": state,
+                    "task_successes": sum(
+                        task_success(result) for result in state_runs
+                    ),
+                    "n_runs": len(state_runs),
+                }
+            )
+    return overall_rows, per_state_rows, failure_rows
+
+
+def mechanism_selected_generations(
+    fidelity_rows: list[dict],
+    pool_rows: list[dict],
+    generations: tuple[int, ...] = (5, 10, 20, 50),
+) -> list[dict]:
+    rows = []
+    for method in ALL_METHODS:
+        for generation in generations:
+            fidelity = next(
+                (
+                    row
+                    for row in fidelity_rows
+                    if row["method"] == method
+                    and row["generation"] == generation
+                ),
+                None,
+            )
+            pool = next(
+                (
+                    row
+                    for row in pool_rows
+                    if row["method"] == method
+                    and row["generation"] == generation
+                ),
+                None,
+            )
+            rows.append(
+                {
+                    "method": method,
+                    "generation": generation,
+                    "population_max_fidelity_mean": (
+                        fidelity["mean"] if fidelity else ""
+                    ),
+                    "population_max_fidelity_n_runs": (
+                        fidelity["n"] if fidelity else 0
+                    ),
+                    "post_case_pool_size_mean": (
+                        pool["mean"] if pool else ""
+                    ),
+                    "post_case_pool_size_n_selections": (
+                        pool["n"] if pool else 0
+                    ),
+                    "post_case_pool_status": (
+                        "available" if pool else "not logged in v0.1 artifact"
+                    ),
+                }
+            )
+    return rows
+
+
 def exact_rescoring(results: dict) -> dict:
-    with NOISE_BUNDLE.open("rb") as handle:
-        bundle = pickle.load(handle)
-    simulator = AerSimulator(method="density_matrix", noise_model=bundle["noise_model"])
-    exact = {}
+    jobs = []
+    for method in PAIR_METHODS:
+        for state in STATES:
+            for seed in SEEDS:
+                result = results[(method, state, seed)]
+                jobs.append(
+                    {
+                        "method": method,
+                        "state": state,
+                        "seed": seed,
+                        "phenotype": result["phenotype"],
+                        "genome_hash": result["genome_hash"],
+                        "recorded_gates": result["gate_count"],
+                        "recorded_depth": result["depth"],
+                        "recorded_two_qubit_gates": result[
+                            "two_qubit_gates"
+                        ],
+                    }
+                )
+    workers = min(4, os.cpu_count() or 1)
+    qpy_jobs = []
     for state in STATES:
         for run_id, seed in enumerate(SEEDS, 1):
-            circuit, metadata, _qpy, _meta = load_scored_isa(
-                str(run_dir(CTRL, state, seed)), state, run_id
+            qpy_jobs.append(
+                {
+                    "state": state,
+                    "seed": seed,
+                    "run_id": run_id,
+                    "run_dir": str(run_dir(CTRL, state, seed)),
+                }
             )
-            exact[(state, seed)] = exact_target_probability(
-                simulator,
-                circuit,
-                metadata["measurement_layout"],
-                state,
-            )
-    return exact
+    with ProcessPoolExecutor(
+        max_workers=workers,
+        initializer=_init_exact_worker,
+        initargs=(str(NOISE_BUNDLE),),
+    ) as executor:
+        records = list(executor.map(_exact_rescore_one, jobs, chunksize=1))
+        qpy_records = list(
+            executor.map(_exact_rescore_control_qpy_one, qpy_jobs, chunksize=1)
+        )
+    common = {
+        (record["method"], record["state"], record["seed"]): record
+        for record in records
+    }
+    control_qpy = {
+        (record["state"], record["seed"]): record
+        for record in qpy_records
+    }
+    return common, control_qpy
 
 
 def plot_mechanism(fidelity_rows: list[dict], pool_rows: list[dict]) -> Path:
@@ -591,9 +1006,34 @@ def build_report(
     fidelity_rows: list[dict],
     pool_rows: list[dict],
     highest_rows: list[dict],
-    exact_deltas: dict,
+    sampled_minus_exact: dict,
     paired_rows: list[dict],
+    four_arm_overall: list[dict],
+    four_arm_by_state: list[dict],
+    four_arm_failure: list[dict],
+    mechanism_summary: list[dict],
+    paired_success_delta: float,
+    paired_success_ci: tuple[float, float],
+    exact_path_rows: list[dict],
 ) -> None:
+    metrics_match_total = sum(
+        bool(row["metrics_match"]) for row in exact_path_rows
+    )
+    lexi2_metrics_matches = sum(
+        bool(row["metrics_match"])
+        for row in exact_path_rows
+        if row["method"] == LEX
+    )
+    control_metrics_matches = sum(
+        bool(row["metrics_match"])
+        for row in exact_path_rows
+        if row["method"] == CTRL
+    )
+    qpy_layout_matches = sum(
+        row["qpy_layout_matches_reconstruction"] is True
+        for row in exact_path_rows
+        if row["method"] == CTRL
+    )
     lines = [
         "# lexi8_random control-arm analysis",
         "",
@@ -617,6 +1057,79 @@ def build_report(
         "",
         "The worker check is structural: `infra/run_sweep.py` hardcodes "
         "`--workers 1` in the sole child-process spawn path.",
+        "",
+        "## 0.5 Exact-fidelity reconciliation",
+        "",
+        "The control-only exact values previously reported here are superseded. "
+        "That path loaded the stored control ISA QPY, removed measurements, and "
+        "saved probabilities before readout; Lexi2 was left at its sampled value. "
+        "The two arms therefore did not share a scoring path, and only the control "
+        "benefited from removal of readout error. Its sampled-minus-exact mean "
+        "was -0.012204, compared with approximately +0.0015 for the earlier "
+        "readout-inclusive Lexi2 Task A check.",
+        "",
+        "The common exact calculation is now: obtain the scored circuit, run "
+        "`AerSimulator(method=\"density_matrix\")` on the fixed noise model, "
+        "save pre-readout probabilities, then apply the frozen per-qubit readout "
+        "confusion matrices. No shot sampling is used. For the phenotype-based "
+        "comparison, both arms are reconstructed with the run seed and fixed "
+        "target; a run is eligible only when the reconstructed gate, depth, and "
+        "2Q counts equal the stored metrics. All 80 controls are additionally "
+        "scored from their persisted QPY circuits.",
+        "",
+        *markdown_table(
+            ["Method", "n", "Sampled minus exact: mean", "Median", "Min", "Max"],
+            [
+                [
+                    method,
+                    sampled_minus_exact[method]["n"],
+                    f"{sampled_minus_exact[method]['mean']:+.6f}",
+                    f"{sampled_minus_exact[method]['median']:+.6f}",
+                    f"{sampled_minus_exact[method]['min']:+.6f}",
+                    f"{sampled_minus_exact[method]['max']:+.6f}",
+                ]
+                for method in PAIR_METHODS
+            ],
+        ),
+        "",
+        "In this table the control summary uses all 80 stored QPY circuits; the "
+        "Lexi2 summary uses the 68 phenotype reconstructions that reproduce the "
+        "stored transpiled metrics. The paired comparison below uses the same "
+        "68 phenotype-reconstructed pairs in both arms.",
+        "",
+        f"The unified Lexi2 sample-minus-exact mean is "
+        f"{sampled_minus_exact[LEX]['mean']:+.6f}, comparable to the earlier "
+        "Task A mean of approximately +0.0015.",
+        "",
+        "Unified exact-value paired comparison:",
+        "",
+        *markdown_table(
+            ["Quantity", "Unified exact result"],
+            [
+                ["lexi8_random higher / Lexi2 higher / ties", f"{exact_summary['pairs_control_higher']} / {exact_summary['pairs_lexi2_higher']} / {exact_summary['pairs_tied']}"],
+                ["Median paired difference (control - Lexi2)", f"{exact_summary['median_paired_diff_control_minus_lexi2']:+.6f}"],
+                ["Wilcoxon W / p / non-zero n", f"{exact_summary['wilcoxon_statistic']:.1f} / {exact_summary['wilcoxon_p']:.6f} / {exact_summary['wilcoxon_n_nonzero']}"],
+                ["Cliff's delta (control vs Lexi2)", f"{exact_summary['cliffs_delta_control_vs_lexi2']:+.6f}"],
+            ],
+        ),
+        "",
+        "The earlier 64/16 control advantage was not a finding about the methods. "
+        "It was produced by omitting readout error for only the control arm. "
+        "Applying readout confusion to both arms removes that systematic advantage.",
+        f"The shared phenotype reconstruction matches the stored transpiled "
+        f"metrics for {lexi2_metrics_matches}/80 Lexi2 runs and "
+        f"{control_metrics_matches}/80 control runs, giving "
+        f"{exact_summary['n_pairs']} complete pairs. The remaining pairs contain "
+        "at least one endpoint whose transpiled circuit cannot be reconstructed "
+        "from the saved phenotype with the current Qiskit pass manager; the older "
+        "Lexi2 runs have no QPY. They are excluded from the paired exact "
+        "comparison rather than silently substituting a different transpilation.",
+        "",
+        "The reconstructed gate/depth/2Q metrics matched the stored logged metrics "
+        f"in {metrics_match_total}/160 "
+        "runs. For the control's stored QPY, measurement layout matched the "
+        f"common-path reconstruction in {qpy_layout_matches}/80 "
+        "runs. Full per-run provenance is in `exact_fidelity_unified.csv`.",
         "",
         "## 1. Pre-registered analysis",
         "",
@@ -785,16 +1298,19 @@ def build_report(
             "",
             "### 1.4 Robustness: exact density-matrix rescoring",
             "",
-            f"All 80 control champions were re-scored with the fixed noise model "
-            f"using `AerSimulator(method=\"density_matrix\")`, without shot sampling. "
-            "Lexi2 values remain the stored v0.1 final fidelities.",
+            "All 80 lexi8_random endpoints were re-scored from stored QPY. "
+            f"The paired exact comparison uses the {exact_summary['n_pairs']} "
+            "(state, seed) pairs for "
+            "which both phenotype reconstructions reproduce the stored transpiled "
+            "metrics and therefore share the same reconstruction path. Exact task "
+            "success uses exact fidelity with the stored transpiled size metrics.",
             "",
             *markdown_table(
-                ["Quantity", "Stored controls", "Exact controls"],
+                ["Quantity", "Lexi2 sampled", "Lexi2 exact", "Control sampled", "Control exact"],
                 [
-                    ["Task success", stored_summary["control_task_success"], exact_summary["control_task_success"]],
-                    ["Median final fidelity", f"{stored_summary['control_median_fidelity']:.6f}", f"{exact_summary['control_median_fidelity']:.6f}"],
-                    ["Mean final fidelity", f"{stored_summary['control_mean_fidelity']:.6f}", f"{exact_summary['control_mean_fidelity']:.6f}"],
+                    ["Task success on comparable set", "see stored 80-run result", f"{exact_summary['lex_task_success']}/{exact_summary['n_pairs']}", "see stored 80-run result", f"{exact_summary['control_task_success']}/{exact_summary['n_pairs']}"],
+                    ["Median final fidelity", f"{stored_summary['lex_median_fidelity']:.6f}", f"{exact_summary['lex_median_fidelity']:.6f}", f"{stored_summary['control_median_fidelity']:.6f}", f"{exact_summary['control_median_fidelity']:.6f}"],
+                    ["Mean final fidelity", f"{stored_summary['lex_mean_fidelity']:.6f}", f"{exact_summary['lex_mean_fidelity']:.6f}", f"{stored_summary['control_mean_fidelity']:.6f}", f"{exact_summary['control_mean_fidelity']:.6f}"],
                 ],
             ),
             "",
@@ -809,13 +1325,11 @@ def build_report(
                     ["Median paired difference", f"{exact_summary['median_paired_diff_control_minus_lexi2']:+.6f}"],
                     ["Wilcoxon W / p / non-zero n", f"{exact_summary['wilcoxon_statistic']:.1f} / {exact_summary['wilcoxon_p']:.6f} / {exact_summary['wilcoxon_n_nonzero']}"],
                     ["Cliff's delta (control vs Lexi2)", f"{exact_summary['cliffs_delta_control_vs_lexi2']:+.6f}"],
-                    ["State-cluster bootstrap 95% CI", f"[{exact_summary['cliffs_delta_ci95_state_cluster'][0]:+.6f}, {exact_summary['cliffs_delta_ci95_state_cluster'][1]:+.6f}]"],
                 ],
             ),
             "",
-            f"Exact minus stored control fidelity: mean "
-            f"{exact_deltas['mean']:+.6f}, median {exact_deltas['median']:+.6f}, "
-            f"minimum {exact_deltas['min']:+.6f}, maximum {exact_deltas['max']:+.6f}.",
+            "The paired exact comparison is not the primary task-success test; "
+            "the primary analysis remains based on the stored sampled endpoint.",
             "",
             "## 2. Descriptive tables",
             "",
@@ -910,18 +1424,112 @@ def build_report(
             "The complete per-generation descriptive table is in "
             "`control_highest_fidelity_individual_by_generation.csv`.",
             "",
-            "## EXPLORATORY",
+            "## EXPLORATORY (post hoc; not pre-registered)",
             "",
-            "No analyses outside the pre-registered plan were added.",
+            "### E1. Paired task-success difference",
+            "",
+            f"Lexi2 minus lexi8_random task-success difference: "
+            f"**{paired_success_delta:+.6f}** (5/80, or 6.25 percentage points). "
+            f"Exact conditional 95% CI: "
+            f"**[{paired_success_ci[0]:+.6f}, {paired_success_ci[1]:+.6f}]**. "
+            "The interval conditions on the 17 Lexi2-only and 12 control-only "
+            "discordant pairs and applies a Clopper-Pearson interval to their "
+            "win probability.",
+            "",
+            "### E2. Four-method task success and failure composition",
+            "",
+            *markdown_table(
+                ["Method", "Task successes", "n", "Proportion"],
+                [
+                    [
+                        row["method"],
+                        row["task_successes"],
+                        row["n_runs"],
+                        f"{row['task_success_proportion']:.3f}",
+                    ]
+                    for row in four_arm_overall
+                ],
+            ),
+            "",
+            *(
+                lambda per_state: markdown_table(
+                    ["State", *ALL_METHODS],
+                    [
+                        [
+                            state,
+                            *[
+                                next(
+                                    row["task_successes"]
+                                    for row in four_arm_by_state
+                                    if row["method"] == method
+                                    and row["state"] == state
+                                )
+                                for method in ALL_METHODS
+                            ],
+                        ]
+                        for state in STATES
+                    ],
+                )
+            )(four_arm_by_state),
+            "",
+            *markdown_table(
+                ["Method", "Early stop", "Late success", "Fidelity fail", "Size fail", "Total"],
+                [
+                    [
+                        row["method"],
+                        row["early stop"],
+                        row["late success"],
+                        row["fidelity fail"],
+                        row["size fail"],
+                        row["total"],
+                    ]
+                    for row in four_arm_failure
+                ],
+            ),
+            "",
+            "### E3. Mechanism summary at selected generations",
+            "",
+            *markdown_table(
+                ["Method", "Gen", "Max-fid mean", "Runs", "Pool mean", "Selections"],
+                [
+                    [
+                        row["method"],
+                        row["generation"],
+                        (
+                            f"{row['population_max_fidelity_mean']:.6f}"
+                            if row["population_max_fidelity_mean"] != ""
+                            else "NA"
+                        ),
+                        row["population_max_fidelity_n_runs"],
+                        (
+                            f"{row['post_case_pool_size_mean']:.6f}"
+                            if row["post_case_pool_size_mean"] != ""
+                            else "NA"
+                        ),
+                        row["post_case_pool_size_n_selections"],
+                    ]
+                    for row in mechanism_summary
+                ],
+            ),
+            "",
+            "Population maximum fidelity is available for all four methods. "
+            "Post-case pool size is available only for Lexi2 and lexi8_random; "
+            "the v0.1 epsilon-lexicase and tournament artifacts did not log those "
+            "pools, so no values are reconstructed or invented here.",
             "",
             "## Outputs",
             "",
             "- `integrity_check.json`",
             "- `control_arm_results.json`",
             "- `run_level_paired.csv`",
+            "- `exact_fidelity_unified.csv`",
             "- `per_state_task_success.csv`",
             "- `control_failure_composition.csv`",
             "- `run_level_median_sizes.csv`",
+            "- `four_arm_task_success.csv`",
+            "- `four_arm_task_success_by_state.csv`",
+            "- `four_arm_failure_composition.csv`",
+            "- `mechanism_selected_generations.csv`",
             "- `mechanism_population_max_fidelity_by_generation.csv`",
             "- `mechanism_post_case_pool_size_by_generation.csv`",
             "- `control_highest_fidelity_individual_by_generation.csv`",
@@ -961,37 +1569,88 @@ def main() -> None:
         fidelity_key="fidelity",
     )
 
-    exact = exact_rescoring(results)
-    exact_ctrl_fid = np.asarray(
-        [exact[(state, seed)] for state in STATES for seed in SEEDS],
+    common_exact, control_qpy_exact = exact_rescoring(results)
+    exact_pair_coordinates = [
+        (state, seed)
+        for state in STATES
+        for seed in SEEDS
+        if common_exact[(LEX, state, seed)]["metrics_match"]
+        and common_exact[(CTRL, state, seed)]["metrics_match"]
+    ]
+    exact_lex_values = np.asarray(
+        [
+            common_exact[(LEX, state, seed)]["exact_fidelity"]
+            for state, seed in exact_pair_coordinates
+        ],
         dtype=float,
     )
-    exact_ctrl_meta = []
-    for result, exact_value in zip(ctrl_meta, exact_ctrl_fid):
-        exact_ctrl_meta.append({**result, "exact_fidelity": exact_value})
-    exact_lex_meta = [
-        {**result, "exact_fidelity": result["fidelity"]}
-        for result in lex_meta
-    ]
-    exact_summary = paired_fidelity_summary(
-        lex_fid,
-        exact_ctrl_fid,
-        lex_meta=exact_lex_meta,
-        ctrl_meta=exact_ctrl_meta,
-        fidelity_key="exact_fidelity",
+    exact_ctrl_values = np.asarray(
+        [
+            common_exact[(CTRL, state, seed)]["exact_fidelity"]
+            for state, seed in exact_pair_coordinates
+        ],
+        dtype=float,
     )
-    exact_summary["control_mean_fidelity"] = float(np.mean(exact_ctrl_fid))
+    exact_lex_meta = [
+        {
+            **results[(LEX, state, seed)],
+            "exact_fidelity": common_exact[(LEX, state, seed)][
+                "exact_fidelity"
+            ],
+        }
+        for state, seed in exact_pair_coordinates
+    ]
+    exact_ctrl_meta = [
+        {
+            **results[(CTRL, state, seed)],
+            "exact_fidelity": common_exact[(CTRL, state, seed)][
+                "exact_fidelity"
+            ],
+        }
+        for state, seed in exact_pair_coordinates
+    ]
+    exact_summary = paired_exact_summary(
+        exact_lex_values,
+        exact_ctrl_values,
+        exact_lex_meta,
+        exact_ctrl_meta,
+    )
 
     success_rows, failure_rows = per_state_rows(results)
     median_rows = size_rows(results)
     fidelity_rows, pool_rows, highest_rows = mechanism_tables(results)
-    exact_deltas_array = exact_ctrl_fid - ctrl_fid
-    exact_deltas = {
-        "mean": float(np.mean(exact_deltas_array)),
-        "median": float(np.median(exact_deltas_array)),
-        "min": float(np.min(exact_deltas_array)),
-        "max": float(np.max(exact_deltas_array)),
+    sampled_minus_exact = {
+        LEX: qsummary(
+            [
+                results[(LEX, state, seed)]["fidelity"]
+                - common_exact[(LEX, state, seed)]["exact_fidelity"]
+                for state, seed in exact_pair_coordinates
+            ]
+        ),
+        CTRL: qsummary(
+            [
+                results[(CTRL, state, seed)]["fidelity"]
+                - control_qpy_exact[(state, seed)]["exact_fidelity"]
+                for state in STATES
+                for seed in SEEDS
+            ]
+        ),
     }
+
+    all_results = load_all_analysis_data()
+    four_arm_overall, four_arm_by_state, four_arm_failure = four_arm_descriptives(
+        all_results
+    )
+    mechanism_summary = mechanism_selected_generations(fidelity_rows, pool_rows)
+    paired_success_delta = (
+        stored_summary["lex_task_success"]
+        - stored_summary["control_task_success"]
+    ) / 80.0
+    paired_success_ci = exact_conditional_paired_ci(
+        stored_summary["mcnemar_only_lexi2"],
+        stored_summary["mcnemar_only_control"],
+        80,
+    )
 
     paired_rows = []
     for index, (state, seed) in enumerate(
@@ -1021,21 +1680,150 @@ def main() -> None:
                     ctrl_result.get("early_stopped_gen") or 100
                 ),
                 "control_stop_family": stop_family(ctrl_result),
-                "control_exact_fidelity": exact[(state, seed)],
-                "exact_fidelity_change": exact[(state, seed)]
-                - ctrl_result["fidelity"],
+                "lexi2_phenotype_exact_fidelity": common_exact[
+                    (LEX, state, seed)
+                ]["exact_fidelity"],
+                "control_phenotype_exact_fidelity": common_exact[
+                    (CTRL, state, seed)
+                ]["exact_fidelity"],
+                "control_qpy_exact_fidelity": control_qpy_exact[
+                    (state, seed)
+                ]["exact_fidelity"],
+                "common_path_pair_eligible": (
+                    common_exact[(LEX, state, seed)]["metrics_match"]
+                    and common_exact[(CTRL, state, seed)]["metrics_match"]
+                ),
+                "lexi2_sampled_minus_phenotype_exact": (
+                    lex_result["fidelity"]
+                    - common_exact[(LEX, state, seed)]["exact_fidelity"]
+                    if common_exact[(LEX, state, seed)]["metrics_match"]
+                    else None
+                ),
+                "control_sampled_minus_phenotype_exact": (
+                    ctrl_result["fidelity"]
+                    - common_exact[(CTRL, state, seed)]["exact_fidelity"]
+                    if common_exact[(CTRL, state, seed)]["metrics_match"]
+                    else None
+                ),
+                "control_sampled_minus_qpy_exact": (
+                    ctrl_result["fidelity"]
+                    - control_qpy_exact[(state, seed)]["exact_fidelity"]
+                ),
+                "lexi2_exact_task_success": (
+                    bool(
+                        common_exact[(LEX, state, seed)]["exact_fidelity"]
+                        >= FID_TARGET
+                        and int(lex_result["gate_count"]) <= GATE_TARGET
+                        and int(lex_result["depth"]) <= DEPTH_TARGET
+                    )
+                    if common_exact[(LEX, state, seed)]["metrics_match"]
+                    else None
+                ),
                 "control_exact_task_success": bool(
-                    exact[(state, seed)] >= FID_TARGET
+                    control_qpy_exact[(state, seed)]["exact_fidelity"]
+                    >= FID_TARGET
                     and int(ctrl_result["gate_count"]) <= GATE_TARGET
                     and int(ctrl_result["depth"]) <= DEPTH_TARGET
                 ),
+                "lexi2_reconstructed_gates": common_exact[(LEX, state, seed)][
+                    "reconstructed_gates"
+                ],
+                "control_reconstructed_gates": common_exact[(CTRL, state, seed)][
+                    "reconstructed_gates"
+                ],
+                "lexi2_reconstructed_depth": common_exact[(LEX, state, seed)][
+                    "reconstructed_depth"
+                ],
+                "control_reconstructed_depth": common_exact[(CTRL, state, seed)][
+                    "reconstructed_depth"
+                ],
             }
         )
+
+    exact_path_rows = []
+    for method in PAIR_METHODS:
+        for state in STATES:
+            for run_id, seed in enumerate(SEEDS, 1):
+                result = results[(method, state, seed)]
+                record = common_exact[(method, state, seed)]
+                qpy_gates = ""
+                qpy_depth = ""
+                qpy_two_qubit_gates = ""
+                qpy_measurement_layout = ""
+                qpy_layout_matches_reconstruction = ""
+                qpy_exact_fidelity = ""
+                if method == CTRL:
+                    _circuit, metadata, _qpy, _meta = load_scored_isa(
+                        str(run_dir(method, state, seed)), state, run_id
+                    )
+                    qpy_exact_fidelity = control_qpy_exact[(state, seed)][
+                        "exact_fidelity"
+                    ]
+                    qpy_gates = metadata["gate_count"]
+                    qpy_depth = metadata["depth"]
+                    qpy_two_qubit_gates = metadata["two_qubit_gates"]
+                    qpy_measurement_layout = json.dumps(
+                        metadata["measurement_layout"]
+                    )
+                    qpy_layout_matches_reconstruction = (
+                        metadata["measurement_layout"]
+                        == record["measurement_layout"]
+                    )
+                exact_path_rows.append(
+                    {
+                        "method": method,
+                        "state": state,
+                        "seed": seed,
+                        "sampled_fidelity": result["fidelity"],
+                        "exact_fidelity": record["exact_fidelity"],
+                        "sampled_minus_exact": (
+                            result["fidelity"] - record["exact_fidelity"]
+                            if record["exact_fidelity"] is not None
+                            else ""
+                        ),
+                        "metrics_match": record["metrics_match"],
+                        "recorded_metrics": list(record["recorded_metrics"]),
+                        "reconstructed_metrics": list(
+                            record["reconstructed_metrics"]
+                        ),
+                        "control_qpy_exact_fidelity": qpy_exact_fidelity,
+                        "control_sampled_minus_qpy_exact": (
+                            result["fidelity"] - qpy_exact_fidelity
+                            if qpy_exact_fidelity != ""
+                            else ""
+                        ),
+                        "recorded_gates": result["gate_count"],
+                        "reconstructed_gates": record["reconstructed_gates"],
+                        "recorded_depth": result["depth"],
+                        "reconstructed_depth": record["reconstructed_depth"],
+                        "recorded_two_qubit_gates": result[
+                            "two_qubit_gates"
+                        ],
+                        "reconstructed_two_qubit_gates": record[
+                            "reconstructed_two_qubit_gates"
+                        ],
+                        "qpy_gates_for_control_comparison": qpy_gates,
+                        "qpy_depth_for_control_comparison": qpy_depth,
+                        "qpy_two_qubit_gates_for_control_comparison": (
+                            qpy_two_qubit_gates
+                        ),
+                        "qpy_measurement_layout": qpy_measurement_layout,
+                        "qpy_layout_matches_reconstruction": (
+                            qpy_layout_matches_reconstruction
+                        ),
+                        "transpiler_seed": record["transpiler_seed"],
+                    }
+                )
 
     write_csv(
         OUT / "run_level_paired.csv",
         list(paired_rows[0]),
         paired_rows,
+    )
+    write_csv(
+        OUT / "exact_fidelity_unified.csv",
+        list(exact_path_rows[0]),
+        exact_path_rows,
     )
     write_csv(
         OUT / "per_state_task_success.csv",
@@ -1067,6 +1855,26 @@ def main() -> None:
         list(highest_rows[0]),
         highest_rows,
     )
+    write_csv(
+        OUT / "four_arm_task_success.csv",
+        list(four_arm_overall[0]),
+        four_arm_overall,
+    )
+    write_csv(
+        OUT / "four_arm_task_success_by_state.csv",
+        list(four_arm_by_state[0]),
+        four_arm_by_state,
+    )
+    write_csv(
+        OUT / "four_arm_failure_composition.csv",
+        list(four_arm_failure[0]),
+        four_arm_failure,
+    )
+    write_csv(
+        OUT / "mechanism_selected_generations.csv",
+        list(mechanism_summary[0]),
+        mechanism_summary,
+    )
 
     boot_draws = state_cluster_bootstrap(
         ctrl_fid,
@@ -1090,7 +1898,19 @@ def main() -> None:
         "integrity": integrity,
         "stored_fidelity_analysis": stored_summary,
         "exact_density_matrix_analysis": exact_summary,
-        "exact_minus_stored_control_fidelity_distribution": exact_deltas,
+        "sampled_minus_exact_fidelity_distribution": sampled_minus_exact,
+        "exploratory_paired_task_success": {
+            "difference_lexi2_minus_control": paired_success_delta,
+            "exact_conditional_95_ci": list(paired_success_ci),
+            "method": (
+                "Clopper-Pearson exact conditional interval for paired risk "
+                "difference"
+            ),
+        },
+        "exploratory_four_arm_task_success": four_arm_overall,
+        "exploratory_four_arm_task_success_by_state": four_arm_by_state,
+        "exploratory_four_arm_failure_composition": four_arm_failure,
+        "exploratory_mechanism_selected_generations": mechanism_summary,
         "per_state_task_success": success_rows,
         "control_failure_composition": failure_rows,
         "run_level_median_sizes": median_rows,
@@ -1110,8 +1930,15 @@ def main() -> None:
         fidelity_rows,
         pool_rows,
         highest_rows,
-        exact_deltas,
+        sampled_minus_exact,
         paired_rows,
+        four_arm_overall,
+        four_arm_by_state,
+        four_arm_failure,
+        mechanism_summary,
+        paired_success_delta,
+        paired_success_ci,
+        exact_path_rows,
     )
     print(json.dumps(combined, indent=2, sort_keys=True))
 

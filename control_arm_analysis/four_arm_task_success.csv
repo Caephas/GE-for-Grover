@@ -1,0 +1,5 @@
+method,task_successes,n_runs,task_success_proportion
+epsilon_lexicase,79,80,0.9875
+tournament,75,80,0.9375
+lexi2,57,80,0.7125
+lexi8_random,52,80,0.65

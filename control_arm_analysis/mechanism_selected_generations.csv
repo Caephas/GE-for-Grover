@@ -1,0 +1,17 @@
+method,generation,population_max_fidelity_mean,population_max_fidelity_n_runs,post_case_pool_size_mean,post_case_pool_size_n_selections,post_case_pool_status
+epsilon_lexicase,5,0.6921575,80,,0,not logged in v0.1 artifact
+epsilon_lexicase,10,0.8012225000000001,80,,0,not logged in v0.1 artifact
+epsilon_lexicase,20,0.8495921568627451,51,,0,not logged in v0.1 artifact
+epsilon_lexicase,50,0.8455142857142858,7,,0,not logged in v0.1 artifact
+tournament,5,0.5548274999999999,80,,0,not logged in v0.1 artifact
+tournament,10,0.72520375,80,,0,not logged in v0.1 artifact
+tournament,20,0.7881579999999999,50,,0,not logged in v0.1 artifact
+tournament,50,0.8494333333333334,15,,0,not logged in v0.1 artifact
+lexi2,5,0.77135625,80,8.126309845014745,15937,available
+lexi2,10,0.86179875,80,8.946653219385318,18839,available
+lexi2,20,0.9113986666666669,75,9.401759824017597,20002,available
+lexi2,50,0.9120864864864867,37,8.875681030212977,10095,available
+lexi8_random,5,0.78627625,80,7.290737928940176,16465,available
+lexi8_random,10,0.86743375,80,7.987863951247461,19199,available
+lexi8_random,20,0.9205846153846156,78,9.177706448789028,20562,available
+lexi8_random,50,0.944314,50,9.38482424598224,13627,available

@@ -15,6 +15,35 @@ Pre-registered analysis of the completed 80-run control sweep. All results below
 
 The worker check is structural: `infra/run_sweep.py` hardcodes `--workers 1` in the sole child-process spawn path.
 
+## 0.5 Exact-fidelity reconciliation
+
+The control-only exact values previously reported here are superseded. That path loaded the stored control ISA QPY, removed measurements, and saved probabilities before readout; Lexi2 was left at its sampled value. The two arms therefore did not share a scoring path, and only the control benefited from removal of readout error. Its sampled-minus-exact mean was -0.012204, compared with approximately +0.0015 for the earlier readout-inclusive Lexi2 Task A check.
+
+The common exact calculation is now: obtain the scored circuit, run `AerSimulator(method="density_matrix")` on the fixed noise model, save pre-readout probabilities, then apply the frozen per-qubit readout confusion matrices. No shot sampling is used. For the phenotype-based comparison, both arms are reconstructed with the run seed and fixed target; a run is eligible only when the reconstructed gate, depth, and 2Q counts equal the stored metrics. All 80 controls are additionally scored from their persisted QPY circuits.
+
+| Method | n | Sampled minus exact: mean | Median | Min | Max |
+|---|---|---|---|---|---|
+| lexi2 | 68 | +0.001573 | +0.001706 | -0.007504 | +0.004601 |
+| lexi8_random | 80 | +0.001480 | +0.002153 | -0.012401 | +0.005390 |
+
+In this table the control summary uses all 80 stored QPY circuits; the Lexi2 summary uses the 68 phenotype reconstructions that reproduce the stored transpiled metrics. The paired comparison below uses the same 68 phenotype-reconstructed pairs in both arms.
+
+The unified Lexi2 sample-minus-exact mean is +0.001573, comparable to the earlier Task A mean of approximately +0.0015.
+
+Unified exact-value paired comparison:
+
+| Quantity | Unified exact result |
+|---|---|
+| lexi8_random higher / Lexi2 higher / ties | 28 / 40 / 0 |
+| Median paired difference (control - Lexi2) | -0.000458 |
+| Wilcoxon W / p / non-zero n | 943.0 / 0.159908 / 68 |
+| Cliff's delta (control vs Lexi2) | -0.075476 |
+
+The earlier 64/16 control advantage was not a finding about the methods. It was produced by omitting readout error for only the control arm. Applying readout confusion to both arms removes that systematic advantage.
+The shared phenotype reconstruction matches the stored transpiled metrics for 72/80 Lexi2 runs and 74/80 control runs, giving 68 complete pairs. The remaining pairs contain at least one endpoint whose transpiled circuit cannot be reconstructed from the saved phenotype with the current Qiskit pass manager; the older Lexi2 runs have no QPY. They are excluded from the paired exact comparison rather than silently substituting a different transpilation.
+
+The reconstructed gate/depth/2Q metrics matched the stored logged metrics in 146/160 runs. For the control's stored QPY, measurement layout matched the common-path reconstruction in 75/80 runs. Full per-run provenance is in `exact_fidelity_unified.csv`.
+
 ## 1. Pre-registered analysis
 
 ### 1.1 Primary: task success and exact McNemar
@@ -76,27 +105,26 @@ The full per-generation distributions are in the two mechanism CSV files. The ve
 
 ### 1.4 Robustness: exact density-matrix rescoring
 
-All 80 control champions were re-scored with the fixed noise model using `AerSimulator(method="density_matrix")`, without shot sampling. Lexi2 values remain the stored v0.1 final fidelities.
+All 80 lexi8_random endpoints were re-scored from stored QPY. The paired exact comparison uses the 68 (state, seed) pairs for which both phenotype reconstructions reproduce the stored transpiled metrics and therefore share the same reconstruction path. Exact task success uses exact fidelity with the stored transpiled size metrics.
 
-| Quantity | Stored controls | Exact controls |
-|---|---|---|
-| Task success | 52 | 52 |
-| Median final fidelity | 0.977200 | 0.990847 |
-| Mean final fidelity | 0.914354 | 0.926557 |
+| Quantity | Lexi2 sampled | Lexi2 exact | Control sampled | Control exact |
+|---|---|---|---|---|
+| Task success on comparable set | see stored 80-run result | 55/68 | see stored 80-run result | 48/68 |
+| Median final fidelity | 0.977150 | 0.976290 | 0.977200 | 0.975842 |
+| Mean final fidelity | 0.906595 | 0.949772 | 0.914354 | 0.939094 |
 
 Exact-value paired comparison:
 
 | Quantity | Exact-value result |
 |---|---|
-| McNemar cells (both / only Lexi2 / only control / neither) | 40 / 17 / 12 / 11 |
-| Exact McNemar p | 0.458258 |
-| Control higher / Lexi2 higher / ties | 64 / 16 / 0 |
-| Median paired difference | +0.012125 |
-| Wilcoxon W / p / non-zero n | 683.0 / 0.000007 / 80 |
-| Cliff's delta (control vs Lexi2) | +0.638437 |
-| State-cluster bootstrap 95% CI | [+0.469055, +0.802813] |
+| McNemar cells (both / only Lexi2 / only control / neither) | 40 / 15 / 8 / 5 |
+| Exact McNemar p | 0.210040 |
+| Control higher / Lexi2 higher / ties | 28 / 40 / 0 |
+| Median paired difference | -0.000458 |
+| Wilcoxon W / p / non-zero n | 943.0 / 0.159908 / 68 |
+| Cliff's delta (control vs Lexi2) | -0.075476 |
 
-Exact minus stored control fidelity: mean +0.012204, median +0.012475, minimum -0.001121, maximum +0.018946.
+The paired exact comparison is not the primary task-success test; the primary analysis remains based on the stored sampled endpoint.
 
 ## 2. Descriptive tables
 
@@ -162,18 +190,75 @@ These fields are descriptive for lexi8_random only and are not used for between-
 
 The complete per-generation descriptive table is in `control_highest_fidelity_individual_by_generation.csv`.
 
-## EXPLORATORY
+## EXPLORATORY (post hoc; not pre-registered)
 
-No analyses outside the pre-registered plan were added.
+### E1. Paired task-success difference
+
+Lexi2 minus lexi8_random task-success difference: **+0.062500** (5/80, or 6.25 percentage points). Exact conditional 95% CI: **[-0.080212, +0.191951]**. The interval conditions on the 17 Lexi2-only and 12 control-only discordant pairs and applies a Clopper-Pearson interval to their win probability.
+
+### E2. Four-method task success and failure composition
+
+| Method | Task successes | n | Proportion |
+|---|---|---|---|
+| epsilon_lexicase | 79 | 80 | 0.988 |
+| tournament | 75 | 80 | 0.938 |
+| lexi2 | 57 | 80 | 0.713 |
+| lexi8_random | 52 | 80 | 0.650 |
+
+| State | epsilon_lexicase | tournament | lexi2 | lexi8_random |
+|---|---|---|---|---|
+| 000 | 10 | 10 | 8 | 4 |
+| 001 | 10 | 10 | 8 | 6 |
+| 010 | 10 | 9 | 9 | 8 |
+| 011 | 10 | 8 | 5 | 8 |
+| 100 | 10 | 10 | 8 | 8 |
+| 101 | 10 | 10 | 6 | 9 |
+| 110 | 9 | 10 | 8 | 5 |
+| 111 | 10 | 8 | 5 | 4 |
+
+| Method | Early stop | Late success | Fidelity fail | Size fail | Total |
+|---|---|---|---|---|---|
+| epsilon_lexicase | 79 | 0 | 1 | 0 | 80 |
+| tournament | 75 | 0 | 1 | 4 | 80 |
+| lexi2 | 55 | 2 | 14 | 9 | 80 |
+| lexi8_random | 51 | 1 | 12 | 16 | 80 |
+
+### E3. Mechanism summary at selected generations
+
+| Method | Gen | Max-fid mean | Runs | Pool mean | Selections |
+|---|---|---|---|---|---|
+| epsilon_lexicase | 5 | 0.692157 | 80 | NA | 0 |
+| epsilon_lexicase | 10 | 0.801223 | 80 | NA | 0 |
+| epsilon_lexicase | 20 | 0.849592 | 51 | NA | 0 |
+| epsilon_lexicase | 50 | 0.845514 | 7 | NA | 0 |
+| tournament | 5 | 0.554827 | 80 | NA | 0 |
+| tournament | 10 | 0.725204 | 80 | NA | 0 |
+| tournament | 20 | 0.788158 | 50 | NA | 0 |
+| tournament | 50 | 0.849433 | 15 | NA | 0 |
+| lexi2 | 5 | 0.771356 | 80 | 8.126310 | 15937 |
+| lexi2 | 10 | 0.861799 | 80 | 8.946653 | 18839 |
+| lexi2 | 20 | 0.911399 | 75 | 9.401760 | 20002 |
+| lexi2 | 50 | 0.912086 | 37 | 8.875681 | 10095 |
+| lexi8_random | 5 | 0.786276 | 80 | 7.290738 | 16465 |
+| lexi8_random | 10 | 0.867434 | 80 | 7.987864 | 19199 |
+| lexi8_random | 20 | 0.920585 | 78 | 9.177706 | 20562 |
+| lexi8_random | 50 | 0.944314 | 50 | 9.384824 | 13627 |
+
+Population maximum fidelity is available for all four methods. Post-case pool size is available only for Lexi2 and lexi8_random; the v0.1 epsilon-lexicase and tournament artifacts did not log those pools, so no values are reconstructed or invented here.
 
 ## Outputs
 
 - `integrity_check.json`
 - `control_arm_results.json`
 - `run_level_paired.csv`
+- `exact_fidelity_unified.csv`
 - `per_state_task_success.csv`
 - `control_failure_composition.csv`
 - `run_level_median_sizes.csv`
+- `four_arm_task_success.csv`
+- `four_arm_task_success_by_state.csv`
+- `four_arm_failure_composition.csv`
+- `mechanism_selected_generations.csv`
 - `mechanism_population_max_fidelity_by_generation.csv`
 - `mechanism_post_case_pool_size_by_generation.csv`
 - `control_highest_fidelity_individual_by_generation.csv`

@@ -1,0 +1,5 @@
+method,early stop,late success,fidelity fail,size fail,total
+epsilon_lexicase,79,0,1,0,80
+tournament,75,0,1,4,80
+lexi2,55,2,14,9,80
+lexi8_random,51,1,12,16,80
