@@ -41,17 +41,17 @@ No single state is significant at α = 0.05 after a per-state two-sided binomial
 
 **Aggregate sign test** on the 78 non-tied pairs (52 wins vs 26): assumes pairs independent (the pseudo-replication caveat it is intended to check).
 
-**Sensitivity to the single most extreme pair** (tournament |111⟩ seed 91197, difference +0.2091): excluding it, wins 51/26/2, median +0.0018, Wilcoxon p = 0.0270 (n = 77), per-pair permutation p = 0.2572.
+**Sensitivity to the single most extreme pair** (tournament |111⟩ seed 91197, difference +0.2091): excluding it, wins 51/26/2, median +0.0018, Wilcoxon p = 0.0270 (n = 77), per-pair permutation p = 0.2575.
 
 | Check | Statistic | p | Verdict (α = 0.05) |
 |---|---|---|---|
-| State-block permutation (exact, 256 assignments) | Σᵢ meanᵢ(diff) = +0.0335 | 0.0547 | borderline (just above threshold) |
+| State-block permutation (exact, 256 assignments) | Σᵢ meanᵢ(diff) = +0.0335 | 0.0625 | borderline (just above threshold) |
 | Per-pair sign-flip permutation (mean) | Σ diff = +0.3349 | 0.1268 | not significant |
 | Aggregate sign test (independent-pairs assumption) | 52 vs 26 | 0.0043 | significant |
 | Wilcoxon, excluding the extreme pair | W = 1066.0, n = 77 | 0.0270 | significant |
 | Per-state binomial (worst case) | 8/10 wins (|001⟩, |111⟩) | 0.1094 | not significant |
 
-**Result:** the paired advantage is robust in rank- and sign-based terms (Wilcoxon p = 0.018, and p = 0.027 excluding the extreme pair; 52/26/2 win split, aggregate sign-test p = 0.0043), but it is small and state-dependent: no state is individually significant at n = 10, and the conservative state-block permutation is borderline (p = 0.0547) while the mean-based per-pair permutation is not significant (p = 0.1268). The headline should be phrased as a small, concentrated advantage rather than a uniform effect over 80 independent pairs.
+**Result:** the paired advantage is robust in rank- and sign-based terms (Wilcoxon p = 0.018, and p = 0.027 excluding the extreme pair; 52/26/2 win split, aggregate sign-test p = 0.0043), but it is small and state-dependent: no state is individually significant at n = 10, and the conservative state-block permutation is borderline (p = 0.0625) while the mean-based per-pair permutation is not significant (p = 0.1268). The headline should be phrased as a small, concentrated advantage rather than a uniform effect over 80 independent pairs.
 
 ## 2. Supporting effect-size evidence
 
@@ -124,14 +124,14 @@ The rule-(b) pick (seed 29440) has **no hardware result on disk** (only the depl
 | Metric | ε-lex median | Tour median | Wilcoxon p (paired) |
 |---|---|---|---|
 | Transpiled depth | 5 | 6 | 0.1879 |
-| Transpiled 2Q gates | 2 | 2 | 0.1245 |
+| Transpiled 2Q gates | 2 | 2 | 0.0849 |
 
 | Substantially larger tournament circuit | Count (/80) |
 |---|---|
 | tournament depth > ε-lexicase | 39 |
 | tournament depth ≥ 2× ε-lexicase | **14** |
-| tournament 2Q > ε-lexicase | 34 |
-| tournament 2Q ≥ ε-lexicase + 2 | **21** |
+| tournament 2Q > ε-lexicase | 35 |
+| tournament 2Q ≥ ε-lexicase + 2 | **22** |
 
 **Deployed best-of-10 per state (λ-free rule):**
 
@@ -146,7 +146,7 @@ The rule-(b) pick (seed 29440) has **no hardware result on disk** (only the depl
 | $\ket{110}$ | 2/0 | 6/2 |
 | $\ket{111}$ | 10/3 | 5/2 |
 
-Tournament's deployed circuit is ≥2× the ε-lexicase depth for |011⟩ (15 vs 4) and |110⟩ (6 vs 2); no deployed tournament circuit exceeds ε-lexicase 2Q by ≥2. At run level, tournament produces a ≥2×-depth circuit in 14/80 pairs and a 2Q ≥ +2 circuit in 17/80.
+Tournament's deployed circuit is ≥2× the ε-lexicase depth for |011⟩ (15 vs 4) and |110⟩ (6 vs 2); no deployed tournament circuit exceeds ε-lexicase 2Q by ≥2. At run level, tournament produces a ≥2×-depth circuit in 14/80 pairs and a 2Q ≥ +2 circuit in 22/80.
 
 ## 6. The 6 non-converged runs
 
@@ -176,4 +176,4 @@ Provenance note: `two_qubit_gates corrected from logged 3 (gate_ops.cx) to 10, v
 - **Brown-Forsythe**: Levene with medians, robust to non-normality; independent samples.
 - **SD-ratio bootstrap CI**: 10,000 independent resamples of each arm, percentile 2.5–97.5.
 - All bootstrap/permutation draws use seed 20260827.
-- Reproducibility check: 52/26/2, Wilcoxon ≈0.018, MWU ≈0.012, Cliff's δ ≈ +0.23 (CI excludes 0), SDs 0.0096/0.0264 (ratio ≈2.75), per-state SD flags 010/011/111, depth ≥2× in 14/80, 2Q ≥+2 in 17/80, and the 5-vs-1 non-converged classification all reproduced exactly. **Flagged as not reproducing an implicit expectation:** the formal variance tests are NOT significant (Brown-Forsythe p = 0.455; SD-ratio CI includes 1), and the conservative state-block permutation is borderline (p = 0.0547) rather than clearly significant.
+- Reproducibility check: 52/26/2, Wilcoxon ≈0.018, MWU ≈0.012, Cliff's δ ≈ +0.23 (CI excludes 0), SDs 0.0096/0.0264 (ratio ≈2.75), per-state SD flags 010/011/111, depth ≥2× in 14/80, 2Q ≥+2 in 22/80, and the 5-vs-1 non-converged classification all reproduced exactly. **Flagged as not reproducing an implicit expectation:** the formal variance tests are NOT significant (Brown-Forsythe p = 0.455; SD-ratio CI includes 1), and the conservative state-block permutation is borderline (p = 0.0625) rather than clearly significant.
