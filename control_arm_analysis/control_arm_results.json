@@ -1,0 +1,241 @@
+{
+  "analysis_plan_sha256": "8357c97ff0831ab8f44a19f56b5fc532791b463ed17029764722ad4f9c2ad25c",
+  "control_failure_composition": [
+    {
+      "early stop": 4,
+      "fidelity fail": 3,
+      "late success": 0,
+      "size fail": 3,
+      "state": "000",
+      "total": 10
+    },
+    {
+      "early stop": 6,
+      "fidelity fail": 2,
+      "late success": 0,
+      "size fail": 2,
+      "state": "001",
+      "total": 10
+    },
+    {
+      "early stop": 8,
+      "fidelity fail": 0,
+      "late success": 0,
+      "size fail": 2,
+      "state": "010",
+      "total": 10
+    },
+    {
+      "early stop": 8,
+      "fidelity fail": 0,
+      "late success": 0,
+      "size fail": 2,
+      "state": "011",
+      "total": 10
+    },
+    {
+      "early stop": 7,
+      "fidelity fail": 0,
+      "late success": 1,
+      "size fail": 2,
+      "state": "100",
+      "total": 10
+    },
+    {
+      "early stop": 9,
+      "fidelity fail": 1,
+      "late success": 0,
+      "size fail": 0,
+      "state": "101",
+      "total": 10
+    },
+    {
+      "early stop": 5,
+      "fidelity fail": 3,
+      "late success": 0,
+      "size fail": 2,
+      "state": "110",
+      "total": 10
+    },
+    {
+      "early stop": 4,
+      "fidelity fail": 3,
+      "late success": 0,
+      "size fail": 3,
+      "state": "111",
+      "total": 10
+    }
+  ],
+  "exact_density_matrix_analysis": {
+    "bootstrap_draws": 10000,
+    "bootstrap_seed": 20260827,
+    "cliffs_delta_ci95_state_cluster": [
+      0.4690546875,
+      0.8028125
+    ],
+    "cliffs_delta_control_vs_lexi2": 0.6384375,
+    "control_mean_fidelity": 0.9265574826383165,
+    "control_median_fidelity": 0.9908465643744147,
+    "control_task_success": 52,
+    "lex_median_fidelity": 0.97715,
+    "lex_task_success": 57,
+    "mcnemar_both_succeed": 40,
+    "mcnemar_exact_p": 0.45825831964612007,
+    "mcnemar_neither": 11,
+    "mcnemar_only_control": 12,
+    "mcnemar_only_lexi2": 17,
+    "mean_paired_diff_control_minus_lexi2": 0.01996248263831641,
+    "median_paired_diff_control_minus_lexi2": 0.012125204769372233,
+    "n_pairs": 80,
+    "pairs_control_higher": 64,
+    "pairs_lexi2_higher": 16,
+    "pairs_tied": 0,
+    "wilcoxon_method": "scipy.stats.wilcoxon, two-sided, zero_method=wilcox, scipy method=auto",
+    "wilcoxon_n_nonzero": 80,
+    "wilcoxon_p": 6.985786769022115e-06,
+    "wilcoxon_statistic": 683.0
+  },
+  "exact_minus_stored_control_fidelity_distribution": {
+    "max": 0.018946170406356377,
+    "mean": 0.012203732638316414,
+    "median": 0.012475478648499072,
+    "min": -0.0011212706418975982
+  },
+  "integrity": {
+    "control_run_result_file_count": 80,
+    "control_run_result_files_exactly_match_expected_grid": true,
+    "control_unique_grid_cells": 80,
+    "expected_grid_cells": 80,
+    "gen0_hash_comparisons": 80,
+    "gen0_hash_mismatches": [],
+    "lexi2_unique_grid_cells": 80,
+    "passed": true,
+    "scored_isa_errors": [],
+    "scored_isa_files_checked": 80,
+    "states_x_seeds_exactly_match_lexi2": true,
+    "workers_evidence": "infra/run_sweep.py hardcodes --workers 1 in the sole child spawn command; the single completed sweep used that dispatcher",
+    "workers_per_run": 1
+  },
+  "mechanism_figure": "control_arm_analysis/figures/control_arm_mechanism.pdf",
+  "per_state_task_success": [
+    {
+      "control_minus_lexi2": -4,
+      "control_task_success": 4,
+      "lexi2_task_success": 8,
+      "n_per_method": 10,
+      "state": "000"
+    },
+    {
+      "control_minus_lexi2": -2,
+      "control_task_success": 6,
+      "lexi2_task_success": 8,
+      "n_per_method": 10,
+      "state": "001"
+    },
+    {
+      "control_minus_lexi2": -1,
+      "control_task_success": 8,
+      "lexi2_task_success": 9,
+      "n_per_method": 10,
+      "state": "010"
+    },
+    {
+      "control_minus_lexi2": 3,
+      "control_task_success": 8,
+      "lexi2_task_success": 5,
+      "n_per_method": 10,
+      "state": "011"
+    },
+    {
+      "control_minus_lexi2": 0,
+      "control_task_success": 8,
+      "lexi2_task_success": 8,
+      "n_per_method": 10,
+      "state": "100"
+    },
+    {
+      "control_minus_lexi2": 3,
+      "control_task_success": 9,
+      "lexi2_task_success": 6,
+      "n_per_method": 10,
+      "state": "101"
+    },
+    {
+      "control_minus_lexi2": -3,
+      "control_task_success": 5,
+      "lexi2_task_success": 8,
+      "n_per_method": 10,
+      "state": "110"
+    },
+    {
+      "control_minus_lexi2": -1,
+      "control_task_success": 4,
+      "lexi2_task_success": 5,
+      "n_per_method": 10,
+      "state": "111"
+    }
+  ],
+  "run_level_median_sizes": [
+    {
+      "median_depth": 10.0,
+      "median_gates": 17.0,
+      "median_two_qubit_gates": 3.0,
+      "method": "lexi2",
+      "n_runs": 80,
+      "population": "all runs"
+    },
+    {
+      "median_depth": 8.0,
+      "median_gates": 13.0,
+      "median_two_qubit_gates": 2.0,
+      "method": "lexi2",
+      "n_runs": 57,
+      "population": "task-success runs"
+    },
+    {
+      "median_depth": 10.0,
+      "median_gates": 18.0,
+      "median_two_qubit_gates": 3.0,
+      "method": "lexi8_random",
+      "n_runs": 80,
+      "population": "all runs"
+    },
+    {
+      "median_depth": 9.0,
+      "median_gates": 16.0,
+      "median_two_qubit_gates": 3.0,
+      "method": "lexi8_random",
+      "n_runs": 52,
+      "population": "task-success runs"
+    }
+  ],
+  "stored_fidelity_analysis": {
+    "bootstrap_draws": 10000,
+    "bootstrap_seed": 20260827,
+    "cliffs_delta_ci95_state_cluster": [
+      -0.21015625,
+      0.14546875
+    ],
+    "cliffs_delta_control_vs_lexi2": -0.0225,
+    "control_mean_fidelity": 0.9143537499999999,
+    "control_median_fidelity": 0.9772,
+    "control_task_success": 52,
+    "lex_median_fidelity": 0.97715,
+    "lex_task_success": 57,
+    "mcnemar_both_succeed": 40,
+    "mcnemar_exact_p": 0.45825831964612007,
+    "mcnemar_neither": 11,
+    "mcnemar_only_control": 12,
+    "mcnemar_only_lexi2": 17,
+    "mean_paired_diff_control_minus_lexi2": 0.007758749999999995,
+    "median_paired_diff_control_minus_lexi2": -0.00039999999999995595,
+    "n_pairs": 80,
+    "pairs_control_higher": 39,
+    "pairs_lexi2_higher": 41,
+    "pairs_tied": 0,
+    "wilcoxon_method": "scipy.stats.wilcoxon, two-sided, zero_method=wilcox, scipy method=auto",
+    "wilcoxon_n_nonzero": 80,
+    "wilcoxon_p": 0.6887897251983043,
+    "wilcoxon_statistic": 1536.5
+  }
+}

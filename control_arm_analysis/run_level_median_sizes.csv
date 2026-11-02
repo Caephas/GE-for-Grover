@@ -1,0 +1,5 @@
+method,population,n_runs,median_gates,median_depth,median_two_qubit_gates
+lexi2,all runs,80,17.0,10.0,3.0
+lexi2,task-success runs,57,13.0,8.0,2.0
+lexi8_random,all runs,80,18.0,10.0,3.0
+lexi8_random,task-success runs,52,16.0,9.0,3.0

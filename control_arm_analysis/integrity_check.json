@@ -1,0 +1,15 @@
+{
+  "control_run_result_file_count": 80,
+  "control_run_result_files_exactly_match_expected_grid": true,
+  "control_unique_grid_cells": 80,
+  "expected_grid_cells": 80,
+  "gen0_hash_comparisons": 80,
+  "gen0_hash_mismatches": [],
+  "lexi2_unique_grid_cells": 80,
+  "passed": true,
+  "scored_isa_errors": [],
+  "scored_isa_files_checked": 80,
+  "states_x_seeds_exactly_match_lexi2": true,
+  "workers_evidence": "infra/run_sweep.py hardcodes --workers 1 in the sole child spawn command; the single completed sweep used that dispatcher",
+  "workers_per_run": 1
+}

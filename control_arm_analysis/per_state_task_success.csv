@@ -1,0 +1,9 @@
+state,lexi2_task_success,control_task_success,n_per_method,control_minus_lexi2
+000,8,4,10,-4
+001,8,6,10,-2
+010,9,8,10,-1
+011,5,8,10,3
+100,8,8,10,0
+101,6,9,10,3
+110,8,5,10,-3
+111,5,4,10,-1
