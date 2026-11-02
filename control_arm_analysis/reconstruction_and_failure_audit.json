@@ -1,0 +1,173 @@
+{
+  "control_task_failures": {
+    "n": 28,
+    "target_meeting_but_champion_failed": [
+      {
+        "first_target_meeting_generation": 0,
+        "seed": 91197,
+        "state": "011"
+      },
+      {
+        "first_target_meeting_generation": 42,
+        "seed": 67154,
+        "state": "111"
+      }
+    ],
+    "target_meeting_individual_ever": 2
+  },
+  "determinism": {
+    "cases": [
+      {
+        "seed": 80248,
+        "state": "000"
+      },
+      {
+        "seed": 70300,
+        "state": "001"
+      },
+      {
+        "seed": 67154,
+        "state": "111"
+      }
+    ],
+    "fresh_process_unique_signatures": {
+      "000_80248": 1,
+      "001_70300": 1,
+      "111_67154": 1
+    },
+    "repeats_per_case_per_mode": 5,
+    "same_process_unique_signatures": {
+      "000_80248": 1,
+      "001_70300": 1,
+      "111_67154": 1
+    }
+  },
+  "task_a_archived_result": {
+    "lexi2_metric_mismatches": 8,
+    "metric_mismatches": 9,
+    "records_processed": 240
+  },
+  "task_a_path": "Build phenotype, then instantiate a fresh preset pass manager with target=frozen target, optimization_level=3, seed_transpiler=run seed; retry up to 8 times and accept the first circuit whose gate/depth/2Q metrics match the log.",
+  "unmatched_lexi2_runs": [
+    {
+      "actual": [
+        22,
+        11,
+        3
+      ],
+      "expected": [
+        68,
+        47,
+        11
+      ],
+      "matched_under_task_a": false,
+      "seed": 80248,
+      "state": "000"
+    },
+    {
+      "actual": [
+        23,
+        15,
+        4
+      ],
+      "expected": [
+        62,
+        42,
+        10
+      ],
+      "matched_under_task_a": false,
+      "seed": 70300,
+      "state": "001"
+    },
+    {
+      "actual": [
+        39,
+        26,
+        7
+      ],
+      "expected": [
+        66,
+        45,
+        10
+      ],
+      "matched_under_task_a": false,
+      "seed": 70300,
+      "state": "011"
+    },
+    {
+      "actual": [
+        65,
+        45,
+        14
+      ],
+      "expected": [
+        65,
+        44,
+        12
+      ],
+      "matched_under_task_a": false,
+      "seed": 47182,
+      "state": "101"
+    },
+    {
+      "actual": [
+        29,
+        16,
+        3
+      ],
+      "expected": [
+        63,
+        43,
+        10
+      ],
+      "matched_under_task_a": false,
+      "seed": 12147,
+      "state": "101"
+    },
+    {
+      "actual": [
+        56,
+        40,
+        12
+      ],
+      "expected": [
+        62,
+        43,
+        10
+      ],
+      "matched_under_task_a": false,
+      "seed": 70300,
+      "state": "110"
+    },
+    {
+      "actual": [
+        63,
+        39,
+        10
+      ],
+      "expected": [
+        72,
+        48,
+        11
+      ],
+      "matched_under_task_a": false,
+      "seed": 74135,
+      "state": "111"
+    },
+    {
+      "actual": [
+        78,
+        52,
+        14
+      ],
+      "expected": [
+        52,
+        34,
+        9
+      ],
+      "matched_under_task_a": false,
+      "seed": 67154,
+      "state": "111"
+    }
+  ]
+}
