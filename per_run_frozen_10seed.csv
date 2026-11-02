@@ -151,7 +151,7 @@ tournament,110,47182,2,0.9781,13,8,2,2,28,13,0.28190000000000004,"Hardware targe
 tournament,110,80248,8,0.9724,10,5,2,2,28,11,0.22759999999999997,"Hardware targets achieved: fidelity=0.972, gates=10, depth=5",45,3357163437
 tournament,111,21315,1,0.9624,10,6,2,2,25,11,0.23759999999999998,"Hardware targets achieved: fidelity=0.962, gates=10, depth=6",20,381182113
 tournament,111,74135,6,0.9785,22,10,3,7,60,28,0.46149999999999997,completed_all_generations,99,353184723
-tournament,111,91197,9,0.7489,68,45,10,4,29,15,1.6111,completed_all_generations,99,4237107497
+tournament,111,91197,9,0.7489,68,45,3,4,29,15,1.6111,completed_all_generations,99,4237107497
 tournament,111,33537,4,0.9752,10,5,1,4,41,19,0.22480000000000006,"Hardware targets achieved: fidelity=0.975, gates=10, depth=5",61,1347061106
 tournament,111,12147,3,0.9793,16,8,3,7,64,34,0.34070000000000006,"Hardware targets achieved: fidelity=0.979, gates=16, depth=8",85,3513629926
 tournament,111,67154,7,0.9794,8,5,2,2,26,12,0.18059999999999996,"Hardware targets achieved: fidelity=0.979, gates=8, depth=5",15,1139794691

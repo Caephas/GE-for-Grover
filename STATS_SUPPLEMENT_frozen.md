@@ -157,9 +157,11 @@ Tournament's deployed circuit is ≥2× the ε-lexicase depth for |011⟩ (15 vs
 | tournament | 011 | 70300 | 0.9797 | 99 | 0.9797 | 22/15/5 | yes | size-target miss |
 | tournament | 011 | 74135 | 0.9790 | 29 | 0.9766 | 25/14/5 | yes | size-target miss |
 | tournament | 111 | 74135 | 0.9785 | 98 | 0.9785 | 22/10/3 | yes | size-target miss |
-| tournament | 111 | 91197 | 0.7489 | 90 | 0.7489 | 68/45/10 | no | fidelity failure |
+| tournament | 111 | 91197 | 0.7489 | 90 | 0.7489 | 68/45/3 | no | fidelity failure |
 
 **Result:** of the 6 non-converged runs, **5 met fidelity ≥ 0.95 at their peak but missed the hardware size targets** (gates ≤ 20, depth ≤ 15) and **1 genuinely failed on fidelity** (tournament |111⟩ seed 91197, peak 0.7489). The residual failure mode in this batch is size, not fidelity.
+
+Provenance note: `legacy recorded value restored; attempted transpiled metadata correction was not reproducible from the stored phenotype with the Task A path`
 
 ## Methods and assumptions
 
