@@ -1,0 +1,161 @@
+method,state,seed,final_sampled_fidelity,final_gates,final_depth,final_2q,stop_reason,task_success,exact_fidelity,reconstruction_matches
+lexi2,000,21315,0.9768,14,8,2,completed_all_generations,true,0.9760509911309185,true
+lexi2,000,47182,0.9834,5,2,0,"Hardware targets achieved: fidelity=0.983, gates=5, depth=2",true,0.9820323110034224,true
+lexi2,000,12147,0.9755,14,10,2,"Hardware targets achieved: fidelity=0.976, gates=14, depth=10",true,0.9755754388238902,true
+lexi2,000,33537,0.981,7,3,1,"Hardware targets achieved: fidelity=0.981, gates=7, depth=3",true,0.9784848671706163,true
+lexi2,000,70300,0.9772,10,6,2,"Hardware targets achieved: fidelity=0.977, gates=10, depth=6",true,0.9769865256538837,true
+lexi2,000,74135,0.9821,9,5,1,"Hardware targets achieved: fidelity=0.982, gates=9, depth=5",true,0.9776956172932861,true
+lexi2,000,67154,0.9738,16,8,2,"Hardware targets achieved: fidelity=0.974, gates=16, depth=8",true,0.9738539710454888,true
+lexi2,000,80248,0.6555,68,47,11,completed_all_generations,false,0.6605140905671173,true
+lexi2,000,91197,0.9739,19,11,2,"Hardware targets achieved: fidelity=0.974, gates=19, depth=11",true,0.9738540961924134,true
+lexi2,000,29440,0.9692,34,18,7,completed_all_generations,false,0.9661184487380274,true
+lexi2,001,21315,0.9789,10,5,1,"Hardware targets achieved: fidelity=0.979, gates=10, depth=5",true,0.9766233711936996,true
+lexi2,001,47182,0.9789,9,6,1,"Hardware targets achieved: fidelity=0.979, gates=9, depth=6",true,0.9778087286407408,true
+lexi2,001,12147,0.9769,19,12,4,"Hardware targets achieved: fidelity=0.977, gates=19, depth=12",true,0.9751451148803778,true
+lexi2,001,33537,0.9819,12,7,2,"Hardware targets achieved: fidelity=0.982, gates=12, depth=7",true,0.977298631187952,true
+lexi2,001,70300,0.5459,62,42,10,completed_all_generations,false,0.540501846346155,true
+lexi2,001,74135,0.9801,6,3,1,"Hardware targets achieved: fidelity=0.980, gates=6, depth=3",true,0.9781898320123337,true
+lexi2,001,67154,0.9737,13,8,3,"Hardware targets achieved: fidelity=0.974, gates=13, depth=8",true,0.9729342337932503,true
+lexi2,001,80248,0.9754,28,15,5,completed_all_generations,false,0.9723250787321258,true
+lexi2,001,91197,0.9794,9,6,2,"Hardware targets achieved: fidelity=0.979, gates=9, depth=6",true,0.9777489182652349,true
+lexi2,001,29440,0.9783,10,5,1,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",true,0.9764036009901916,true
+lexi2,010,21315,0.9794,18,10,3,"Hardware targets achieved: fidelity=0.979, gates=18, depth=10",true,0.9779003446930181,true
+lexi2,010,47182,0.9758,20,12,4,"Hardware targets achieved: fidelity=0.976, gates=20, depth=12",true,0.9754418233867176,true
+lexi2,010,12147,0.9791,20,11,3,"Hardware targets achieved: fidelity=0.979, gates=20, depth=11",true,0.9775456957116382,true
+lexi2,010,33537,0.9787,17,11,4,"Hardware targets achieved: fidelity=0.979, gates=17, depth=11",true,0.9752719893136023,true
+lexi2,010,70300,0.9779,11,7,3,"Hardware targets achieved: fidelity=0.978, gates=11, depth=7",true,0.9768427143473672,true
+lexi2,010,74135,0.9771,19,11,4,"Hardware targets achieved: fidelity=0.977, gates=19, depth=11",true,0.9755571964815677,true
+lexi2,010,67154,0.9766,23,14,5,completed_all_generations,false,0.9727198139123217,true
+lexi2,010,80248,0.9851,5,3,0,"Hardware targets achieved: fidelity=0.985, gates=5, depth=3",true,0.9833403433030593,true
+lexi2,010,91197,0.9743,20,11,4,"Hardware targets achieved: fidelity=0.974, gates=20, depth=11",true,0.9752731581941655,true
+lexi2,010,29440,0.9785,13,8,2,"Hardware targets achieved: fidelity=0.979, gates=13, depth=8",true,0.9755083719980897,true
+lexi2,011,21315,0.9758,22,13,5,completed_all_generations,false,0.9726586739853492,true
+lexi2,011,47182,0.4896,29,16,5,completed_all_generations,false,0.4892333005679245,true
+lexi2,011,12147,0.9806,8,3,1,"Hardware targets achieved: fidelity=0.981, gates=8, depth=3",true,0.9778430816526786,true
+lexi2,011,33537,0.9874,8,3,0,"Hardware targets achieved: fidelity=0.987, gates=8, depth=3",true,0.9872265799599559,true
+lexi2,011,70300,0.5985,66,45,10,completed_all_generations,false,0.597204826874267,true
+lexi2,011,74135,0.9751,21,13,6,completed_all_generations,false,0.9711747744358048,true
+lexi2,011,67154,0.9783,8,4,1,"Hardware targets achieved: fidelity=0.978, gates=8, depth=4",true,0.9765891863971133,true
+lexi2,011,80248,0.9528,12,9,2,"Hardware targets achieved: fidelity=0.953, gates=12, depth=9",true,0.9522062075584768,true
+lexi2,011,91197,0.9887,5,2,0,"Hardware targets achieved: fidelity=0.989, gates=5, depth=2",true,0.9872265799599558,true
+lexi2,011,29440,0.9711,28,16,6,completed_all_generations,false,0.9686206224343057,true
+lexi2,100,21315,0.98,17,10,3,"Hardware targets achieved: fidelity=0.980, gates=17, depth=10",true,0.9779003811210412,true
+lexi2,100,47182,0.9778,10,6,1,"Hardware targets achieved: fidelity=0.978, gates=10, depth=6",true,0.977570978715489,true
+lexi2,100,12147,0.9768,17,9,3,"Hardware targets achieved: fidelity=0.977, gates=17, depth=9",true,0.9785536913044837,true
+lexi2,100,33537,0.9723,20,13,5,"Hardware targets achieved: fidelity=0.972, gates=20, depth=13",true,0.9741696984483601,true
+lexi2,100,70300,0.9803,18,9,3,"Hardware targets achieved: fidelity=0.980, gates=18, depth=9",true,0.9790964752074204,true
+lexi2,100,74135,0.9585,54,37,10,completed_all_generations,false,0.9558525093135435,true
+lexi2,100,67154,0.9746,20,12,5,"Hardware targets achieved: fidelity=0.975, gates=20, depth=12",true,0.9728834494935165,true
+lexi2,100,80248,0.9763,25,18,5,completed_all_generations,false,0.9722845336527343,true
+lexi2,100,91197,0.9809,20,10,3,"Hardware targets achieved: fidelity=0.981, gates=20, depth=10",true,0.9775455554324669,true
+lexi2,100,29440,0.9869,6,3,0,"Hardware targets achieved: fidelity=0.987, gates=6, depth=3",true,0.9860960220056375,true
+lexi2,101,21315,0.982,7,3,0,completed_all_generations,true,0.9812270484146985,true
+lexi2,101,47182,0.6726,65,44,12,completed_all_generations,false,0.6676110196523322,true
+lexi2,101,12147,0.5958,63,43,10,completed_all_generations,false,0.5976531079235289,true
+lexi2,101,33537,0.979,11,7,1,"Hardware targets achieved: fidelity=0.979, gates=11, depth=7",true,0.9766605275740541,true
+lexi2,101,70300,0.9801,16,9,3,"Hardware targets achieved: fidelity=0.980, gates=16, depth=9",true,0.9787421761567052,true
+lexi2,101,74135,0.4906,20,12,4,completed_all_generations,false,0.48889904913832094,true
+lexi2,101,67154,0.6709,55,33,9,completed_all_generations,false,0.6784044275870306,true
+lexi2,101,80248,0.9783,13,10,2,"Hardware targets achieved: fidelity=0.978, gates=13, depth=10",true,0.9761762030684246,true
+lexi2,101,91197,0.9754,15,8,3,"Hardware targets achieved: fidelity=0.975, gates=15, depth=8",true,0.9722408368708186,true
+lexi2,101,29440,0.9806,9,5,2,"Hardware targets achieved: fidelity=0.981, gates=9, depth=5",true,0.9776004170386585,true
+lexi2,110,21315,0.9805,11,6,1,"Hardware targets achieved: fidelity=0.981, gates=11, depth=6",true,0.9773366146783831,true
+lexi2,110,47182,0.9776,10,5,2,"Hardware targets achieved: fidelity=0.978, gates=10, depth=5",true,0.9751765496870627,true
+lexi2,110,12147,0.9786,18,10,3,"Hardware targets achieved: fidelity=0.979, gates=18, depth=10",true,0.9777464296106324,true
+lexi2,110,33537,0.9803,9,4,1,"Hardware targets achieved: fidelity=0.980, gates=9, depth=4",true,0.9774621133752435,true
+lexi2,110,70300,0.5435,62,43,10,completed_all_generations,false,0.5406094686739848,true
+lexi2,110,74135,0.4885,16,10,2,completed_all_generations,false,0.4829837947854074,true
+lexi2,110,67154,0.9782,19,11,4,"Hardware targets achieved: fidelity=0.978, gates=19, depth=11",true,0.97558652594171,true
+lexi2,110,80248,0.9786,19,10,3,"Hardware targets achieved: fidelity=0.979, gates=19, depth=10",true,0.9777464275243704,true
+lexi2,110,91197,0.9768,10,6,2,"Hardware targets achieved: fidelity=0.977, gates=10, depth=6",true,0.9757379621636475,true
+lexi2,110,29440,0.9777,20,12,4,"Hardware targets achieved: fidelity=0.978, gates=20, depth=12",true,0.9754733079565739,true
+lexi2,111,21315,0.9876,7,3,0,"Hardware targets achieved: fidelity=0.988, gates=7, depth=3",true,0.9854654025235398,true
+lexi2,111,47182,0.4883,26,15,5,completed_all_generations,false,0.48919699228810043,true
+lexi2,111,12147,0.4879,33,17,6,completed_all_generations,false,0.48489626911841927,true
+lexi2,111,33537,0.9775,9,4,1,"Hardware targets achieved: fidelity=0.978, gates=9, depth=4",true,0.9765508704933747,true
+lexi2,111,70300,0.9585,14,7,2,"Hardware targets achieved: fidelity=0.959, gates=14, depth=7",true,0.9582176198762417,true
+lexi2,111,74135,0.7466,72,48,11,completed_all_generations,false,0.7528055818208935,true
+lexi2,111,67154,0.5434,52,34,9,completed_all_generations,false,0.5430351475533494,true
+lexi2,111,80248,0.9793,18,9,3,"Hardware targets achieved: fidelity=0.979, gates=18, depth=9",true,0.9776260716819313,true
+lexi2,111,91197,0.9742,19,10,4,"Hardware targets achieved: fidelity=0.974, gates=19, depth=10",true,0.9753195545915236,true
+lexi2,111,29440,0.9761,22,16,5,completed_all_generations,false,0.9721676338411047,true
+lexi8_random,000,21315,0.9762,17,9,2,"Hardware targets achieved: fidelity=0.976, gates=17, depth=9",true,0.9762242471676102,true
+lexi8_random,000,47182,0.9722,29,15,6,completed_all_generations,false,0.9701885197585045,true
+lexi8_random,000,12147,0.9801,17,11,3,"Hardware targets achieved: fidelity=0.980, gates=17, depth=11",true,0.9799850396923867,true
+lexi8_random,000,33537,0.9745,17,11,4,"Hardware targets achieved: fidelity=0.975, gates=17, depth=11",true,0.97567639355917,true
+lexi8_random,000,70300,0.4948,27,16,5,completed_all_generations,false,0.48949102402335937,true
+lexi8_random,000,74135,0.494,7,4,0,completed_all_generations,false,0.4957145488458403,true
+lexi8_random,000,67154,0.9716,13,7,3,"Hardware targets achieved: fidelity=0.972, gates=13, depth=7",true,0.9735234671071973,true
+lexi8_random,000,80248,0.529,72,49,13,completed_all_generations,false,0.5384599256688843,false
+lexi8_random,000,91197,0.9766,22,14,5,completed_all_generations,false,0.9728732416104542,true
+lexi8_random,000,29440,0.9552,25,14,4,completed_all_generations,false,0.9514579999378405,true
+lexi8_random,001,21315,0.9786,18,9,3,"Hardware targets achieved: fidelity=0.979, gates=18, depth=9",true,0.9775790867050397,true
+lexi8_random,001,47182,0.979,18,9,4,"Hardware targets achieved: fidelity=0.979, gates=18, depth=9",true,0.9767613100393977,true
+lexi8_random,001,12147,0.9786,21,14,4,completed_all_generations,false,0.9749598982115836,true
+lexi8_random,001,33537,0.9803,10,6,2,"Hardware targets achieved: fidelity=0.980, gates=10, depth=6",true,0.9768908304315722,true
+lexi8_random,001,70300,0.976,20,10,2,"Hardware targets achieved: fidelity=0.976, gates=20, depth=10",true,0.9753154043603602,true
+lexi8_random,001,74135,0.9791,13,8,2,"Hardware targets achieved: fidelity=0.979, gates=13, depth=8",true,0.975951815719992,true
+lexi8_random,001,67154,0.975,23,13,5,completed_all_generations,false,0.9724255083592676,true
+lexi8_random,001,80248,0.49,32,19,6,completed_all_generations,false,0.48721937708148794,true
+lexi8_random,001,91197,0.9881,6,3,0,"Hardware targets achieved: fidelity=0.988, gates=6, depth=3",true,0.987547942528836,true
+lexi8_random,001,29440,0.4885,21,13,5,completed_all_generations,false,0.4884635495998603,true
+lexi8_random,010,21315,0.976,20,11,3,"Hardware targets achieved: fidelity=0.976, gates=20, depth=11",true,0.9775456957116382,true
+lexi8_random,010,47182,0.9783,13,7,3,"Hardware targets achieved: fidelity=0.978, gates=13, depth=7",true,0.9729103489463397,true
+lexi8_random,010,12147,0.9812,9,5,1,"Hardware targets achieved: fidelity=0.981, gates=9, depth=5",true,0.9766233711936996,true
+lexi8_random,010,33537,0.9771,14,8,3,"Hardware targets achieved: fidelity=0.977, gates=14, depth=8",true,0.9731094676482985,true
+lexi8_random,010,70300,0.9604,16,9,2,"Hardware targets achieved: fidelity=0.960, gates=16, depth=9",true,0.9558881659088413,true
+lexi8_random,010,74135,0.9657,35,22,8,completed_all_generations,false,0.9620234296457554,true
+lexi8_random,010,67154,0.9796,17,11,3,"Hardware targets achieved: fidelity=0.980, gates=17, depth=11",true,0.9783053329514813,true
+lexi8_random,010,80248,0.976,20,11,3,"Hardware targets achieved: fidelity=0.976, gates=20, depth=11",true,0.9775445563424425,true
+lexi8_random,010,91197,0.9799,10,5,2,"Hardware targets achieved: fidelity=0.980, gates=10, depth=5",true,0.9762980113249192,true
+lexi8_random,010,29440,0.9704,29,18,7,completed_all_generations,false,0.9666137666185836,true
+lexi8_random,011,21315,0.9793,20,10,3,"Hardware targets achieved: fidelity=0.979, gates=20, depth=10",true,0.9774252201171375,true
+lexi8_random,011,47182,0.9796,9,4,1,"Hardware targets achieved: fidelity=0.980, gates=9, depth=4",true,0.9774621133752432,true
+lexi8_random,011,12147,0.9836,7,3,0,"Hardware targets achieved: fidelity=0.984, gates=7, depth=3",true,0.9812028801984107,true
+lexi8_random,011,33537,0.9732,20,15,5,"Hardware targets achieved: fidelity=0.973, gates=20, depth=15",true,0.9740946662367892,true
+lexi8_random,011,70300,0.9818,18,12,3,"Hardware targets achieved: fidelity=0.982, gates=18, depth=12",true,0.9796310112529609,true
+lexi8_random,011,74135,0.9752,14,7,3,"Hardware targets achieved: fidelity=0.975, gates=14, depth=7",true,0.9726473464660204,true
+lexi8_random,011,67154,0.9806,18,10,4,"Hardware targets achieved: fidelity=0.981, gates=18, depth=10",true,0.9773472097199666,true
+lexi8_random,011,80248,0.9789,15,9,2,"Hardware targets achieved: fidelity=0.979, gates=15, depth=9",true,0.9754682741297661,true
+lexi8_random,011,91197,0.9757,22,12,5,completed_all_generations,false,0.9728540206234276,true
+lexi8_random,011,29440,0.9713,31,16,6,completed_all_generations,false,0.9682964405512556,true
+lexi8_random,100,21315,0.9805,20,11,3,"Hardware targets achieved: fidelity=0.981, gates=20, depth=11",true,0.977900485000961,true
+lexi8_random,100,47182,0.9789,16,9,3,completed_all_generations,true,0.9792904263841714,true
+lexi8_random,100,12147,0.9763,19,10,3,"Hardware targets achieved: fidelity=0.976, gates=19, depth=10",true,0.9779003446930181,true
+lexi8_random,100,33537,0.9779,20,11,4,"Hardware targets achieved: fidelity=0.978, gates=20, depth=11",true,0.9751277282418319,true
+lexi8_random,100,70300,0.9798,19,10,3,"Hardware targets achieved: fidelity=0.980, gates=19, depth=10",true,0.9779003811210412,true
+lexi8_random,100,74135,0.9777,13,7,2,"Hardware targets achieved: fidelity=0.978, gates=13, depth=7",true,0.9755805164441782,true
+lexi8_random,100,67154,0.9774,11,8,2,"Hardware targets achieved: fidelity=0.977, gates=11, depth=8",true,0.9761981829638471,true
+lexi8_random,100,80248,0.9754,24,15,5,completed_all_generations,false,0.9730559244609946,true
+lexi8_random,100,91197,0.9773,17,10,4,"Hardware targets achieved: fidelity=0.977, gates=17, depth=10",true,0.9761062240414916,true
+lexi8_random,100,29440,0.9707,31,16,6,completed_all_generations,false,0.9688295321901185,true
+lexi8_random,101,21315,0.9759,13,7,2,"Hardware targets achieved: fidelity=0.976, gates=13, depth=7",true,0.9757294814474594,true
+lexi8_random,101,47182,0.6625,59,36,8,completed_all_generations,false,0.6576998322027412,false
+lexi8_random,101,12147,0.9806,20,10,3,"Hardware targets achieved: fidelity=0.981, gates=20, depth=10",true,0.9782283780990688,true
+lexi8_random,101,33537,0.978,11,6,2,"Hardware targets achieved: fidelity=0.978, gates=11, depth=6",true,0.9759459566624132,true
+lexi8_random,101,70300,0.9787,20,11,3,"Hardware targets achieved: fidelity=0.979, gates=20, depth=11",true,0.9782274149642058,true
+lexi8_random,101,74135,0.9814,18,10,3,"Hardware targets achieved: fidelity=0.981, gates=18, depth=10",true,0.978228380186031,true
+lexi8_random,101,67154,0.9789,14,7,1,"Hardware targets achieved: fidelity=0.979, gates=14, depth=7",true,0.9759867460378789,true
+lexi8_random,101,80248,0.9839,6,3,0,"Hardware targets achieved: fidelity=0.984, gates=6, depth=3",true,0.9828962920105949,true
+lexi8_random,101,91197,0.9791,8,4,1,"Hardware targets achieved: fidelity=0.979, gates=8, depth=4",true,0.9765891863971135,true
+lexi8_random,101,29440,0.9788,18,8,2,"Hardware targets achieved: fidelity=0.979, gates=18, depth=8",true,0.9774763363067798,true
+lexi8_random,110,21315,0.9774,24,16,5,completed_all_generations,false,0.9729196921236001,true
+lexi8_random,110,47182,0.9777,9,5,2,"Hardware targets achieved: fidelity=0.978, gates=9, depth=5",true,0.9757379621636475,true
+lexi8_random,110,12147,0.979,17,10,3,"Hardware targets achieved: fidelity=0.979, gates=17, depth=10",true,0.9781779161849766,true
+lexi8_random,110,33537,0.9779,12,6,2,"Hardware targets achieved: fidelity=0.978, gates=12, depth=6",true,0.9757294814474594,true
+lexi8_random,110,70300,0.4839,51,30,8,completed_all_generations,false,0.48204134309152874,true
+lexi8_random,110,74135,0.7621,70,46,11,completed_all_generations,false,0.7568373110527534,false
+lexi8_random,110,67154,0.5271,64,44,12,completed_all_generations,false,0.539500877970043,false
+lexi8_random,110,80248,0.9764,18,11,4,"Hardware targets achieved: fidelity=0.976, gates=18, depth=11",true,0.9755366183173201,true
+lexi8_random,110,91197,0.9797,19,11,3,"Hardware targets achieved: fidelity=0.980, gates=19, depth=11",true,0.9790405817799875,true
+lexi8_random,110,29440,0.967,43,25,8,completed_all_generations,false,0.9636059519804582,true
+lexi8_random,111,21315,0.9833,9,3,0,"Hardware targets achieved: fidelity=0.983, gates=9, depth=3",true,0.9809352373276218,true
+lexi8_random,111,47182,0.5428,54,36,8,completed_all_generations,false,0.5444009570310925,false
+lexi8_random,111,12147,0.9833,9,3,0,"Hardware targets achieved: fidelity=0.983, gates=9, depth=3",true,0.9809352373276218,true
+lexi8_random,111,33537,0.9751,11,7,2,"Hardware targets achieved: fidelity=0.975, gates=11, depth=7",true,0.9768221488274772,true
+lexi8_random,111,70300,0.48,63,44,13,completed_all_generations,false,0.4776043425360514,true
+lexi8_random,111,74135,0.974,16,9,2,"Hardware targets achieved: fidelity=0.974, gates=16, depth=9",true,0.9752007353650326,true
+lexi8_random,111,67154,0.9758,22,12,4,completed_all_generations,false,0.974634012114194,true
+lexi8_random,111,80248,0.761,70,46,10,completed_all_generations,false,0.7695649940741132,false
+lexi8_random,111,91197,0.9773,23,13,5,completed_all_generations,false,0.9735700300139951,true
+lexi8_random,111,29440,0.9766,24,14,5,completed_all_generations,false,0.9721816329453238,true
